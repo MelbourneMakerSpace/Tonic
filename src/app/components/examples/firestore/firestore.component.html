@@ -1,0 +1,17 @@
+<div fxLayout="column" class="mygreen" fxLayoutAlign="space-around center">
+  <div *ngFor="let item of items | async">{{item.Item}}</div>
+</div>
+<div fxLayout="row" fxLayoutAlign="center center">
+  <button mat-raised-button (click)="addItem()">Add Item</button>
+</div>
+<div fxLayout="column" class="mygreen" fxLayoutAlign="space-around center">
+  <div *ngFor="let item of itemsFromSnapshot | async" style="text-align: center;">
+    {{item.Key}}
+    <br>
+    <b>Created</b> {{item.Item}}
+    <br>
+    <b>Updated</b> {{item.updated}}
+    <button mat-raised-button (click)="update(item.Key)">Update</button>
+    <button mat-raised-button (click)="delete(item.Key)">Delete</button>
+  </div>
+</div>
