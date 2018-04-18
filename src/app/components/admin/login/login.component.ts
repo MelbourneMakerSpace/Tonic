@@ -28,6 +28,8 @@ export class LoginComponent implements OnInit {
   login() {
     const formValues = this.form.value;
 
+    console.dir(formValues);
+
     // this.authService
     //   .loginWithGoogle(formValues.email, formValues.password)
     //   .then(result => {

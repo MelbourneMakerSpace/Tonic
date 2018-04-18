@@ -1,11 +1,12 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <button mat-raised-button routerLink="home">Home</button>
-  <button mat-raised-button routerLink="firestore">Firestore</button>
-  <button mat-raised-button *ngIf="!isLoggedIn" routerLink="firestoreauth">Login</button>
-  <button mat-raised-button *ngIf="isLoggedIn" (click)="logout()">Logout</button>
-  <button mat-raised-button routerLink="material">Angular Material</button>
-  <button mat-raised-button routerLink="flexlayout">Angular FlexLayout</button>
+<div fxLayoutAlign="space-around center" *ngIf="isLoggedIn">
+  <div>
+    <img src="assets/Logo.jpg" style="height:60px; width:auto;" />
+  </div>
+  <div>
+    <button mat-raised-button routerLink="home">Home</button>
+    <button mat-raised-button (click)="logout()">Logout</button>
+  </div>
 </div>
 <br>
 <div fxLayout="row">
