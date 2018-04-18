@@ -23,6 +23,7 @@ import { FirebaseAuthService } from './services/security/firebase-auth.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { LoggedInComponent } from './components/examples/logged-in/logged-in.component';
+import { LoginComponent } from './components/admin/login/login.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { LoggedInComponent } from './components/examples/logged-in/logged-in.com
     ExamplesHomeComponent,
     MaterialComponent,
     FlexLayoutComponent,
-    LoggedInComponent
+    LoggedInComponent,
+    LoginComponent
   ],
   imports: [
     AppRoutingModule,

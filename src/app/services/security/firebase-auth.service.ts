@@ -30,7 +30,7 @@ export class FirebaseAuthService {
         this.isAuthenticated = false;
         this.isAuthenticated$.next(false);
         console.log('auth listener: NOT authenticated');
-        this.router.navigate(['firestoreauth']);
+        this.router.navigate(['login']);
       }
     });
   }

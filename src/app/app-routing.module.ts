@@ -7,15 +7,16 @@ import { FireStoreAuthComponent } from './components/examples/fire-store-auth/fi
 import { MaterialComponent } from './components/examples/material/material.component';
 import { FlexLayoutComponent } from './components/examples/flex-layout/flex-layout.component';
 import { LoggedInComponent } from './components/examples/logged-in/logged-in.component';
+import { LoginComponent } from './components/admin/login/login.component';
 
 const routes: Routes = [
-  { path: '', component: ExamplesHomeComponent },
+  { path: '', component: LoginComponent },
   { path: 'home', component: ExamplesHomeComponent },
   { path: 'firestore', component: FirestoreComponent },
   { path: 'material', component: MaterialComponent },
   { path: 'flexlayout', component: FlexLayoutComponent },
   { path: 'loggedIn', component: LoggedInComponent },
-  { path: 'firestoreauth', component: FireStoreAuthComponent }
+  { path: 'login', component: LoginComponent }
 ];
 
 @NgModule({

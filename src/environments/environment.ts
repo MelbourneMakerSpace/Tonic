@@ -6,11 +6,11 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'AIzaSyAlD_nt2GU6CaIotUC1uKpW68P4MZELw8I',
-    authDomain: 'baseng-40e3c.firebaseapp.com',
-    databaseURL: 'https://baseng-40e3c.firebaseio.com',
-    projectId: 'baseng-40e3c',
-    storageBucket: 'baseng-40e3c.appspot.com',
-    messagingSenderId: '593024193291'
+    apiKey: 'AIzaSyAfmXnoqhPT7jPhPEEnTffkp35B0JUZxuU',
+    authDomain: 'makertonic321.firebaseapp.com',
+    databaseURL: 'https://makertonic321.firebaseio.com',
+    projectId: 'makertonic321',
+    storageBucket: '',
+    messagingSenderId: '382050690528'
   }
 };
