@@ -1,11 +1,12 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div fxLayoutAlign="space-around center" *ngIf="isLoggedIn">
-  <div>
+<div fxLayout="row" fxLayoutAlign="center center" *ngIf="isLoggedIn">
+  <div fxFlex="50" fxLayoutAlign="start center" fxLayoutGap="10px">
     <img src="assets/Logo.jpg" style="height:60px; width:auto;" />
-  </div>
-  <div>
     <button mat-raised-button routerLink="home">Home</button>
     <button mat-raised-button (click)="logout()">Logout</button>
+  </div>
+  <div style="text-align:right;" fxFlex="10" fxFlexAlign="end">
+    Identity
   </div>
 </div>
 <br>
