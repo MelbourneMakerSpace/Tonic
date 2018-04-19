@@ -8,14 +8,12 @@ import { MaterialComponent } from './components/examples/material/material.compo
 import { FlexLayoutComponent } from './components/examples/flex-layout/flex-layout.component';
 import { LoggedInComponent } from './components/examples/logged-in/logged-in.component';
 import { LoginComponent } from './components/admin/login/login.component';
+import { MemberlistComponent } from './components/memberlist/memberlist.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
-  { path: 'home', component: ExamplesHomeComponent },
-  { path: 'firestore', component: FirestoreComponent },
-  { path: 'material', component: MaterialComponent },
-  { path: 'flexlayout', component: FlexLayoutComponent },
-  { path: 'loggedIn', component: LoggedInComponent },
+  { path: 'home', component: MemberlistComponent },
+  { path: 'memberlist', component: MemberlistComponent },
   { path: 'login', component: LoginComponent }
 ];
 
