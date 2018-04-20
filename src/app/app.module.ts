@@ -19,9 +19,10 @@ import { LoginComponent } from './components/admin/login/login.component';
 import { MemberlistComponent } from './components/memberlist/memberlist.component';
 
 import { MemberService } from './services/member.service';
+import { TbCardComponent } from './components/controls/tb-card/tb-card.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, MemberlistComponent],
+  declarations: [AppComponent, LoginComponent, MemberlistComponent, TbCardComponent],
   imports: [
     AppRoutingModule,
     AppMaterialModule,

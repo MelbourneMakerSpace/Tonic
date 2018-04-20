@@ -28,7 +28,7 @@ export class MemberlistComponent implements OnInit {
     console.log('Key:', Key);
   }
 
-  addMember() {
+  addMember(event) {
     console.log('add member button');
   }
 }

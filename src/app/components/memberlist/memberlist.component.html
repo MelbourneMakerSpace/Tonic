@@ -31,3 +31,12 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
 </div>
+<br>
+<br>
+<tb-card (addClick)="addMember($event)">
+  <div class="headerText">My Header
+    <br>second line</div>
+  <div class="subheaderText">Sub header
+  </div>
+  <div class="content">content</div>
+</tb-card>

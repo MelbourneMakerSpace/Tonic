@@ -1,0 +1,19 @@
+<div class="mat-elevation-z2">
+  <div style="height:10px" class="bgdark"></div>
+  <div class="bgprimary headerspan headerdiv">
+    <ng-content select=".headerText"></ng-content>
+  </div>
+  <div fxFlex class="bggray" fxLayout="row">
+    <div fxFlex="75" fxLayoutAlign="start center" class="headerdiv">
+      <ng-content select=".subHeaderText"></ng-content>
+    </div>
+    <div fxFlex style="display:table-cell;">
+      <button *ngIf="addClick.observers.length > 0" mat-mini-fab (click)="add($event)" style="position:relative;top:calc(100% - 20px);z-index: 10;">
+        <mat-icon aria-label="Add">add</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div style="min-height:150px;" class="bglightgray">
+    <ng-content select=".content"></ng-content>
+  </div>
+</div>
