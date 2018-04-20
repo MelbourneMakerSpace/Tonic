@@ -1,19 +1,33 @@
-<button mat-icon-button (click)="addMember()" style="background-color:lightgreen;">
-  <mat-icon color="Primary" aria-label="Add">add</mat-icon>
-</button>
-<mat-table #table [dataSource]="memberSnapshot | async">
-  <ng-container matColumnDef="Actions">
-    <mat-header-cell *matHeaderCellDef style="text-align: center;"> Actions </mat-header-cell>
-    <mat-cell *matCellDef="let item" style="text-align: center;">
-      <button mat-icon-button color="primary" (click)="viewMember(item.Key)">
-        <mat-icon aria-label="Update">folder_shared</mat-icon>
+<div class="mat-elevation-z2">
+  <div style="height:10px" class="bgdark"></div>
+  <div class="bgprimary headerspan headerdiv">
+    Members
+  </div>
+  <div fxFlex class="bggray" fxLayout="row">
+    <div fxFlex="75"></div>
+    <div fxFlex>
+      <button mat-mini-fab (click)="addMember()" style="position:relative;top:50%;z-index: 10;">
+        <mat-icon aria-label="Add">add</mat-icon>
       </button>
-    </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="Name">
-    <mat-header-cell *matHeaderCellDef> Member </mat-header-cell>
-    <mat-cell *matCellDef="let item"> {{item.FirstName}} {{item.LastName}} </mat-cell>
-  </ng-container>
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
+    </div>
+  </div>
+  <mat-table class="bglightgray" #table [dataSource]="memberSnapshot | async">
+    <ng-container matColumnDef="Actions">
+      <mat-header-cell *matHeaderCellDef style="text-align: center;"> Actions </mat-header-cell>
+      <mat-cell *matCellDef="let item" style="text-align: center;">
+        <button mat-icon-button color="primary" (click)="viewMember(item.Key)">
+          <mat-icon aria-label="Update">folder_shared</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Name">
+      <mat-header-cell *matHeaderCellDef> Member </mat-header-cell>
+      <mat-cell *matCellDef="let item">
+        <button mat-icon-button color="primary" (click)="viewMember(item.Key)">
+          <mat-icon aria-label="Update">folder_shared</mat-icon>
+        </button> {{item.FirstName}} {{item.LastName}} </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>

@@ -5,11 +5,19 @@ import { MemberService } from '../../services/member.service';
 @Component({
   selector: 'app-memberlist',
   templateUrl: './memberlist.component.html',
-  styles: []
+  styles: [
+    `.headerdiv {
+    padding-left:10px;
+  }
+  .headerspan {
+    font-size:50px;
+    font-weight:bold;
+  }`
+  ]
 })
 export class MemberlistComponent implements OnInit {
   memberSnapshot: Observable<Member>;
-  displayedColumns = ['Name', 'Actions'];
+  displayedColumns = ['Name'];
   constructor(private memberService: MemberService) {}
 
   ngOnInit() {
