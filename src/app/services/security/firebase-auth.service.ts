@@ -4,10 +4,12 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { TimerObservable } from 'rxjs/observable/TimerObservable';
 
 @Injectable()
 export class FirebaseAuthService {
   isAuthenticated: boolean;
+  displayName$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   isAuthenticated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
@@ -25,6 +27,8 @@ export class FirebaseAuthService {
         console.log('auth listener: authenticated');
         this.isAuthenticated = true;
         this.isAuthenticated$.next(true);
+        this.displayName$.next(user.displayName);
+        this.displayName$.complete();
         this.router.navigate(['memberlist']);
       } else {
         this.isAuthenticated = false;
@@ -50,9 +54,7 @@ export class FirebaseAuthService {
     this.fbAuth.auth.signOut();
   }
 
-  loginWithGoogle(email, password): Promise<any> {
-    return this.fbAuth.auth.signInWithPopup(
-      new firebase.auth.GoogleAuthProvider()
-    );
+  loginWithGoogle() {
+    this.fbAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
   }
 }

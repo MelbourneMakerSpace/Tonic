@@ -8,6 +8,7 @@ import { FirebaseAuthService } from './services/security/firebase-auth.service';
 })
 export class AppComponent implements OnInit {
   isLoggedIn = false;
+  identity: string;
 
   constructor(private authService: FirebaseAuthService) {}
 
@@ -21,5 +22,8 @@ export class AppComponent implements OnInit {
     this.authService.isAuthenticated$.subscribe(isAuth => {
       this.isLoggedIn = isAuth;
     });
+    this.authService.displayName$.subscribe(
+      identity => (this.identity = identity)
+    );
   }
 }

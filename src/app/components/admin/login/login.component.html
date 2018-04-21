@@ -1,5 +1,5 @@
 <form fxLayout="column" fxFlex fxLayoutAlign="center center" autocomplete="off" novalidate class="login-form" [formGroup]="form">
-  <mat-card fxLayout="column" fxLayoutAlign="space-around stretch" style="width:300px;">
+  <mat-card fxLayout="column" fxLayoutAlign="space-around stretch" style="width:350px;">
     <mat-card-header>
       <div style="width:100%;">
         <img style="width:95%;height:auto;" src="assets/Logo.jpg" />
@@ -12,6 +12,10 @@
       <input name="password" formControlName="password" type="password" matInput placeholder="Password">
     </mat-form-field>
     <button mat-raised-button (click)="login()">Login</button>
+    <br>
+    <button mat-raised-button (click)="loginWithGoogle()">
+      <img src="assets/GoogleLogIn.png" style="height:auto;width:100%;" />
+    </button>
   </mat-card>
   <div *ngIf="loginError" style="width:300px;">
     <mat-card>
