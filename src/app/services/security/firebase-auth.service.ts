@@ -27,8 +27,7 @@ export class FirebaseAuthService {
         console.log('auth listener: authenticated');
         this.isAuthenticated = true;
         this.isAuthenticated$.next(true);
-        this.displayName$.next(user.displayName);
-        this.displayName$.complete();
+        this.displayName$.next(user.displayName || user.email);
         this.router.navigate(['memberlist']);
       } else {
         this.isAuthenticated = false;
