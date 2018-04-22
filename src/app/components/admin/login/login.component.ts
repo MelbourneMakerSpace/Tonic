@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
 
 @Component({
-  selector: 'login',
+  selector: 'app-login',
   templateUrl: './login.component.html',
   styles: []
 })

@@ -12,6 +12,9 @@ import { MemberService } from '../../services/member.service';
   .headerspan {
     font-size:50px;
     font-weight:bold;
+  }
+  .hover:hover{
+    background-color:#e1e2e1;
   }`
   ]
 })
@@ -25,7 +28,7 @@ export class MemberlistComponent implements OnInit {
   }
 
   viewMember(Key) {
-    console.log('Key:', Key);
+    console.dir(Key);
   }
 
   addMember(event) {

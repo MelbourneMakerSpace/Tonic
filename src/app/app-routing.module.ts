@@ -9,12 +9,14 @@ import { FlexLayoutComponent } from './components/examples/flex-layout/flex-layo
 import { LoggedInComponent } from './components/examples/logged-in/logged-in.component';
 import { LoginComponent } from './components/admin/login/login.component';
 import { MemberlistComponent } from './components/memberlist/memberlist.component';
+import { MemberComponent } from './components/member/member.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'home', component: MemberlistComponent },
   { path: 'memberlist', component: MemberlistComponent },
-  { path: 'login', component: LoginComponent }
+  { path: 'member/:key', component: MemberComponent },
+  { path: 'app-login', component: LoginComponent }
 ];
 
 @NgModule({

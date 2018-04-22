@@ -20,7 +20,7 @@
           </button> {{item.FirstName}} {{item.LastName}} </mat-cell>
       </ng-container>
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-row class="hover" [routerLink]="['/member/' + row.Key]" *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
   </div>
 </tb-card>

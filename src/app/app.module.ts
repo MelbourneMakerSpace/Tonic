@@ -20,9 +20,10 @@ import { MemberlistComponent } from './components/memberlist/memberlist.componen
 
 import { MemberService } from './services/member.service';
 import { TbCardComponent } from './components/controls/tb-card/tb-card.component';
+import { MemberComponent } from './components/member/member.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, MemberlistComponent, TbCardComponent],
+  declarations: [AppComponent, LoginComponent, MemberlistComponent, TbCardComponent, MemberComponent],
   imports: [
     AppRoutingModule,
     AppMaterialModule,
