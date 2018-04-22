@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-member',
@@ -6,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styles: []
 })
 export class MemberComponent implements OnInit {
+  constructor(private router: Router) {}
 
-  constructor() { }
+  ngOnInit() {}
 
-  ngOnInit() {
+  back() {
+    this.router.navigateByUrl('/memberlist');
   }
 
+  save() {
+    this.router.navigateByUrl('/memberlist');
+  }
 }
