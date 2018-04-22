@@ -2,7 +2,7 @@
   <div class="headerText">Member Name</div>
   <div class="subheaderText"></div>
   <div class="extraButtons">
-    <button mat-mini-fab (click)="back()">
+    <button mat-mini-fab (click)="save()">
       <mat-icon aria-label="Save" title="Save">save</mat-icon>
     </button>
 
@@ -10,6 +10,18 @@
       <mat-icon aria-label="Back" title="Back">arrow_back</mat-icon>
     </button>
   </div>
+  <div class="content">
+    <form novalidate class="login-form" [formGroup]="form">
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
+        <mat-form-field>
+          <input formControlName="FirstName" matInput placeholder="First Name">
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="LastName" matInput placeholder="Last Name">
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
 
-  <div class="content">Member details will be here</div>
+
 </tb-card>

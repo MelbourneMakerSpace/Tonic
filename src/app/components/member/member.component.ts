@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-member',
@@ -7,7 +8,14 @@ import { Router } from '@angular/router';
   styles: []
 })
 export class MemberComponent implements OnInit {
-  constructor(private router: Router) {}
+  form: FormGroup;
+
+  constructor(private router: Router, private fb: FormBuilder) {
+    this.form = this.fb.group({
+      FirstName: ['', Validators.required],
+      LastName: ['', Validators.required]
+    });
+  }
 
   ngOnInit() {}
 

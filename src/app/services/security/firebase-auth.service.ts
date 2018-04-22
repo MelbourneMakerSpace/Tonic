@@ -28,7 +28,6 @@ export class FirebaseAuthService {
         this.isAuthenticated = true;
         this.isAuthenticated$.next(true);
         this.displayName$.next(user.displayName || user.email);
-        this.router.navigate(['memberlist']);
       } else {
         this.isAuthenticated = false;
         this.isAuthenticated$.next(false);
@@ -54,6 +53,8 @@ export class FirebaseAuthService {
   }
 
   loginWithGoogle() {
-    this.fbAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    this.fbAuth.auth
+      .signInWithPopup(new firebase.auth.GoogleAuthProvider())
+      .then(() => this.router.navigate(['memberlist']));
   }
 }

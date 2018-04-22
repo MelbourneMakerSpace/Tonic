@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
     this.authService
       .login(formValues.email, formValues.password)
       .then((user: firebase.auth.UserCredential) => {
-        console.log(user.user.displayName);
+        this.router.navigate(['memberlist']);
         // this.router.navigate(['loggedIn']);
         // console.dir(result);
       })

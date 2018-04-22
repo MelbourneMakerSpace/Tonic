@@ -1,18 +1,20 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div fxLayout="row">
-  <div fxFlex="20"></div>
+  <div fxFlex.gt-xs="20" fxHide="xs"></div>
   <div fxFlex>
-      <div fxLayout="row" fxLayoutAlign="center center" *ngIf="isLoggedIn">
-          <div fxLayoutAlign="start center" fxLayoutGap="10px">
-            <img src="assets/Logo.jpg" style="height:60px; width:auto;" />
-            <button mat-raised-button color="primary" routerLink="home">Home</button>
-            <button mat-raised-button (click)="logout()">Logout</button>
-          </div>
-          <div style="text-align:right;" fxFlex fxLayoutAlign="end center">
-            {{identity}}
-          </div>
-        </div>
+    <div fxLayout="row" fxLayoutAlign="center center" *ngIf="isLoggedIn">
+      <div fxLayoutAlign="start center" fxLayoutGap="10px">
+        <img src="assets/Logo.jpg" style="height:60px; width:auto;" />
+        <span fxHide.xs>
+          <button mat-raised-button color="primary" routerLink="home">Home</button>
+          <button mat-raised-button (click)="logout()">Logout</button>
+        </span>
+      </div>
+      <div style="text-align:right;" fxFlex fxLayoutAlign="end center" fxHide.xs>
+        {{identity}}
+      </div>
+    </div>
     <router-outlet></router-outlet>
   </div>
-  <div fxFlex="20"></div>
+  <div fxFlex.gt-xs="20" fxHide="xs"></div>
 </div>
