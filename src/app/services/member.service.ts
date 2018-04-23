@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
+import { take } from 'rxjs/operators/take';
 
 @Injectable()
 export class MemberService {
@@ -16,6 +17,18 @@ export class MemberService {
           const Key = record.payload.doc.id;
           return { Key, ...payload };
         });
+      });
+  }
+
+  getMember(key): Observable<any> {
+    console.log('getting: ', `Members/${key}`);
+    return this.db
+      .doc<Member>('Members/' + key)
+      .snapshotChanges()
+      .map(record => {
+        const payload = record.payload.data();
+        const Key = record.payload.id;
+        return { Key, ...payload };
       });
   }
 }
