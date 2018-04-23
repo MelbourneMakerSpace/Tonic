@@ -20,7 +20,8 @@ export class MemberComponent implements OnInit {
     this.form = this.fb.group({
       key: [''],
       FirstName: ['', Validators.required],
-      LastName: ['', Validators.required]
+      LastName: ['', Validators.required],
+      email: ['']
     });
 
     this.activatedRoute.params.subscribe(params => {
