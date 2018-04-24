@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'home', component: MemberlistComponent },
   { path: 'memberlist', component: MemberlistComponent },
-  { path: 'member/:key', component: MemberComponent },
+  { path: 'member/:Key', component: MemberComponent },
   { path: 'app-login', component: LoginComponent }
 ];
 

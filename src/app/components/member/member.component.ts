@@ -18,25 +18,27 @@ export class MemberComponent implements OnInit {
     private memberService: MemberService
   ) {
     this.form = this.fb.group({
-      key: [''],
+      Key: [''],
       FirstName: ['', Validators.required],
       LastName: ['', Validators.required],
-      email: ['']
+      email: [''],
+      phone: [''],
+      paypalEmail: ['']
     });
 
     this.activatedRoute.params.subscribe(params => {
-      this.form.controls['key'].setValue(params.key);
-      if (this.form.controls['key'].value !== 'New') {
-        this.loadValuesIfExisting(this.form.controls['key'].value);
+      this.form.controls['Key'].setValue(params.Key);
+      if (this.form.controls['Key'].value !== 'New') {
+        this.loadValuesIfExisting(this.form.controls['Key'].value);
       }
     });
   }
 
-  loadValuesIfExisting(key) {
-    this.memberService.getMember(key).subscribe(data => {
-      Object.keys(data).forEach(keyName => {
-        if (this.form.controls[keyName]) {
-          this.form.controls[keyName].setValue(data[keyName]);
+  loadValuesIfExisting(Key) {
+    this.memberService.getMember(Key).subscribe(data => {
+      Object.keys(data).forEach(KeyName => {
+        if (this.form.controls[KeyName]) {
+          this.form.controls[KeyName].setValue(data[KeyName]);
         }
       });
     });
@@ -49,6 +51,16 @@ export class MemberComponent implements OnInit {
   }
 
   save() {
-    this.router.navigateByUrl('/memberlist');
+    // console.dir(this.form);
+
+    this.memberService
+      .saveMember(this.form.value)
+      .then(result => {
+        console.dir(result);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    // this.memberService.blah(this.form.value);
   }
 }

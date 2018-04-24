@@ -36,15 +36,24 @@ export class MemberService {
       });
   }
 
-  getMember(key): Observable<any> {
-    console.log('getting: ', `Members/${key}`);
+  getMember(Key): Observable<any> {
+    console.log('getting: ', `Members/${Key}`);
     return this.db
-      .doc<Member>('Members/' + key)
+      .doc<Member>('Members/' + Key)
       .snapshotChanges()
       .map(record => {
         const payload = record.payload.data();
+        // tslint:disable-next-line:no-shadowed-variable
         const Key = record.payload.id;
         return { Key, ...payload };
       });
+  }
+
+  saveMember(member: Member) {
+    console.log('Hello from our service!');
+    console.dir(member);
+    console.log('updating:', 'Members/' + member.Key);
+
+    return this.db.doc<Member>('Members/' + member.Key).update(member);
   }
 }

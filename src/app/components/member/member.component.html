@@ -2,7 +2,7 @@
   <div class="headerText">Member Name</div>
   <div class="subheaderText"></div>
   <div class="extraButtons">
-    <button mat-mini-fab (click)="save()">
+    <button mat-mini-fab [disabled]="!form.valid" (click)="save()">
       <mat-icon aria-label="Save" title="Save">save</mat-icon>
     </button>
 
@@ -19,10 +19,16 @@
         <mat-form-field>
           <input formControlName="LastName" matInput placeholder="Last Name">
         </mat-form-field>
+        <mat-form-field>
+          <input formControlName="phone" matInput placeholder="Phone">
+        </mat-form-field>
       </div>
       <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
         <mat-form-field style="width:300px">
           <input formControlName="email" matInput placeholder="Email">
+        </mat-form-field>
+        <mat-form-field style="width:300px">
+          <input formControlName="paypalEmail" matInput placeholder="Paypal Email">
         </mat-form-field>
       </div>
     </form>
@@ -30,3 +36,8 @@
 </tb-card>
 <p>Form value: {{ form.value | json }}</p>
 <p>Form status: {{ form.status | json }}</p>
+<tb-card (addClick)="addPlan($event)">
+  <div class="headerText">Plans</div>
+  <div class="subheaderText">The plans for this person</div>
+  <div class="content">content</div>
+</tb-card>
