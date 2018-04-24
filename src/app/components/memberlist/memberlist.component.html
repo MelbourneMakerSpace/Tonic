@@ -1,6 +1,11 @@
 <tb-card (addClick)="addMember($event)">
-  <div class="headerText">Members</div>
+  <div class="headerText">Members {{filter}}</div>
   <div class="subheaderText">
+    <div style="padding-top:20px;">
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+      </mat-form-field>
+    </div>
   </div>
   <div class="content">
     <mat-table class="bglightgray" #table [dataSource]="memberSnapshot | async">

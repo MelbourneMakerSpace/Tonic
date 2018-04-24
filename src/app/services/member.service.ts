@@ -20,6 +20,22 @@ export class MemberService {
       });
   }
 
+  // gets a filtered list, but is case sensative
+  getFilteredMemberList(filter: string): Observable<any> {
+    return this.db
+      .collection<Member>('Members', ref =>
+        ref.where('FirstName', '>=', filter)
+      )
+      .snapshotChanges()
+      .map(data => {
+        return data.map(record => {
+          const payload = record.payload.doc.data();
+          const Key = record.payload.doc.id;
+          return { Key, ...payload };
+        });
+      });
+  }
+
   getMember(key): Observable<any> {
     console.log('getting: ', `Members/${key}`);
     return this.db

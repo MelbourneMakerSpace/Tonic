@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { MemberService } from '../../services/member.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import { Subject } from 'rxjs/Subject';
+import { filter } from 'rxjs/operators/filter';
 
 @Component({
   selector: 'app-memberlist',
@@ -21,10 +26,37 @@ import { MemberService } from '../../services/member.service';
 export class MemberlistComponent implements OnInit {
   memberSnapshot: Observable<Member>;
   displayedColumns = ['Name'];
+  filter$ = new BehaviorSubject(null);
+  filter = '';
   constructor(private memberService: MemberService) {}
 
   ngOnInit() {
-    this.memberSnapshot = this.memberService.getMemberList();
+    // this.memberSnapshot = this.memberService.getMemberList();
+    this.filter$
+      .debounceTime(400)
+      .distinctUntilChanged()
+      .subscribe(filterstring => {
+        if (filterstring) {
+          // this.memberSnapshot = this.memberService.getFilteredMemberList(
+          //   filterstring
+          // );
+          this.filter = filterstring;
+          this.memberSnapshot = this.memberService
+            .getMemberList()
+            .map(members =>
+              members.filter((x: Member, idx) => {
+                // console.dir(x);
+                return x.FirstName.toLowerCase().startsWith(filterstring);
+              })
+            );
+        } else {
+          this.memberSnapshot = this.memberService.getMemberList();
+        }
+      });
+  }
+
+  applyFilter(filterstring) {
+    this.filter$.next(filterstring);
   }
 
   viewMember(Key) {
