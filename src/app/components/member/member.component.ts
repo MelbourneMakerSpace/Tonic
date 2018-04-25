@@ -23,7 +23,10 @@ export class MemberComponent implements OnInit {
       LastName: ['', Validators.required],
       email: [''],
       phone: [''],
-      paypalEmail: ['']
+      paypalEmail: [''],
+      emergencyName: [''],
+      emergencyEmail: ['', Validators.email],
+      emergencyPhone: ['']
     });
 
     this.activatedRoute.params.subscribe(params => {
@@ -55,8 +58,8 @@ export class MemberComponent implements OnInit {
 
     this.memberService
       .saveMember(this.form.value)
-      .then(result => {
-        console.dir(result);
+      .then(() => {
+        console.dir('saved');
       })
       .catch(error => {
         console.log(error);

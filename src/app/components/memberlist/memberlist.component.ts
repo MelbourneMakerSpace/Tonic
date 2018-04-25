@@ -6,6 +6,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import { Subject } from 'rxjs/Subject';
 import { filter } from 'rxjs/operators/filter';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-memberlist',
@@ -28,7 +29,7 @@ export class MemberlistComponent implements OnInit {
   displayedColumns = ['Name'];
   filter$ = new BehaviorSubject(null);
   filter = '';
-  constructor(private memberService: MemberService) {}
+  constructor(private memberService: MemberService, private router: Router) {}
 
   ngOnInit() {
     // this.memberSnapshot = this.memberService.getMemberList();
@@ -64,6 +65,6 @@ export class MemberlistComponent implements OnInit {
   }
 
   addMember(event) {
-    console.log('add member button');
+    this.router.navigate(['member/New']);
   }
 }

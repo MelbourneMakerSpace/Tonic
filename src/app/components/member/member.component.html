@@ -12,24 +12,42 @@
   </div>
   <div class="content">
     <form novalidate class="login-form" [formGroup]="form">
+      <fieldset>
+        <legend>Member Information
+        </legend>
+        <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
+          <mat-form-field>
+            <input formControlName="FirstName" matInput placeholder="First Name">
+          </mat-form-field>
+          <mat-form-field>
+            <input formControlName="LastName" matInput placeholder="Last Name">
+          </mat-form-field>
+          <mat-form-field>
+            <input formControlName="phone" matInput placeholder="Phone">
+          </mat-form-field>
+        </div>
+        <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
+          <mat-form-field style="width:300px">
+            <input formControlName="email" matInput placeholder="Email">
+          </mat-form-field>
+          <mat-form-field style="width:300px">
+            <input formControlName="paypalEmail" matInput placeholder="Paypal Email">
+          </mat-form-field>
+        </div>
+      </fieldset>
       <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
-        <mat-form-field>
-          <input formControlName="FirstName" matInput placeholder="First Name">
-        </mat-form-field>
-        <mat-form-field>
-          <input formControlName="LastName" matInput placeholder="Last Name">
-        </mat-form-field>
-        <mat-form-field>
-          <input formControlName="phone" matInput placeholder="Phone">
-        </mat-form-field>
-      </div>
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
-        <mat-form-field style="width:300px">
-          <input formControlName="email" matInput placeholder="Email">
-        </mat-form-field>
-        <mat-form-field style="width:300px">
-          <input formControlName="paypalEmail" matInput placeholder="Paypal Email">
-        </mat-form-field>
+        <fieldset>
+          <legend>Emergency Contact</legend>
+          <mat-form-field style="width:300px">
+            <input formControlName="emergencyName" matInput placeholder="Name">
+          </mat-form-field>
+          <mat-form-field style="width:300px">
+            <input formControlName="emergencyEmail" matInput placeholder="Email">
+          </mat-form-field>
+          <mat-form-field style="width:300px">
+            <input formControlName="emergencyPhone" matInput placeholder="Phone">
+          </mat-form-field>
+        </fieldset>
       </div>
     </form>
   </div>

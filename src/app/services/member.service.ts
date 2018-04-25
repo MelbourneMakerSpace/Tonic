@@ -49,11 +49,16 @@ export class MemberService {
       });
   }
 
-  saveMember(member: Member) {
-    console.log('Hello from our service!');
-    console.dir(member);
-    console.log('updating:', 'Members/' + member.Key);
+  saveMember(member) {
+    console.log('Save Key', member.Key);
+    const key = member.Key;
+    delete member.Key;
 
-    return this.db.doc<Member>('Members/' + member.Key).update(member);
+    console.dir(member);
+    if (key === 'New') {
+      return this.db.collection('Members').add(member);
+    } else {
+      return this.db.doc<Member>('Members/' + key).update(member);
+    }
   }
 }
