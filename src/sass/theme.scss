@@ -65,3 +65,6 @@ $tonic-app-theme: mat-light-theme(
 .bgprimary {
   background-color: map-get($tonic-green, 500);
 }
+.trHover:hover {
+  background-color: #e1e2e1;
+}

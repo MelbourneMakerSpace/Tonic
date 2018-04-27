@@ -18,9 +18,6 @@ import { Router } from '@angular/router';
   .headerspan {
     font-size:50px;
     font-weight:bold;
-  }
-  .hover:hover{
-    background-color:#e1e2e1;
   }`
   ]
 })

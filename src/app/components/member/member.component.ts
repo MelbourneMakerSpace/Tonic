@@ -3,7 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MemberService } from '../../services/member.service';
 import { Observable } from 'rxjs/Observable';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatDialog } from '@angular/material';
+import { AddEditMemberPlanComponent } from '../add-edit-member-plan/add-edit-member-plan.component';
 
 @Component({
   selector: 'app-member',
@@ -20,12 +21,14 @@ export class MemberComponent implements OnInit {
   form: FormGroup;
   headerText = '';
   memberPlans = new MatTableDataSource<MemberPlan>();
+  Key = '';
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
-    private memberService: MemberService
+    private memberService: MemberService,
+    private dialog: MatDialog
   ) {
     this.form = this.fb.group({
       Key: [''],
@@ -43,6 +46,7 @@ export class MemberComponent implements OnInit {
 
     this.activatedRoute.params.subscribe(params => {
       this.form.controls['Key'].setValue(params.Key);
+      this.Key = params.Key;
       if (this.form.controls['Key'].value !== 'New') {
         this.loadValuesIfExisting(this.form.controls['Key'].value);
         this.form.valueChanges.subscribe(() => {
@@ -58,6 +62,20 @@ export class MemberComponent implements OnInit {
         this.headerText = 'New Member';
       }
     });
+  }
+
+  addEditPlan(Key) {
+    this.dialog
+      .open(AddEditMemberPlanComponent, {
+        height: '300px',
+        width: '600px',
+        disableClose: true,
+        data: { Key }
+      })
+      .afterClosed()
+      .subscribe(result => {
+        console.dir(result);
+      });
   }
 
   loadValuesIfExisting(Key) {

@@ -21,9 +21,17 @@ import { MemberlistComponent } from './components/memberlist/memberlist.componen
 import { MemberService } from './services/member.service';
 import { TbCardComponent } from './components/controls/tb-card/tb-card.component';
 import { MemberComponent } from './components/member/member.component';
+import { AddEditMemberPlanComponent } from './components/add-edit-member-plan/add-edit-member-plan.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, MemberlistComponent, TbCardComponent, MemberComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    MemberlistComponent,
+    TbCardComponent,
+    MemberComponent,
+    AddEditMemberPlanComponent
+  ],
   imports: [
     AppRoutingModule,
     AppMaterialModule,
@@ -37,6 +45,7 @@ import { MemberComponent } from './components/member/member.component';
     ReactiveFormsModule
   ],
   providers: [FirebaseAuthService, AngularFireAuth, MemberService],
+  entryComponents: [AddEditMemberPlanComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

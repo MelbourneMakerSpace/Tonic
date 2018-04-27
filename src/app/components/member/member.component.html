@@ -54,7 +54,7 @@
             </fieldset>
           </div>
           <div style="padding:2px;">
-            <tb-card [LowElevation]="true" (addClick)=" addPlan($event) ">
+            <tb-card [LowElevation]="true" (addClick)="addEditPlan('New')">
               <div class="headerText ">Plans</div>
               <div class="subheaderText ">The plans for this person</div>
               <div class="content ">
@@ -62,12 +62,12 @@
                   <ng-container matColumnDef="Plan">
                     <mat-header-cell *matHeaderCellDef> Plan </mat-header-cell>
                     <mat-cell *matCellDef="let item">
-                      <button mat-icon-button color="primary" (click)="viewMember(item.Key)">
+                      <button mat-icon-button color="primary">
                         <mat-icon aria-label="Update">folder_shared</mat-icon>
                       </button> {{item.Plan}} </mat-cell>
                   </ng-container>
                   <mat-header-row *matHeaderRowDef="['Plan']"></mat-header-row>
-                  <mat-row class="hover" [routerLink]="['/member/' + row.Key]" *matRowDef="let row; columns: ['Plan'];"></mat-row>
+                  <mat-row class="trHover" (click)="addEditPlan(item.Key)" *matRowDef="let item; columns: ['Plan'];"></mat-row>
                 </mat-table>
               </div>
             </tb-card>
