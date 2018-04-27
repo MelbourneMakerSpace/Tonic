@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { take } from 'rxjs/operators/take';
+import { DocumentReference } from '@firebase/firestore-types';
 
 @Injectable()
 export class MemberService {
@@ -49,7 +50,7 @@ export class MemberService {
       });
   }
 
-  saveMember(member) {
+  saveMember(member: Member): Promise<any> {
     console.log('Save Key', member.Key);
     const key = member.Key;
     delete member.Key;

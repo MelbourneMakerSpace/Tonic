@@ -9,9 +9,9 @@ import { EventEmitter } from '@angular/core';
     padding-left:10px;
   }
   .headerspan {
-    font-size:35px;
+    font-size:30px;
     font-weight:bold;
-    padding-bottom:10px;
+    padding-top:5px;
   }`
   ]
 })

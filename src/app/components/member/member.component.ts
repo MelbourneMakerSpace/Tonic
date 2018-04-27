@@ -6,7 +6,13 @@ import { MemberService } from '../../services/member.service';
 @Component({
   selector: 'app-member',
   templateUrl: './member.component.html',
-  styles: []
+  styles: [
+    `
+    .mediumField{
+      width:200px;
+    }
+    `
+  ]
 })
 export class MemberComponent implements OnInit {
   form: FormGroup;
@@ -26,7 +32,9 @@ export class MemberComponent implements OnInit {
       paypalEmail: [''],
       emergencyName: [''],
       emergencyEmail: ['', Validators.email],
-      emergencyPhone: ['']
+      emergencyPhone: [''],
+      role: [''],
+      password: ['']
     });
 
     this.activatedRoute.params.subscribe(params => {
@@ -58,8 +66,8 @@ export class MemberComponent implements OnInit {
 
     this.memberService
       .saveMember(this.form.value)
-      .then(() => {
-        console.dir('saved');
+      .then(result => {
+        console.dir(result);
       })
       .catch(error => {
         console.log(error);

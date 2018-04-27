@@ -12,43 +12,71 @@
   </div>
   <div class="content">
     <form novalidate class="login-form" [formGroup]="form">
-      <fieldset>
-        <legend>Member Information
-        </legend>
-        <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
-          <mat-form-field>
-            <input formControlName="FirstName" matInput placeholder="First Name">
-          </mat-form-field>
-          <mat-form-field>
-            <input formControlName="LastName" matInput placeholder="Last Name">
-          </mat-form-field>
-          <mat-form-field>
-            <input formControlName="phone" matInput placeholder="Phone">
-          </mat-form-field>
+      <div fxFlex fxLayoutAlign="start stretch">
+        <div fxFlex="80">
+          <fieldset>
+            <legend>Member Information
+            </legend>
+            <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
+              <mat-form-field>
+                <input formControlName="FirstName" matInput placeholder="First Name">
+              </mat-form-field>
+              <mat-form-field>
+                <input formControlName="LastName" matInput placeholder="Last Name">
+              </mat-form-field>
+              <mat-form-field>
+                <input formControlName="phone" matInput placeholder="Phone">
+              </mat-form-field>
+            </div>
+            <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
+              <mat-form-field style="width:300px">
+                <input formControlName="email" matInput placeholder="Email">
+              </mat-form-field>
+              <mat-form-field style="width:300px">
+                <input formControlName="paypalEmail" matInput placeholder="Paypal Email">
+              </mat-form-field>
+            </div>
+          </fieldset>
+          <div fxLayout="row wrap" fxFlex fxLayoutAlign="start stretch">
+            <fieldset style="width:100%">
+              <legend>Emergency Contact</legend>
+              <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <mat-form-field class="mediumField">
+                  <input formControlName="emergencyName" matInput placeholder="Name">
+                </mat-form-field>
+                <mat-form-field class="mediumField">
+                  <input formControlName="emergencyEmail" matInput placeholder="Email">
+                </mat-form-field>
+                <mat-form-field class="mediumField">
+                  <input formControlName="emergencyPhone" matInput placeholder="Phone">
+                </mat-form-field>
+              </div>
+            </fieldset>
+          </div>
         </div>
-        <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
-          <mat-form-field style="width:300px">
-            <input formControlName="email" matInput placeholder="Email">
-          </mat-form-field>
-          <mat-form-field style="width:300px">
-            <input formControlName="paypalEmail" matInput placeholder="Paypal Email">
-          </mat-form-field>
+        <div fxflex>
+          <mat-card>
+            <mat-card-title-group>
+              <mat-card-title>Login Information</mat-card-title>
+            </mat-card-title-group>
+            <img matCardImage src="assets/fry.jpg">
+            <mat-card-content>
+              <mat-select formControlName="role" placeholder="Role" style="width:175px;">
+                <mat-option [value]="'Officer'">Officer</mat-option>
+                <mat-option [value]="'Member'">Member</mat-option>
+                <mat-option [value]="'Disabled'">Disabled</mat-option>
+              </mat-select>
+              <mat-form-field>
+                <input formControlName="password" type="password" autocomplete="new-password" matInput placeholder="Password">
+              </mat-form-field>
+            </mat-card-content>
+            <mat-card-footer>
+              Footer
+            </mat-card-footer>
+          </mat-card>
         </div>
-      </fieldset>
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
-        <fieldset>
-          <legend>Emergency Contact</legend>
-          <mat-form-field style="width:300px">
-            <input formControlName="emergencyName" matInput placeholder="Name">
-          </mat-form-field>
-          <mat-form-field style="width:300px">
-            <input formControlName="emergencyEmail" matInput placeholder="Email">
-          </mat-form-field>
-          <mat-form-field style="width:300px">
-            <input formControlName="emergencyPhone" matInput placeholder="Phone">
-          </mat-form-field>
-        </fieldset>
       </div>
+
     </form>
   </div>
 </tb-card>
