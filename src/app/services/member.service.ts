@@ -21,6 +21,19 @@ export class MemberService {
       });
   }
 
+  getMemberPlans(): Observable<MemberPlan[]> {
+    return this.db
+      .collection<MemberPlan>('MemberPlans')
+      .snapshotChanges()
+      .map(data => {
+        return data.map(record => {
+          const payload = record.payload.doc.data();
+          const Key = record.payload.doc.id;
+          return <MemberPlan>{ Key, ...payload };
+        });
+      });
+  }
+
   // gets a filtered list, but is case sensative
   getFilteredMemberList(filter: string): Observable<any> {
     return this.db

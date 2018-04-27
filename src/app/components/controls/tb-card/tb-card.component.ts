@@ -1,4 +1,4 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Output, Input } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 
 @Component({
@@ -10,13 +10,14 @@ import { EventEmitter } from '@angular/core';
   }
   .headerspan {
     font-size:30px;
-    font-weight:bold;
     padding-top:5px;
+    color:white;
   }`
   ]
 })
 export class TbCardComponent implements OnInit {
   @Output() addClick = new EventEmitter();
+  @Input() LowElevation = false;
   constructor() {}
 
   add(event) {

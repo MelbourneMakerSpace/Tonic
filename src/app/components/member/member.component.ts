@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MemberService } from '../../services/member.service';
+import { Observable } from 'rxjs/Observable';
+import { MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-member',
@@ -16,6 +18,8 @@ import { MemberService } from '../../services/member.service';
 })
 export class MemberComponent implements OnInit {
   form: FormGroup;
+  headerText = '';
+  memberPlans = new MatTableDataSource<MemberPlan>();
 
   constructor(
     private router: Router,
@@ -41,6 +45,17 @@ export class MemberComponent implements OnInit {
       this.form.controls['Key'].setValue(params.Key);
       if (this.form.controls['Key'].value !== 'New') {
         this.loadValuesIfExisting(this.form.controls['Key'].value);
+        this.form.valueChanges.subscribe(() => {
+          this.headerText =
+            this.form.controls['FirstName'].value +
+            ' ' +
+            this.form.controls['LastName'].value;
+        });
+        this.memberService.getMemberPlans().subscribe(data => {
+          this.memberPlans.data = data;
+        });
+      } else {
+        this.headerText = 'New Member';
       }
     });
   }

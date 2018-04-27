@@ -1,4 +1,4 @@
-<div class="mat-elevation-z2">
+<div [class.mat-elevation-z2]="!LowElevation">
   <div style="height:10px" class="bgdark"></div>
   <div class="bgprimary headerspan headerdiv" fxLayout="row">
     <div fxFlex="75">
@@ -15,11 +15,10 @@
   </div>
   <div fxFlex class="bggray" fxLayout="row">
     <div fxFlex="75" fxLayoutAlign="start center" class="headerdiv">
-      <div style="min-height:40px;">
+      <div style="min-height:40px;" fxLayoutAlign="start center">
         <ng-content select=".subHeaderText"></ng-content>
       </div>
     </div>
-
   </div>
   <div style="min-height:150px;" class="bglightgray">
     <ng-content select=".content"></ng-content>

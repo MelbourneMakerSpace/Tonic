@@ -1,5 +1,5 @@
 <tb-card>
-  <div class="headerText">Member Name</div>
+  <div class="headerText">{{headerText}}</div>
   <div class="subheaderText"></div>
   <div class="extraButtons">
     <button mat-mini-fab [disabled]="!form.valid" (click)="save()">
@@ -11,7 +11,7 @@
     </button>
   </div>
   <div class="content">
-    <form novalidate class="login-form" [formGroup]="form">
+    <form [formGroup]="form">
       <div fxFlex fxLayoutAlign="start stretch">
         <div fxFlex="80">
           <fieldset>
@@ -53,21 +53,53 @@
               </div>
             </fieldset>
           </div>
+          <div style="padding:2px;">
+            <tb-card [LowElevation]="true" (addClick)=" addPlan($event) ">
+              <div class="headerText ">Plans</div>
+              <div class="subheaderText ">The plans for this person</div>
+              <div class="content ">
+                <mat-table class="bglightgray" #table [dataSource]="memberPlans">
+                  <ng-container matColumnDef="Plan">
+                    <mat-header-cell *matHeaderCellDef> Plan </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                      <button mat-icon-button color="primary" (click)="viewMember(item.Key)">
+                        <mat-icon aria-label="Update">folder_shared</mat-icon>
+                      </button> {{item.Plan}} </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="['Plan']"></mat-header-row>
+                  <mat-row class="hover" [routerLink]="['/member/' + row.Key]" *matRowDef="let row; columns: ['Plan'];"></mat-row>
+                </mat-table>
+              </div>
+            </tb-card>
+          </div>
+          <div style="padding:2px;">
+            <tb-card [LowElevation]="true" (addClick)=" addPlan($event) ">
+              <div class="headerText ">Keys</div>
+              <div class="subheaderText ">The keys for this person</div>
+              <div class="content ">content</div>
+            </tb-card>
+          </div>
+          <div style="padding:2px;">
+            <tb-card [LowElevation]="true" (addClick)=" addPlan($event) ">
+              <div class="headerText ">Payment History</div>
+              <div class="subheaderText ">The payment history for this person</div>
+              <div class="content ">content</div>
+            </tb-card>
+          </div>
         </div>
-        <div fxflex>
+        <!--Left Content-->
+        <!--Side nav-->
+        <div fxflex style="padding:10px; ">
           <mat-card>
-            <mat-card-title-group>
-              <mat-card-title>Login Information</mat-card-title>
-            </mat-card-title-group>
-            <img matCardImage src="assets/fry.jpg">
+            <img matCardImage src="assets/fry.jpg ">
             <mat-card-content>
-              <mat-select formControlName="role" placeholder="Role" style="width:175px;">
-                <mat-option [value]="'Officer'">Officer</mat-option>
-                <mat-option [value]="'Member'">Member</mat-option>
-                <mat-option [value]="'Disabled'">Disabled</mat-option>
+              <mat-select formControlName="role" placeholder="Role" style="width:175px; ">
+                <mat-option [value]=" 'Officer' ">Officer</mat-option>
+                <mat-option [value]=" 'Member' ">Member</mat-option>
+                <mat-option [value]=" 'Disabled' ">Disabled</mat-option>
               </mat-select>
               <mat-form-field>
-                <input formControlName="password" type="password" autocomplete="new-password" matInput placeholder="Password">
+                <input formControlName="password" type="password" autocomplete="new-password" matInput placeholder="Password ">
               </mat-form-field>
             </mat-card-content>
             <mat-card-footer>
@@ -82,8 +114,3 @@
 </tb-card>
 <p>Form value: {{ form.value | json }}</p>
 <p>Form status: {{ form.status | json }}</p>
-<tb-card (addClick)="addPlan($event)">
-  <div class="headerText">Plans</div>
-  <div class="subheaderText">The plans for this person</div>
-  <div class="content">content</div>
-</tb-card>
