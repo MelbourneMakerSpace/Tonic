@@ -1,6 +1,6 @@
 class MemberPlan {
   Key: string;
-  PlanName: string;
-  PlanStartDate: Date;
-  PlanEndDate: Date;
+  plan: string;
+  startDate: Date;
+  endDate: Date;
 }

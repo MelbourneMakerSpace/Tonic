@@ -34,6 +34,28 @@ export class MemberService {
       });
   }
 
+  getPlan(key): Observable<MemberPlan> {
+    return this.db
+      .doc<MemberPlan>('MemberPlans/' + key)
+      .snapshotChanges()
+      .map(record => {
+        const payload = record.payload.data();
+        const Key = record.payload.id;
+        return <MemberPlan>{ Key, ...payload };
+      });
+  }
+
+  savePlan(plan: MemberPlan): Promise<any> {
+    console.log('Save Key', plan.Key);
+    const key = plan.Key;
+    delete plan.Key;
+    if (key === 'New') {
+      return this.db.collection('MemberPlans').add(plan);
+    } else {
+      return this.db.doc<MemberPlan>('MemberPlans/' + key).update(plan);
+    }
+  }
+
   // gets a filtered list, but is case sensative
   getFilteredMemberList(filter: string): Observable<any> {
     return this.db

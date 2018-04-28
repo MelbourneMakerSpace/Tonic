@@ -22,6 +22,7 @@ export class MemberComponent implements OnInit {
   headerText = '';
   memberPlans = new MatTableDataSource<MemberPlan>();
   Key = '';
+  memberTypes = ['Officer', 'Member', 'Disabled'];
 
   constructor(
     private router: Router,
@@ -67,8 +68,6 @@ export class MemberComponent implements OnInit {
   addEditPlan(Key) {
     this.dialog
       .open(AddEditMemberPlanComponent, {
-        height: '300px',
-        width: '600px',
         disableClose: true,
         data: { Key }
       })

@@ -56,18 +56,28 @@
           <div style="padding:2px;">
             <tb-card [LowElevation]="true" (addClick)="addEditPlan('New')">
               <div class="headerText ">Plans</div>
-              <div class="subheaderText ">The plans for this person</div>
+              <div class="subheaderText "></div>
               <div class="content ">
                 <mat-table class="bglightgray" #table [dataSource]="memberPlans">
                   <ng-container matColumnDef="Plan">
                     <mat-header-cell *matHeaderCellDef> Plan </mat-header-cell>
                     <mat-cell *matCellDef="let item">
                       <button mat-icon-button color="primary">
-                        <mat-icon aria-label="Update">folder_shared</mat-icon>
-                      </button> {{item.Plan}} </mat-cell>
+                        <mat-icon aria-label="Update">folder</mat-icon>
+                      </button> ${{item.plan}} / Month </mat-cell>
                   </ng-container>
-                  <mat-header-row *matHeaderRowDef="['Plan']"></mat-header-row>
-                  <mat-row class="trHover" (click)="addEditPlan(item.Key)" *matRowDef="let item; columns: ['Plan'];"></mat-row>
+                  <ng-container matColumnDef="StartDate">
+                    <mat-header-cell *matHeaderCellDef> Start Date </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                      {{item.startDate | date}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="EndDate">
+                    <mat-header-cell *matHeaderCellDef> End Date </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                      {{item.endDate | date}} </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="['Plan', 'StartDate','EndDate']"></mat-header-row>
+                  <mat-row class="trHover" (click)="addEditPlan(item.Key)" *matRowDef="let item; columns: ['Plan', 'StartDate','EndDate'];"></mat-row>
                 </mat-table>
               </div>
             </tb-card>
@@ -89,21 +99,23 @@
         </div>
         <!--Left Content-->
         <!--Side nav-->
-        <div fxflex style="padding:10px; ">
+        <div fxflex style="padding:10px;">
           <mat-card>
             <img matCardImage src="assets/fry.jpg ">
             <mat-card-content>
-              <mat-select formControlName="role" placeholder="Role" style="width:175px; ">
-                <mat-option [value]=" 'Officer' ">Officer</mat-option>
-                <mat-option [value]=" 'Member' ">Member</mat-option>
-                <mat-option [value]=" 'Disabled' ">Disabled</mat-option>
-              </mat-select>
-              <mat-form-field>
+              <mat-form-field style="width:100%">
+                <mat-select formControlName="role" placeholder="Role">
+                  <mat-option *ngFor="let memberType of memberTypes" [value]="memberType">
+                    {{memberType}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field style="width:100%">
                 <input formControlName="password" type="password" autocomplete="new-password" matInput placeholder="Password ">
               </mat-form-field>
             </mat-card-content>
             <mat-card-footer>
-              Footer
+
             </mat-card-footer>
           </mat-card>
         </div>
