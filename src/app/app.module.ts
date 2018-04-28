@@ -22,6 +22,7 @@ import { MemberService } from './services/member.service';
 import { TbCardComponent } from './components/controls/tb-card/tb-card.component';
 import { MemberComponent } from './components/member/member.component';
 import { AddEditMemberPlanComponent } from './components/add-edit-member-plan/add-edit-member-plan.component';
+import { DbRecordService } from './services/db-record.service';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,12 @@ import { AddEditMemberPlanComponent } from './components/add-edit-member-plan/ad
     AppMaterialModule,
     ReactiveFormsModule
   ],
-  providers: [FirebaseAuthService, AngularFireAuth, MemberService],
+  providers: [
+    FirebaseAuthService,
+    AngularFireAuth,
+    MemberService,
+    DbRecordService
+  ],
   entryComponents: [AddEditMemberPlanComponent],
   bootstrap: [AppComponent]
 })
