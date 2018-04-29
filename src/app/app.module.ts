@@ -23,6 +23,7 @@ import { TbCardComponent } from './components/controls/tb-card/tb-card.component
 import { MemberComponent } from './components/member/member.component';
 import { AddEditMemberPlanComponent } from './components/add-edit-member-plan/add-edit-member-plan.component';
 import { DbRecordService } from './services/db-record.service';
+import { AlertDialogComponent } from './components/shared/alert-dialog/alert-dialog.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { DbRecordService } from './services/db-record.service';
     MemberlistComponent,
     TbCardComponent,
     MemberComponent,
-    AddEditMemberPlanComponent
+    AddEditMemberPlanComponent,
+    AlertDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -51,7 +53,7 @@ import { DbRecordService } from './services/db-record.service';
     MemberService,
     DbRecordService
   ],
-  entryComponents: [AddEditMemberPlanComponent],
+  entryComponents: [AddEditMemberPlanComponent, AlertDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

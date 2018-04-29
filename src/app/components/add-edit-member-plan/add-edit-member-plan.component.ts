@@ -11,6 +11,7 @@ import { MemberService } from '../../services/member.service';
 export class AddEditMemberPlanComponent implements OnInit {
   plans = [50, 25, 0];
   planForm: FormGroup;
+  error = '';
 
   constructor(
     public dialogRef: MatDialogRef<AddEditMemberPlanComponent>,
@@ -21,11 +22,15 @@ export class AddEditMemberPlanComponent implements OnInit {
     this.planForm = this.fb.group({
       Key: [''],
       plan: ['', Validators.required],
-      startDate: [''],
+      startDate: ['', Validators.required],
       endDate: ['']
     });
-    if (data.key !== 'New') {
+
+    if (data.Key !== 'New') {
       this.loadExisting(data.Key);
+    } else {
+      this.planForm.controls['startDate'].setValue(new Date());
+      this.planForm.controls['plan'].setValue(50);
     }
   }
 
@@ -46,14 +51,18 @@ export class AddEditMemberPlanComponent implements OnInit {
   }
 
   Save() {
-    this.memberService
-      .savePlan(this.planForm.value)
-      .then(result => {
-        this.dialogRef.close('Saved');
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    if (this.planForm.valid) {
+      this.memberService
+        .savePlan(this.planForm.value)
+        .then(result => {
+          this.dialogRef.close('Saved');
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      this.error = 'Please fill in requred fields';
+    }
   }
 
   ngOnInit() {}

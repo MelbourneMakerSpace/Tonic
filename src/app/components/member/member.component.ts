@@ -5,6 +5,7 @@ import { MemberService } from '../../services/member.service';
 import { Observable } from 'rxjs/Observable';
 import { MatTableDataSource, MatDialog } from '@angular/material';
 import { AddEditMemberPlanComponent } from '../add-edit-member-plan/add-edit-member-plan.component';
+import { AlertDialogComponent } from '../shared/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-member',
@@ -23,6 +24,7 @@ export class MemberComponent implements OnInit {
   memberPlans = new MatTableDataSource<MemberPlan>();
   Key = '';
   memberTypes = ['Officer', 'Member', 'Disabled'];
+  openPlan = false;
 
   constructor(
     private router: Router,
@@ -58,6 +60,11 @@ export class MemberComponent implements OnInit {
         });
         this.memberService.getMemberPlans().subscribe(data => {
           this.memberPlans.data = data;
+          data.forEach(record => {
+            if (!record.endDate) {
+              this.openPlan = true;
+            }
+          });
         });
       } else {
         this.headerText = 'New Member';
@@ -66,6 +73,16 @@ export class MemberComponent implements OnInit {
   }
 
   addEditPlan(Key) {
+    if (Key === 'New' && this.openPlan) {
+      this.dialog.open(AlertDialogComponent, {
+        data: {
+          message:
+            'This member already has a plan.  Add an end date to the existing plan before adding a new one.'
+        }
+      });
+      return;
+    }
+
     this.dialog
       .open(AddEditMemberPlanComponent, {
         disableClose: true,

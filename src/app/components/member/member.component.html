@@ -56,7 +56,7 @@
           <div style="padding:2px;">
             <tb-card [LowElevation]="true" (addClick)="addEditPlan('New')">
               <div class="headerText ">Plans</div>
-              <div class="subheaderText "></div>
+              <div class="subheaderText ">{{openPlan}}</div>
               <div class="content ">
                 <mat-table class="bglightgray" #table [dataSource]="memberPlans">
                   <ng-container matColumnDef="Plan">

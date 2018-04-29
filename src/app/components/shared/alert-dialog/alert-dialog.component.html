@@ -1,0 +1,16 @@
+<tb-card>
+  <div class="headerText">Warning</div>
+  <div class="subheaderText"></div>
+  <div class="extraButtons">
+    <button mat-mini-fab (click)="close()" tabindex="-1">
+      <mat-icon class="mat-18">cancel</mat-icon>
+    </button>
+  </div>
+  <div class="content">
+    <div fxLayout="column" fxLayoutAlign="center center" style="height:150px;padding-left:15px;padding-right:15px;">
+      <mat-icon color='warn' style="font-size:40px;">warning</mat-icon>
+      <br>
+      <span style="font-size:20px;">{{message}}</span>
+    </div>
+  </div>
+</tb-card>
