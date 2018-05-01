@@ -17,6 +17,25 @@ export class DbRecordService {
     }
   }
 
+  getFilteredRecordList(
+    collectionName,
+    FilterField,
+    FilterValue
+  ): Observable<any> {
+    return this.db
+      .collection(collectionName, ref =>
+        ref.where(FilterField, '==', FilterValue)
+      )
+      .snapshotChanges()
+      .map(data => {
+        return data.map(record => {
+          const payload = record.payload.doc.data();
+          const Key = record.payload.doc.id;
+          return { Key, ...payload };
+        });
+      });
+  }
+
   getRecordList(collectionName): Observable<any> {
     return this.db
       .collection(collectionName)

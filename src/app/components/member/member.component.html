@@ -56,7 +56,7 @@
           <div style="padding:2px;">
             <tb-card [LowElevation]="true" (addClick)="addEditPlan('New')">
               <div class="headerText ">Plans</div>
-              <div class="subheaderText ">{{openPlan}}</div>
+              <div class="subheaderText "></div>
               <div class="content ">
                 <mat-table class="bglightgray" #table [dataSource]="memberPlans">
                   <ng-container matColumnDef="Plan">
@@ -83,10 +83,22 @@
             </tb-card>
           </div>
           <div style="padding:2px;">
-            <tb-card [LowElevation]="true" (addClick)=" addPlan($event) ">
+            <tb-card [LowElevation]="true" (addClick)="addKey($event)">
               <div class="headerText ">Keys</div>
-              <div class="subheaderText ">The keys for this person</div>
-              <div class="content ">content</div>
+              <div class="subheaderText "></div>
+              <div class="content ">
+                <mat-table class="bglightgray" #table [dataSource]="memberKeys">
+                  <ng-container matColumnDef="keySerial">
+                    <mat-header-cell *matHeaderCellDef> Key Serial </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                      <button mat-icon-button color="warn" (click)="deactivateKey(item.Key)">
+                        <mat-icon>cancel</mat-icon>
+                      </button> {{item.keySerial}} </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="['keySerial']"></mat-header-row>
+                  <mat-row class="trHover" *matRowDef="let item; columns: ['keySerial'];"></mat-row>
+                </mat-table>
+              </div>
             </tb-card>
           </div>
           <div style="padding:2px;">

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { MatTableDataSource, MatDialog } from '@angular/material';
 import { AddEditMemberPlanComponent } from '../add-edit-member-plan/add-edit-member-plan.component';
 import { AlertDialogComponent } from '../shared/alert-dialog/alert-dialog.component';
+import { DbRecordService } from '../../services/db-record.service';
 
 @Component({
   selector: 'app-member',
@@ -22,6 +23,7 @@ export class MemberComponent implements OnInit {
   form: FormGroup;
   headerText = '';
   memberPlans = new MatTableDataSource<MemberPlan>();
+  memberKeys = new MatTableDataSource<MemberKey>();
   Key = '';
   memberTypes = ['Officer', 'Member', 'Disabled'];
   openPlan = false;
@@ -31,7 +33,8 @@ export class MemberComponent implements OnInit {
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private memberService: MemberService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private dbService: DbRecordService
   ) {
     this.form = this.fb.group({
       Key: [''],
@@ -58,7 +61,9 @@ export class MemberComponent implements OnInit {
             ' ' +
             this.form.controls['LastName'].value;
         });
+
         this.memberService.getMemberPlans().subscribe(data => {
+          this.openPlan = false;
           this.memberPlans.data = data;
           data.forEach(record => {
             if (!record.endDate) {
@@ -66,10 +71,25 @@ export class MemberComponent implements OnInit {
             }
           });
         });
+
+        //load member keys
+        this.dbService
+          .getFilteredRecordList('MemberKeys', 'memberKey', this.Key)
+          .subscribe(keys => {
+            this.memberKeys.data = keys;
+          });
       } else {
         this.headerText = 'New Member';
       }
     });
+  }
+
+  addKey() {
+    console.log('add key for member:', this.Key);
+  }
+
+  deactivateKey(Key) {
+    console.log('deactivate key:', Key);
   }
 
   addEditPlan(Key) {

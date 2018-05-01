@@ -29,6 +29,7 @@ export class AddEditMemberPlanComponent implements OnInit {
     if (data.Key !== 'New') {
       this.loadExisting(data.Key);
     } else {
+      this.planForm.controls['Key'].setValue('New');
       this.planForm.controls['startDate'].setValue(new Date());
       this.planForm.controls['plan'].setValue(50);
     }
@@ -51,6 +52,8 @@ export class AddEditMemberPlanComponent implements OnInit {
   }
 
   Save() {
+    console.log('about to save:');
+    console.dir(this.planForm.value);
     if (this.planForm.valid) {
       this.memberService
         .savePlan(this.planForm.value)
