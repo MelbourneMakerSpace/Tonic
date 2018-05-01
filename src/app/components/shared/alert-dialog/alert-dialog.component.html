@@ -2,7 +2,7 @@
   <div class="headerText">Warning</div>
   <div class="subheaderText"></div>
   <div class="extraButtons">
-    <button mat-mini-fab (click)="close()" tabindex="-1">
+    <button *ngIf="!OkCancel" mat-mini-fab (click)="close()" tabindex="-1">
       <mat-icon class="mat-18">cancel</mat-icon>
     </button>
   </div>
@@ -11,6 +11,15 @@
       <mat-icon color='warn' style="font-size:40px;">warning</mat-icon>
       <br>
       <span style="font-size:20px;">{{message}}</span>
+      <br>
+      <div *ngIf="OkCancel">
+        <button mat-raised-button (click)="cancel()" tabindex="-1" color="warn">
+          <mat-icon class="mat-18">cancel</mat-icon> No, Cancel
+        </button>
+        <button mat-raised-button (click)="ok()" tabindex="-1" color="primary">
+          <mat-icon class="mat-18">check_circle</mat-icon> Yes
+        </button>
+      </div>
     </div>
   </div>
 </tb-card>

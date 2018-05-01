@@ -24,6 +24,7 @@ import { MemberComponent } from './components/member/member.component';
 import { AddEditMemberPlanComponent } from './components/add-edit-member-plan/add-edit-member-plan.component';
 import { DbRecordService } from './services/db-record.service';
 import { AlertDialogComponent } from './components/shared/alert-dialog/alert-dialog.component';
+import { AddKeyComponent } from './components/add-key/add-key.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { AlertDialogComponent } from './components/shared/alert-dialog/alert-dia
     TbCardComponent,
     MemberComponent,
     AddEditMemberPlanComponent,
-    AlertDialogComponent
+    AlertDialogComponent,
+    AddKeyComponent
   ],
   imports: [
     AppRoutingModule,
@@ -53,7 +55,11 @@ import { AlertDialogComponent } from './components/shared/alert-dialog/alert-dia
     MemberService,
     DbRecordService
   ],
-  entryComponents: [AddEditMemberPlanComponent, AlertDialogComponent],
+  entryComponents: [
+    AddEditMemberPlanComponent,
+    AlertDialogComponent,
+    AddKeyComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

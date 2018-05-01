@@ -83,7 +83,7 @@
             </tb-card>
           </div>
           <div style="padding:2px;">
-            <tb-card [LowElevation]="true" (addClick)="addKey($event)">
+            <tb-card [LowElevation]="true" (addClick)="addKey()">
               <div class="headerText ">Keys</div>
               <div class="subheaderText "></div>
               <div class="content ">
@@ -91,12 +91,20 @@
                   <ng-container matColumnDef="keySerial">
                     <mat-header-cell *matHeaderCellDef> Key Serial </mat-header-cell>
                     <mat-cell *matCellDef="let item">
-                      <button mat-icon-button color="warn" (click)="deactivateKey(item.Key)">
+                      <button *ngIf="item.status == 'Inactive'" mat-icon-button color="primary" title="Reactivate Key" (click)="setKeyStatus(item, 'Active')">
+                        <mat-icon>refresh</mat-icon>
+                      </button>
+                      <button *ngIf="item.status == 'Active'" mat-icon-button color="warn" title="Deactivate Key" (click)="setKeyStatus(item, 'Inactive')">
                         <mat-icon>cancel</mat-icon>
                       </button> {{item.keySerial}} </mat-cell>
                   </ng-container>
-                  <mat-header-row *matHeaderRowDef="['keySerial']"></mat-header-row>
-                  <mat-row class="trHover" *matRowDef="let item; columns: ['keySerial'];"></mat-row>
+                  <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                      {{item.status}} </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="['keySerial', 'status']"></mat-header-row>
+                  <mat-row class="trHover" *matRowDef="let item; columns: ['keySerial', 'status'];"></mat-row>
                 </mat-table>
               </div>
             </tb-card>

@@ -7,15 +7,25 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   styles: []
 })
 export class AlertDialogComponent implements OnInit {
-  @Input() message;
+  message;
+  OkCancel = false;
   constructor(
     public dialogRef: MatDialogRef<AlertDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.message = data.message;
+    this.OkCancel = data.OkCancel;
   }
 
   ngOnInit() {}
+
+  cancel() {
+    this.dialogRef.close('cancel');
+  }
+
+  ok() {
+    this.dialogRef.close('ok');
+  }
 
   close() {
     this.dialogRef.close();

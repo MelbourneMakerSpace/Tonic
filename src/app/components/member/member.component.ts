@@ -7,6 +7,7 @@ import { MatTableDataSource, MatDialog } from '@angular/material';
 import { AddEditMemberPlanComponent } from '../add-edit-member-plan/add-edit-member-plan.component';
 import { AlertDialogComponent } from '../shared/alert-dialog/alert-dialog.component';
 import { DbRecordService } from '../../services/db-record.service';
+import { AddKeyComponent } from '../add-key/add-key.component';
 
 @Component({
   selector: 'app-member',
@@ -72,7 +73,7 @@ export class MemberComponent implements OnInit {
           });
         });
 
-        //load member keys
+        // load member keys
         this.dbService
           .getFilteredRecordList('MemberKeys', 'memberKey', this.Key)
           .subscribe(keys => {
@@ -86,10 +87,42 @@ export class MemberComponent implements OnInit {
 
   addKey() {
     console.log('add key for member:', this.Key);
+    this.dialog
+      .open(AddKeyComponent, {
+        disableClose: true,
+        data: { memberKey: this.Key }
+      })
+      .afterClosed()
+      .subscribe(result => {
+        console.dir(result);
+      });
   }
 
-  deactivateKey(Key) {
-    console.log('deactivate key:', Key);
+  setKeyStatus(Key, status) {
+    let messageText = 'Are you sure you want to deactivate this key?';
+
+    if (status === 'Active') {
+      messageText = 'Are you sure you want to reactivate this key?';
+    }
+
+    this.dialog
+      .open(AlertDialogComponent, {
+        disableClose: true,
+        data: {
+          OkCancel: true,
+          message: messageText
+        }
+      })
+      .afterClosed()
+      .subscribe(result => {
+        if (result === 'ok') {
+          const keyToUpdate = Key;
+          keyToUpdate.status = status;
+          this.dbService
+            .saveRecord(keyToUpdate, 'MemberKeys')
+            .then(() => console.log('key inactivated'));
+        }
+      });
   }
 
   addEditPlan(Key) {
