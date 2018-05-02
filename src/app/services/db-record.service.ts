@@ -10,6 +10,7 @@ export class DbRecordService {
   saveRecord(record, collectionName): Promise<any> {
     const key = record.Key;
     delete record.Key;
+
     if (key === 'New') {
       return this.db.collection(collectionName).add(record);
     } else {

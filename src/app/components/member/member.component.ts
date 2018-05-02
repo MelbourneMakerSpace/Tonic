@@ -8,6 +8,7 @@ import { AddEditMemberPlanComponent } from '../add-edit-member-plan/add-edit-mem
 import { AlertDialogComponent } from '../shared/alert-dialog/alert-dialog.component';
 import { DbRecordService } from '../../services/db-record.service';
 import { AddKeyComponent } from '../add-key/add-key.component';
+import { AddTransactionComponent } from '../add-transaction/add-transaction.component';
 
 @Component({
   selector: 'app-member',
@@ -25,6 +26,7 @@ export class MemberComponent implements OnInit {
   headerText = '';
   memberPlans = new MatTableDataSource<MemberPlan>();
   memberKeys = new MatTableDataSource<MemberKey>();
+  memberTransactions = new MatTableDataSource<Transaction>();
   Key = '';
   memberTypes = ['Officer', 'Member', 'Disabled'];
   openPlan = false;
@@ -79,6 +81,13 @@ export class MemberComponent implements OnInit {
           .subscribe(keys => {
             this.memberKeys.data = keys;
           });
+
+        // load member transactions
+        this.dbService
+          .getFilteredRecordList('Transactions', 'memberKey', this.Key)
+          .subscribe(transactions => {
+            this.memberTransactions.data = transactions;
+          });
       } else {
         this.headerText = 'New Member';
       }
@@ -122,6 +131,18 @@ export class MemberComponent implements OnInit {
             .saveRecord(keyToUpdate, 'MemberKeys')
             .then(() => console.log('key inactivated'));
         }
+      });
+  }
+
+  addEditTransaction(Key) {
+    this.dialog
+      .open(AddTransactionComponent, {
+        disableClose: true,
+        data: { Key: Key, memberKey: this.Key }
+      })
+      .afterClosed()
+      .subscribe(result => {
+        console.dir(result);
       });
   }
 

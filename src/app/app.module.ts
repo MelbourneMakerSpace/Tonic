@@ -25,6 +25,7 @@ import { AddEditMemberPlanComponent } from './components/add-edit-member-plan/ad
 import { DbRecordService } from './services/db-record.service';
 import { AlertDialogComponent } from './components/shared/alert-dialog/alert-dialog.component';
 import { AddKeyComponent } from './components/add-key/add-key.component';
+import { AddTransactionComponent } from './components/add-transaction/add-transaction.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { AddKeyComponent } from './components/add-key/add-key.component';
     MemberComponent,
     AddEditMemberPlanComponent,
     AlertDialogComponent,
-    AddKeyComponent
+    AddKeyComponent,
+    AddTransactionComponent
   ],
   imports: [
     AppRoutingModule,
@@ -58,7 +60,8 @@ import { AddKeyComponent } from './components/add-key/add-key.component';
   entryComponents: [
     AddEditMemberPlanComponent,
     AlertDialogComponent,
-    AddKeyComponent
+    AddKeyComponent,
+    AddTransactionComponent
   ],
   bootstrap: [AppComponent]
 })
