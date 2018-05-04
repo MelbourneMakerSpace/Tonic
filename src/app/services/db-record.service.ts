@@ -50,7 +50,7 @@ export class DbRecordService {
       });
   }
 
-  getRecord(Key, collectionName): Observable<any> {
+  getRecord<T extends KeyedRecord>(Key, collectionName): Observable<T> {
     return this.db
       .doc(collectionName + '/' + Key)
       .snapshotChanges()
@@ -58,7 +58,7 @@ export class DbRecordService {
         const payload = record.payload.data();
         // tslint:disable-next-line:no-shadowed-variable
         const Key = record.payload.id;
-        return { Key, ...payload };
+        return <T>{ Key, ...payload };
       });
   }
 }

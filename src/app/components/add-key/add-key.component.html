@@ -1,0 +1,24 @@
+<tb-card>
+  <div class="headerText" style="min-width:300px;">Add Key</div>
+  <div class="subheaderText"></div>
+  <div class="extraButtons">
+    <button mat-mini-fab tabindex="-1" title="Save" (click)="Save()">
+      <mat-icon class="mat-18">save</mat-icon>
+    </button>
+    <button mat-mini-fab tabindex="-1" title="Cancel" (click)="onCancel()">
+      <mat-icon class="mat-18">cancel</mat-icon>
+    </button>
+  </div>
+  <div class="content">
+    <form [formGroup]="keyForm">
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
+        <mat-form-field>
+          <input formControlName="keySerial" matInput placeholder="Key Serial Number">
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center center" style="color:red">
+        {{error}}
+      </div>
+    </form>
+  </div>
+</tb-card>

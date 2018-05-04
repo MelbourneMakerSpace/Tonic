@@ -1,0 +1,51 @@
+<tb-card>
+  <div class="headerText" style="min-width:300px;">Transaction</div>
+  <div class="subheaderText"></div>
+  <div class="extraButtons">
+    <button mat-mini-fab tabindex="-1" title="Save" (click)="Save()">
+      <mat-icon class="mat-18">save</mat-icon>
+    </button>
+    <button mat-mini-fab tabindex="-1" title="Cancel" (click)="onCancel()">
+      <mat-icon class="mat-18">cancel</mat-icon>
+    </button>
+  </div>
+  <div class="content">
+    <form [formGroup]="transactionForm">
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
+        <mat-form-field>
+          <input formControlName="date" matInput readonly="true" [matDatepicker]="transactionDate" placeholder="Choose transaction date">
+          <mat-datepicker-toggle matSuffix [for]="transactionDate"></mat-datepicker-toggle>
+          <mat-datepicker #transactionDate></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="amount" matInput placeholder="Amount">
+        </mat-form-field>
+      </div>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
+        <mat-form-field fxFlex>
+          <mat-select formControlName="method" placeholder="Method">
+            <mat-option *ngFor="let method of methods" [value]="method">
+              {{ method }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <input formControlName="confirmation" matInput placeholder="Confirmation #">
+        </mat-form-field>
+      </div>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
+        <mat-form-field fxFlex>
+          <input formControlName="description" matInput placeholder="Description">
+        </mat-form-field>
+      </div>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
+        <mat-form-field fxFlex>
+          <input formControlName="notes" matInput placeholder="Notes">
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center center" style="color:red">
+        {{error}}
+      </div>
+    </form>
+  </div>
+</tb-card>

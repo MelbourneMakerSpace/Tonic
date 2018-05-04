@@ -27,6 +27,8 @@ import { AlertDialogComponent } from './components/shared/alert-dialog/alert-dia
 import { AddKeyComponent } from './components/add-key/add-key.component';
 import { AddTransactionComponent } from './components/add-transaction/add-transaction.component';
 
+import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,6 +43,7 @@ import { AddTransactionComponent } from './components/add-transaction/add-transa
   ],
   imports: [
     AppRoutingModule,
+    HttpClientModule,
     AppMaterialModule,
     BrowserModule,
     BrowserAnimationsModule,

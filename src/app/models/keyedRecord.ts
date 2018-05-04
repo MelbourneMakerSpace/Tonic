@@ -1,0 +1,3 @@
+class KeyedRecord {
+  Key: string;
+}

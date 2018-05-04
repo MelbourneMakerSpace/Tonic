@@ -1,5 +1,4 @@
-class Member {
-  Key: string;
+class Member extends KeyedRecord {
   FirstName: string;
   LastName: string;
   email: string;
