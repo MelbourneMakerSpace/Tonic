@@ -1,12 +1,16 @@
 import * as functions from 'firebase-functions';
 import * as sendgrid from 'sendgrid';
 
-const client = sendgrid(
-  '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'
-);
+const Gmail = require('./gmail');
+exports.Gmail = functions.https.onRequest((req, res) => {
+  Gmail.Gmail(req, res);
+});
+
+const client = sendgrid('YourKey');
 
 function parseBody(body) {
   const helper = sendgrid.mail;
+
   const fromEmail = new helper.Email(body.from);
   const toEmail = new helper.Email(body.to);
   const subject = body.subject;
