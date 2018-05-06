@@ -6,6 +6,10 @@
 /tmp
 /out-tsc
 
+#cloud function config
+functions/.runtimeconfig.json
+firebase-debug.log
+
 # dependencies
 /node_modules
 /functions/node_modules
