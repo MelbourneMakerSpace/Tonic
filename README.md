@@ -1,7 +1,9 @@
 Tonic - Makerspace Member Management
+
 ![Tonic Logo](https://github.com/MelbourneMakerSpace/Tonic/blob/master/src/assets/Logo.jpg?raw=true)
 
 This project uses Google Firebase as the back end. Modify the environments.js file to use your firebase project.
+
 **Firebase Setup: Coming soon...**
 
 **Configuring E-mail**
