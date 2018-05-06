@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
     const emailAddress = 'ykvhveij@sharklasers.com';
     // const url = 'https://us-central1-makertonic321.cloudfunctions.net/httpEmail';
 
-    const url = 'http://localhost:5000/makertonic321/us-central1/gm';
+    const url = 'http://localhost:5000/makertonic321/us-central1/gmailEmail';
     // const params: URLSearchParams = new URLSearchParams();
 
     // params.set('to', emailAddress);
