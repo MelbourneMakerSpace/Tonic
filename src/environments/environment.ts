@@ -12,5 +12,8 @@ export const environment = {
     projectId: 'makertonic321',
     storageBucket: '',
     messagingSenderId: '382050690528'
-  }
+  },
+  firebaseFunctionURL: 'http://localhost:5000/makertonic321/us-central1/',
+  firebaseFunctionURLProd:
+    'https://us-central1-makertonic321.cloudfunctions.net/'
 };

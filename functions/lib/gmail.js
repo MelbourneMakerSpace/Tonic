@@ -1,17 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
-const sendgrid = require("sendgrid");
 const nodemailer = require('nodemailer');
-function parseBody(body) {
-    const helper = sendgrid.mail;
-    const fromEmail = new helper.Email(body.from);
-    const toEmail = new helper.Email(body.to);
-    const subject = body.subject;
-    const content = new helper.Content('text/html', body.content);
-    const mail = new helper.Mail(fromEmail, subject, toEmail, content);
-    return mail.toJSON();
-}
 // gmail note:
 // Set the gmail.emamail and gmail.password Google Cloud environment variables to match the email and password
 // of the Gmail account used to send emails (or the app password if your account has 2-step verification enabled).
@@ -26,7 +16,8 @@ exports.gmailEmail = functions.https.onRequest((req, res) => {
             throw error;
         }
         // get parameters from body
-        const mailProperties = req.body;
+        const mailProperties = JSON.parse(req.body);
+        console.dir(mailProperties);
         // Configure the email transport using the default SMTP transport and a GMail account.
         // For Gmail, enable these:
         // 1. https://www.google.com/settings/security/lesssecureapps
@@ -45,19 +36,16 @@ exports.gmailEmail = functions.https.onRequest((req, res) => {
             }
         });
         console.log('sending...');
-        const email = 'ykvhveij@sharklasers.com';
-        // Your company name to include in the emails
-        // TODO: Change this to your app or company name to customize the email sent.
-        const APP_NAME = 'Melbourne Makerspace';
         const mailOptions = {
-            from: `${APP_NAME} <noreply@firebase.com>`,
-            to: email,
-            subject: `Welcome to ${APP_NAME}!`,
-            text: `Hey! Welcome to ${APP_NAME}. this is a test from tonic.`
+            from: `${mailProperties.from} <noreply@firebase.com>`,
+            to: mailProperties.to,
+            subject: mailProperties.subject,
+            text: mailProperties.content
         };
+        console.dir(mailOptions);
         const response = mailTransport.sendMail(mailOptions).then(result => {
             console.log(result);
-            console.log('sent successfully');
+            console.log('sent successfully!!');
         });
         console.log('done');
         res.send('done');

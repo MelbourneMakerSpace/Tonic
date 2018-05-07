@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseAuthService } from './services/security/firebase-auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../environments/environment';
+import { GmailService } from './services/email/gmail.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +15,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private authService: FirebaseAuthService,
-    private http: HttpClient
+    private http: HttpClient,
+    private email: GmailService
   ) {}
 
   logout() {
@@ -32,35 +35,11 @@ export class AppComponent implements OnInit {
   }
 
   testgmail() {
-    const emailAddress = 'ykvhveij@sharklasers.com';
-    // const url = 'https://us-central1-makertonic321.cloudfunctions.net/httpEmail';
-
-    const url = 'http://localhost:5000/makertonic321/us-central1/gmailEmail';
-    // const params: URLSearchParams = new URLSearchParams();
-
-    // params.set('to', emailAddress);
-    // params.set('from', 'hello@tonic.com');
-    // params.set('subject', 'test-email');
-    // params.set('content', 'this is some test content from a firebase function');
-
-    const body = {
-      to: emailAddress,
-      from: 'hello@tonic.com',
-      subject: 'test-email at 917',
-      content: 'some content here'
-    };
-
-    const postHeaders = new HttpHeaders().set(
-      'Content-Type',
-      'application/json'
-    ); // create header object
-    // postHeaders = postHeaders.append('Access-Control-Allow-Origin', '*'); // add a new header, creating a new object
-
-    return this.http.post(url, JSON.stringify(body)).subscribe(
-      res => {
-        console.log(res);
-      },
-      err => console.log(err)
+    this.email.sendGmail(
+      'tony.bellomo@gmail.com',
+      'noreply@tonic.com',
+      'test subject',
+      'test e-mail through service'
     );
   }
 

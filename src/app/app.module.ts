@@ -28,6 +28,7 @@ import { AddKeyComponent } from './components/add-key/add-key.component';
 import { AddTransactionComponent } from './components/add-transaction/add-transaction.component';
 
 import { HttpClientModule } from '@angular/common/http';
+import { GmailService } from './services/email/gmail.service';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { HttpClientModule } from '@angular/common/http';
     FirebaseAuthService,
     AngularFireAuth,
     MemberService,
-    DbRecordService
+    DbRecordService,
+    GmailService
   ],
   entryComponents: [
     AddEditMemberPlanComponent,
