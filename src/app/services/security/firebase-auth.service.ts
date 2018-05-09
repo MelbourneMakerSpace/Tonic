@@ -5,11 +5,14 @@ import * as firebase from 'firebase/app';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { TimerObservable } from 'rxjs/observable/TimerObservable';
+import { FirebaseAuth, User } from '@firebase/auth-types';
 
 @Injectable()
 export class FirebaseAuthService {
   isAuthenticated: boolean;
-  displayName$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  user$: BehaviorSubject<any | User> = new BehaviorSubject<any | User>('');
+  picture$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  // displayName$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   isAuthenticated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
@@ -27,7 +30,10 @@ export class FirebaseAuthService {
         console.log('auth listener: authenticated');
         this.isAuthenticated = true;
         this.isAuthenticated$.next(true);
-        this.displayName$.next(user.displayName || user.email);
+        this.user$.next(user);
+        this.getUserRole(user.uid);
+        this.picture$.next(user.photoURL);
+        // this.displayName$.next(user.displayName || user.email);
       } else {
         this.isAuthenticated = false;
         this.isAuthenticated$.next(false);
@@ -35,6 +41,11 @@ export class FirebaseAuthService {
         this.router.navigate(['app-login']);
       }
     });
+  }
+
+  getUserRole(uid): string {
+    console.log(uid);
+    return 'testing role';
   }
 
   createUserWithEmailAndPassword(email, password) {
@@ -55,6 +66,9 @@ export class FirebaseAuthService {
   loginWithGoogle() {
     this.fbAuth.auth
       .signInWithPopup(new firebase.auth.GoogleAuthProvider())
-      .then(() => this.router.navigate(['memberlist']));
+      .then((user: FirebaseAuth) => {
+        console.log(user);
+        this.router.navigate(['memberlist']);
+      });
   }
 }

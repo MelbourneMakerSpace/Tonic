@@ -3,6 +3,7 @@ import { FirebaseAuthService } from './services/security/firebase-auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { GmailService } from './services/email/gmail.service';
+import { User } from '@firebase/auth-types';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,9 @@ import { GmailService } from './services/email/gmail.service';
 })
 export class AppComponent implements OnInit {
   isLoggedIn = false;
+
   identity: string;
+  photoURL: string;
 
   constructor(
     private authService: FirebaseAuthService,
@@ -29,14 +32,16 @@ export class AppComponent implements OnInit {
     this.authService.isAuthenticated$.subscribe(isAuth => {
       this.isLoggedIn = isAuth;
     });
-    this.authService.displayName$.subscribe(
-      identity => (this.identity = identity)
-    );
+    this.authService.user$.subscribe((identity: User) => {
+      console.log('identity:', identity);
+      this.identity = identity.displayName || identity.email;
+      this.photoURL = identity.photoURL;
+    });
   }
 
   testgmail() {
     this.email.sendGmail(
-      'tony.bellomo@gmail.com',
+      'ockkqiuj@sharklasers.com',
       'noreply@tonic.com',
       'test subject',
       'test e-mail through service'
