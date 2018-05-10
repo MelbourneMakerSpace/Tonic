@@ -6,6 +6,11 @@ exports.gmailEmail = functions.https.onRequest((req, res) => {
   return gm.gmailEmail(req, res);
 });
 
+exports.getUserMetadata = functions.https.onRequest((req, res) => {
+  const funct = require('./userMetadata');
+  return funct.getUserMetadata(req, res);
+});
+
 exports.checkVariables = functions.https.onRequest((req, res) => {
   console.log(functions.config().gmail.email);
   console.log(functions.config().gmail.password);
