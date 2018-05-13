@@ -1,15 +1,18 @@
 import * as functions from 'firebase-functions';
 import * as sendgrid from 'sendgrid';
+import * as admin from 'firebase-admin';
 
 exports.gmailEmail = functions.https.onRequest((req, res) => {
   const gm = require('./gmail');
   return gm.gmailEmail(req, res);
 });
 
-exports.getUserMetadata = functions.https.onRequest((req, res) => {
-  const funct = require('./userMetadata');
-  return funct.getUserMetadata(req, res);
-});
+exports.getUserMetadata = functions.https.onRequest(
+  (req: functions.Request, res: functions.Response) => {
+    const funct = require('./userMetadata');
+    return funct.getUserMetadata(req, res);
+  }
+);
 
 exports.checkVariables = functions.https.onRequest((req, res) => {
   console.log(functions.config().gmail.email);
