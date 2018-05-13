@@ -11,11 +11,11 @@ const nodemailer = require('nodemailer');
 exports.gmailEmail = functions.https.onRequest((req, res) => {
   return Promise.resolve()
     .then(() => {
-      if (req.method !== 'POST') {
-        const error = new Error('Only POST requests are accepted');
-        // error.code = 405;
-        throw error;
-      }
+      // if (req.method !== 'POST') {
+      //   const error = new Error('Only POST requests are accepted');
+      //   // error.code = 405;
+      //   throw error;
+      // }
 
       // get parameters from body
       const mailProperties = JSON.parse(req.body);

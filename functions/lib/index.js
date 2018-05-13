@@ -2,9 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
 const sendgrid = require("sendgrid");
+const cors = require("cors");
 exports.gmailEmail = functions.https.onRequest((req, res) => {
-    const gm = require('./gmail');
-    return gm.gmailEmail(req, res);
+    const corsHandler = cors({ origin: true });
+    return corsHandler(req, res, () => {
+        const gm = require('./gmail');
+        return gm.gmailEmail(req, res);
+    });
 });
 exports.getUserMetadata = functions.https.onRequest((req, res) => {
     const funct = require('./userMetadata');

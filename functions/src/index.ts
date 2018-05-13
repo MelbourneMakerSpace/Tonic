@@ -1,10 +1,14 @@
 import * as functions from 'firebase-functions';
 import * as sendgrid from 'sendgrid';
 import * as admin from 'firebase-admin';
+import * as cors from 'cors';
 
 exports.gmailEmail = functions.https.onRequest((req, res) => {
-  const gm = require('./gmail');
-  return gm.gmailEmail(req, res);
+  const corsHandler = cors({ origin: true });
+  return corsHandler(req, res, () => {
+    const gm = require('./gmail');
+    return gm.gmailEmail(req, res);
+  });
 });
 
 exports.getUserMetadata = functions.https.onRequest(
