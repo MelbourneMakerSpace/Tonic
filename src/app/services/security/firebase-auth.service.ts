@@ -21,13 +21,14 @@ export class FirebaseAuthService {
   user$: BehaviorSubject<any | User> = new BehaviorSubject<any | User>('');
   picture$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   userMetaData;
+  public userToken = '';
   // displayName$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   isAuthenticated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
 
   constructor(
-    private fbAuth: AngularFireAuth,
+    public fbAuth: AngularFireAuth,
     private router: Router,
     private db: DbRecordService
   ) {}
@@ -36,14 +37,22 @@ export class FirebaseAuthService {
     return this.fbAuth.auth.signInWithEmailAndPassword(email, password);
   }
 
+  // async getIdToken() {
+  //   console.log('get id token');
+  //   const me = <User>this.user$.value;
+  //   return
+  //   // return await me.getIdToken(true).then(x => x);
+  // }
+
   initAuthListener() {
-    console.log('fb listener init');
     this.fbAuth.authState.subscribe(async user => {
       if (user) {
         console.log('auth listener: authenticated');
         this.isAuthenticated = true;
         this.isAuthenticated$.next(true);
         this.user$.next(user);
+        // user.getIdToken().then(token => (this.userToken = token));
+        this.fbAuth.idToken.subscribe(token => (this.userToken = token));
 
         this.userMetaData = await this.getUserMetadata(user.uid);
         console.dir(this.userMetaData);
@@ -65,6 +74,10 @@ export class FirebaseAuthService {
       .first()
       .toPromise()
       .then(metadata => metadata);
+
+    if (val.length === 0) {
+      console.log('no metadata found for user');
+    }
 
     return val;
   }

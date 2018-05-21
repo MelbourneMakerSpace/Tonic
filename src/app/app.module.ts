@@ -27,8 +27,9 @@ import { AlertDialogComponent } from './components/shared/alert-dialog/alert-dia
 import { AddKeyComponent } from './components/add-key/add-key.component';
 import { AddTransactionComponent } from './components/add-transaction/add-transaction.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GmailService } from './services/email/gmail.service';
+import { FirebaseHttpInterceptor } from './services/firebase.interceptor';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,12 @@ import { GmailService } from './services/email/gmail.service';
     AngularFireAuth,
     MemberService,
     DbRecordService,
-    GmailService
+    GmailService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: FirebaseHttpInterceptor,
+      multi: true
+    }
   ],
   entryComponents: [
     AddEditMemberPlanComponent,

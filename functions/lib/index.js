@@ -64,4 +64,26 @@ exports.sendgridEmail = functions.https.onRequest((req, res) => {
 // export const helloWorld = functions.https.onRequest((request, response) => {
 //  response.send("Hello from Firebase!");
 // });
+// exports.createNewUser = functions.auth
+// .user()
+// .onCreate((userRecord, context) => {
+// // Get an object representing the current document
+// // const newValue = snap.data;
+// console.log('Data');
+// console.dir(userRecord);
+// const data = { userID: `${userRecord.uid}`, email: `${userRecord.email}` };
+// console.dir(data);
+// return admin
+// .firestore()
+// .collection(`UserProfiles`)
+// .doc(`${userRecord.uid}`)
+// .set(data);
+// // return await admin.firestore().collection(`userProfile`).get().then(snapshot => {
+// // console.log('snapshot');
+// // console.dir(snapshot);
+// // docRef.set(`{userID: ${userRecord.uid}, email:${userRecord.email}}`);
+// // });
+// // // .ref(`/userProfile/${newValue.uid}`)
+// // // .set({ email: newValue.email });
+// });
 //# sourceMappingURL=index.js.map

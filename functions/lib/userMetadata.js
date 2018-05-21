@@ -13,23 +13,24 @@ const admin = require("firebase-admin");
 const cors = require("cors");
 let fbInstance;
 exports.getUserMetadata = functions.https.onRequest((req, res) => {
+    if (!fbInstance) {
+        fbInstance = admin.initializeApp(functions.config().firebase);
+    }
     const corsHandler = cors({ origin: true });
+    let token = '';
+    token = req.headers.firebasetoken;
+    //const decodedToken = jwt.decode(token, { complete: true });
+    console.log('token:', token);
+    // console.log('decodedToken:', JSON.stringify(decodedToken));
+    // console.log('payload:', decodedToken);
     corsHandler(req, res, () => {
-        console.log('caller:', JSON.stringify(req.headers.authorization));
-        //   if (
-        //     (!req.headers.authorization ||
-        //       !req.headers.authorization.startsWith('Bearer ')) &&
-        //     !req.cookies.__session
-        //   ) {
-        //     console.error(
-        //       'No Firebase ID token was passed as a Bearer token in the Authorization header.',
-        //       'Make sure you authorize your request by providing the following HTTP header:',
-        //       'Authorization: Bearer <Firebase ID Token>',
-        //       'or by passing a "__session" cookie.'
-        //     );
-        //     res.status(403).send('Unauthorized');
-        //     return;
-        //   }
+        const userData = admin
+            .auth()
+            .verifyIdToken(req.headers.firebasetoken)
+            .then(userToken => {
+            console.log('decoded token:', userToken);
+            return userToken;
+        });
         return Promise.resolve()
             .then(() => __awaiter(this, void 0, void 0, function* () {
             // if (req.method !== 'POST') {

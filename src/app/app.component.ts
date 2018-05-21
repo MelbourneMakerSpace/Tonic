@@ -27,6 +27,10 @@ export class AppComponent implements OnInit {
     this.authService.logout();
   }
 
+  testGetId() {
+    console.log(this.authService.userToken);
+  }
+
   ngOnInit() {
     this.authService.initAuthListener();
     this.authService.isAuthenticated$.subscribe(isAuth => {
@@ -37,6 +41,24 @@ export class AppComponent implements OnInit {
       this.identity = identity.displayName || identity.email;
       this.photoURL = identity.photoURL;
     });
+  }
+
+  testmetadata() {
+    const url =
+      'http://localhost:5000/makertonic321/us-central1/getUserMetadata';
+    const body = { uid: '111XXDO7BFVepPcmrXOUDwd2C7Wxak1' };
+    const postHeaders = new HttpHeaders().set(
+      'Content-Type',
+      'application/json'
+    ); // create header object
+    // postHeaders = postHeaders.append('Access-Control-Allow-Origin', '*'); // add a new header, creating a new object
+
+    return this.http.post(url, JSON.stringify(body)).subscribe(
+      res => {
+        console.log(res);
+      },
+      err => console.log(err)
+    );
   }
 
   testgmail() {
