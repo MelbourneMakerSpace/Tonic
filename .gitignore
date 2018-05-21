@@ -9,6 +9,7 @@
 #cloud function config
 functions/.runtimeconfig.json
 firebase-debug.log
+functions/lib
 
 # dependencies
 /node_modules

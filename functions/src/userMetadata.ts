@@ -1,34 +1,25 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import * as cors from 'cors';
-import * as jwt from 'jsonwebtoken';
+const fbauth = require('./fbauth');
 
-let fbInstance: admin.app.App;
+//let fbInstance: admin.app.App;
 
 exports.getUserMetadata = functions.https.onRequest((req, res) => {
-  if (!fbInstance) {
-    fbInstance = admin.initializeApp(functions.config().firebase);
-  }
+  // if (!fbInstance) {
+  //   fbInstance = admin.initializeApp(functions.config().firebase);
+  // }
 
   const corsHandler = cors({ origin: true });
-  let token = '';
-  token = <string>req.headers.firebasetoken;
+  // let token = '';
+  // token = <string>req.headers.firebasetoken;
 
-  //const decodedToken = jwt.decode(token, { complete: true });
+  // console.log('token:', token);
 
-  console.log('token:', token);
-  // console.log('decodedToken:', JSON.stringify(decodedToken));
-  // console.log('payload:', decodedToken);
+  corsHandler(req, res, async () => {
+    const uid = await fbauth.checkFirebaseToken(req, res);
 
-  corsHandler(req, res, () => {
-    const userData = admin
-      .auth()
-      .verifyIdToken(<string>req.headers.firebasetoken)
-      .then(userToken => {
-        console.log('decoded token:', userToken);
-        return userToken;
-      });
-
+    //console.log('userData:', uid);
     return Promise.resolve()
       .then(async () => {
         // if (req.method !== 'POST') {
@@ -36,9 +27,15 @@ exports.getUserMetadata = functions.https.onRequest((req, res) => {
         //   // error.code = 405;
         //   throw error;
         // }
-        const body = JSON.parse(req.body);
-
-        const user = await lookupUser(body.uid);
+        //const body = JSON.parse(req.body);
+        const user = await lookupUser(uid)
+          .then(metadata => {
+            return metadata;
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(500).send(err);
+          });
 
         res.status(200).send(user);
       })
@@ -53,9 +50,9 @@ exports.getUserMetadata = functions.https.onRequest((req, res) => {
 });
 
 async function lookupUser(uid) {
-  if (!fbInstance) {
-    fbInstance = admin.initializeApp(functions.config().firebase);
-  }
+  // if (!fbInstance) {
+  //   fbInstance = admin.initializeApp(functions.config().firebase);
+  // }
   return await admin
     .firestore()
     .collection('Users')

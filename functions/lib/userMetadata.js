@@ -11,26 +11,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const cors = require("cors");
-let fbInstance;
+const fbauth = require('./fbauth');
+//let fbInstance: admin.app.App;
 exports.getUserMetadata = functions.https.onRequest((req, res) => {
-    if (!fbInstance) {
-        fbInstance = admin.initializeApp(functions.config().firebase);
-    }
+    // if (!fbInstance) {
+    //   fbInstance = admin.initializeApp(functions.config().firebase);
+    // }
     const corsHandler = cors({ origin: true });
-    let token = '';
-    token = req.headers.firebasetoken;
-    //const decodedToken = jwt.decode(token, { complete: true });
-    console.log('token:', token);
-    // console.log('decodedToken:', JSON.stringify(decodedToken));
-    // console.log('payload:', decodedToken);
-    corsHandler(req, res, () => {
-        const userData = admin
-            .auth()
-            .verifyIdToken(req.headers.firebasetoken)
-            .then(userToken => {
-            console.log('decoded token:', userToken);
-            return userToken;
-        });
+    // let token = '';
+    // token = <string>req.headers.firebasetoken;
+    // console.log('token:', token);
+    corsHandler(req, res, () => __awaiter(this, void 0, void 0, function* () {
+        const uid = yield fbauth.checkFirebaseToken(req, res);
+        //console.log('userData:', uid);
         return Promise.resolve()
             .then(() => __awaiter(this, void 0, void 0, function* () {
             // if (req.method !== 'POST') {
@@ -38,8 +31,15 @@ exports.getUserMetadata = functions.https.onRequest((req, res) => {
             //   // error.code = 405;
             //   throw error;
             // }
-            const body = JSON.parse(req.body);
-            const user = yield lookupUser(body.uid);
+            //const body = JSON.parse(req.body);
+            const user = yield lookupUser(uid)
+                .then(metadata => {
+                return metadata;
+            })
+                .catch(err => {
+                console.log(err);
+                res.status(500).send(err);
+            });
             res.status(200).send(user);
         }))
             .catch(err => {
@@ -47,13 +47,13 @@ exports.getUserMetadata = functions.https.onRequest((req, res) => {
                 .status(500)
                 .send('there was an error processing the request ' + JSON.stringify(err));
         });
-    });
+    }));
 });
 function lookupUser(uid) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!fbInstance) {
-            fbInstance = admin.initializeApp(functions.config().firebase);
-        }
+        // if (!fbInstance) {
+        //   fbInstance = admin.initializeApp(functions.config().firebase);
+        // }
         return yield admin
             .firestore()
             .collection('Users')

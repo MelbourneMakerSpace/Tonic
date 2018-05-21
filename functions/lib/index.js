@@ -2,7 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
 const sendgrid = require("sendgrid");
+const admin = require("firebase-admin");
 const cors = require("cors");
+let fbInstance;
+if (!fbInstance) {
+    fbInstance = admin.initializeApp(functions.config().firebase);
+}
 exports.gmailEmail = functions.https.onRequest((req, res) => {
     const corsHandler = cors({ origin: true });
     return corsHandler(req, res, () => {

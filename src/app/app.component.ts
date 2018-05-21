@@ -61,6 +61,17 @@ export class AppComponent implements OnInit {
     );
   }
 
+  testSayHello() {
+    const url = 'http://localhost:5000/makertonic321/us-central1/hello';
+
+    return this.http.get(url).subscribe(
+      res => {
+        console.log(res);
+      },
+      err => console.log(err)
+    );
+  }
+
   testgmail() {
     this.email.sendGmail(
       'ockkqiuj@sharklasers.com',

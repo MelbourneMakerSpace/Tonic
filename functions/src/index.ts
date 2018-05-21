@@ -3,6 +3,12 @@ import * as sendgrid from 'sendgrid';
 import * as admin from 'firebase-admin';
 import * as cors from 'cors';
 
+let fbInstance: admin.app.App;
+
+if (!fbInstance) {
+  fbInstance = admin.initializeApp(functions.config().firebase);
+}
+
 exports.gmailEmail = functions.https.onRequest((req, res) => {
   const corsHandler = cors({ origin: true });
   return corsHandler(req, res, () => {
