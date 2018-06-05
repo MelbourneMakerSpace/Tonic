@@ -12,26 +12,13 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const cors = require("cors");
 const fbauth = require('./fbauth');
-//let fbInstance: admin.app.App;
 exports.getUserMetadata = functions.https.onRequest((req, res) => {
-    // if (!fbInstance) {
-    //   fbInstance = admin.initializeApp(functions.config().firebase);
-    // }
     const corsHandler = cors({ origin: true });
-    // let token = '';
-    // token = <string>req.headers.firebasetoken;
-    // console.log('token:', token);
     corsHandler(req, res, () => __awaiter(this, void 0, void 0, function* () {
         const uid = yield fbauth.checkFirebaseToken(req, res);
         //console.log('userData:', uid);
         return Promise.resolve()
             .then(() => __awaiter(this, void 0, void 0, function* () {
-            // if (req.method !== 'POST') {
-            //   const error = new Error('Only POST requests are accepted');
-            //   // error.code = 405;
-            //   throw error;
-            // }
-            //const body = JSON.parse(req.body);
             const user = yield lookupUser(uid)
                 .then(metadata => {
                 return metadata;
@@ -46,6 +33,23 @@ exports.getUserMetadata = functions.https.onRequest((req, res) => {
             res
                 .status(500)
                 .send('there was an error processing the request ' + JSON.stringify(err));
+        });
+    }));
+});
+exports.setMemberImage = functions.https.onRequest((req, res) => {
+    const corsHandler = cors({ origin: true });
+    corsHandler(req, res, () => __awaiter(this, void 0, void 0, function* () {
+        //const uid = await fbauth.checkFirebaseToken(req, res);
+        //console.log('Member Key', req.body.MemberKey);
+        admin
+            .firestore()
+            .doc('Members/' + req.body.MemberKey)
+            .set({ picture: req.body.fileData }, { merge: true })
+            .then(result => {
+            return res.status(200).send(JSON.stringify('OK'));
+        })
+            .catch(err => {
+            return res.status(500).send(err);
         });
     }));
 });
@@ -67,7 +71,7 @@ function lookupUser(uid) {
             }
             else {
                 //create the metadata object
-                const newMetaData = { ProviderUserId: uid, Role: 'Disabled' };
+                const newMetaData = { ProviderUserId: uid, Role: 'Pending' };
                 admin
                     .firestore()
                     .collection('Users')

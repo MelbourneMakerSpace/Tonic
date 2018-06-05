@@ -9,6 +9,14 @@ if (!fbInstance) {
   fbInstance = admin.initializeApp(functions.config().firebase);
 }
 
+exports.setMemberImage = functions.https.onRequest((req, res) => {
+  const corsHandler = cors({ origin: true });
+  return corsHandler(req, res, () => {
+    const funct = require('./userMetaData');
+    return funct.setMemberImage(req, res);
+  });
+});
+
 exports.gmailEmail = functions.https.onRequest((req, res) => {
   const corsHandler = cors({ origin: true });
   return corsHandler(req, res, () => {

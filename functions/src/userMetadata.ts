@@ -3,18 +3,8 @@ import * as admin from 'firebase-admin';
 import * as cors from 'cors';
 const fbauth = require('./fbauth');
 
-//let fbInstance: admin.app.App;
-
 exports.getUserMetadata = functions.https.onRequest((req, res) => {
-  // if (!fbInstance) {
-  //   fbInstance = admin.initializeApp(functions.config().firebase);
-  // }
-
   const corsHandler = cors({ origin: true });
-  // let token = '';
-  // token = <string>req.headers.firebasetoken;
-
-  // console.log('token:', token);
 
   corsHandler(req, res, async () => {
     const uid = await fbauth.checkFirebaseToken(req, res);
@@ -22,12 +12,6 @@ exports.getUserMetadata = functions.https.onRequest((req, res) => {
     //console.log('userData:', uid);
     return Promise.resolve()
       .then(async () => {
-        // if (req.method !== 'POST') {
-        //   const error = new Error('Only POST requests are accepted');
-        //   // error.code = 405;
-        //   throw error;
-        // }
-        //const body = JSON.parse(req.body);
         const user = await lookupUser(uid)
           .then(metadata => {
             return metadata;
@@ -49,6 +33,26 @@ exports.getUserMetadata = functions.https.onRequest((req, res) => {
   });
 });
 
+exports.setMemberImage = functions.https.onRequest((req, res) => {
+  const corsHandler = cors({ origin: true });
+
+  corsHandler(req, res, async () => {
+    //const uid = await fbauth.checkFirebaseToken(req, res);
+    //console.log('Member Key', req.body.MemberKey);
+
+    admin
+      .firestore()
+      .doc('Members/' + req.body.MemberKey)
+      .set({ picture: req.body.fileData }, { merge: true })
+      .then(result => {
+        return res.status(200).send(JSON.stringify('OK'));
+      })
+      .catch(err => {
+        return res.status(500).send(err);
+      });
+  });
+});
+
 async function lookupUser(uid) {
   // if (!fbInstance) {
   //   fbInstance = admin.initializeApp(functions.config().firebase);
@@ -65,7 +69,7 @@ async function lookupUser(uid) {
         return snapshot.docs[0].data();
       } else {
         //create the metadata object
-        const newMetaData = { ProviderUserId: uid, Role: 'Disabled' };
+        const newMetaData = { ProviderUserId: uid, Role: 'Pending' };
         admin
           .firestore()
           .collection('Users')
