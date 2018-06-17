@@ -12,7 +12,7 @@ import { User } from '@firebase/auth-types';
 })
 export class AppComponent implements OnInit {
   isLoggedIn = false;
-
+  userRole: string;
   identity: string;
   photoURL: string;
 
@@ -24,11 +24,8 @@ export class AppComponent implements OnInit {
 
   logout() {
     // console.log('logging out the user...');
+    this.userRole = '';
     this.authService.logout();
-  }
-
-  testGetId() {
-    console.log(this.authService.userToken);
   }
 
   ngOnInit() {
@@ -37,38 +34,12 @@ export class AppComponent implements OnInit {
       this.isLoggedIn = isAuth;
     });
     this.authService.user$.subscribe((identity: User) => {
-      console.log('identity:', identity);
+      // console.log('identity:', identity);
       this.identity = identity.displayName || identity.email;
       this.photoURL = identity.photoURL;
     });
-  }
-
-  testmetadata() {
-    const url =
-      'http://localhost:5000/makertonic321/us-central1/getUserMetadata';
-    const body = { uid: '111XXDO7BFVepPcmrXOUDwd2C7Wxak1' };
-    const postHeaders = new HttpHeaders().set(
-      'Content-Type',
-      'application/json'
-    ); // create header object
-    // postHeaders = postHeaders.append('Access-Control-Allow-Origin', '*'); // add a new header, creating a new object
-
-    return this.http.post(url, JSON.stringify(body)).subscribe(
-      res => {
-        console.log(res);
-      },
-      err => console.log(err)
-    );
-  }
-
-  testSayHello() {
-    const url = 'http://localhost:5000/makertonic321/us-central1/hello';
-
-    return this.http.get(url).subscribe(
-      res => {
-        console.log(res);
-      },
-      err => console.log(err)
+    this.authService.userMetaData$.subscribe(
+      meta => (this.userRole = meta.Role)
     );
   }
 

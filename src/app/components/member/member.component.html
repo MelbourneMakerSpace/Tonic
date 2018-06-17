@@ -152,9 +152,18 @@
         </div>
         <!--Left Content-->
         <!--Side nav-->
-        <div fxflex style="padding:10px;">
+        <div fxflex style="padding:10px;max-width:250px;">
           <mat-card>
-            <img matCardImage src="assets/fry.jpg ">
+            <div style="text-align: center;">
+              <img matCardImage style="width:100%" src="{{memberPicture}}">
+            </div>
+            <div style="margin-left:auto;margin-right:auto; ">
+              <div fxLayout="row ">
+                <input mat-raised-button type="file" accept='.png, .jpg, .jpeg' #fileInput (change)="uploadMemberImage(fileInput.files[0])"
+                />
+                <mat-progress-bar *ngIf="uploadService.loading | async" [value]="uploadService.progress | async"></mat-progress-bar>
+              </div>
+            </div>
             <mat-card-content>
               <mat-form-field style="width:100%">
                 <mat-select formControlName="role" placeholder="Role">

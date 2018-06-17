@@ -1,6 +1,6 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div fxLayout="row">
-  <div fxFlex.gt-xs="15" fxHide.xs></div>
+  <div fxFlex.gt-md="15" fxHide.md></div>
   <div fxFlex>
     <div fxLayout="row" fxLayoutAlign="center center" *ngIf="isLoggedIn">
       <div fxLayoutAlign="start center" fxLayoutGap="10px">
@@ -10,9 +10,7 @@
           <button mat-raised-button (click)="logout()">Logout</button>
           <button mat-raised-button (click)="testMail()">Test Mail</button>
           <button mat-raised-button (click)="testgmail()">Test gMail</button>
-          <button mat-raised-button (click)="testmetadata()">Get Metadata</button>
-          <button mat-raised-button (click)="testSayHello()">Hello</button>
-
+          <button mat-raised-button *ngIf="userRole == 'Admin'">Admin</button>
         </span>
       </div>
       <div style="text-align:right;" fxFlex fxLayoutAlign="end center" fxHide.xs>
@@ -21,5 +19,5 @@
     </div>
     <router-outlet></router-outlet>
   </div>
-  <div fxFlex.gt-xs="15" fxHide.xs></div>
+  <div fxFlex.gt-md="15" fxHide.md></div>
 </div>

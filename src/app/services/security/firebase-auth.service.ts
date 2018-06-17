@@ -7,6 +7,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { TimerObservable } from 'rxjs/observable/TimerObservable';
 import 'rxjs/add/operator/first';
 import { FirebaseAuth, User } from '@firebase/auth-types';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 import {
   AngularFirestore,
   AngularFirestoreDocument,
@@ -20,7 +22,7 @@ export class FirebaseAuthService {
   isAuthenticated: boolean;
   user$: BehaviorSubject<any | User> = new BehaviorSubject<any | User>('');
   picture$: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  userMetaData;
+  userMetaData$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public userToken = '';
   // displayName$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   isAuthenticated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
@@ -30,19 +32,13 @@ export class FirebaseAuthService {
   constructor(
     public fbAuth: AngularFireAuth,
     private router: Router,
-    private db: DbRecordService
+    private db: DbRecordService,
+    private http: HttpClient
   ) {}
 
   login(email, password): Promise<any> {
     return this.fbAuth.auth.signInWithEmailAndPassword(email, password);
   }
-
-  // async getIdToken() {
-  //   console.log('get id token');
-  //   const me = <User>this.user$.value;
-  //   return
-  //   // return await me.getIdToken(true).then(x => x);
-  // }
 
   initAuthListener() {
     this.fbAuth.authState.subscribe(async user => {
@@ -52,10 +48,14 @@ export class FirebaseAuthService {
         this.isAuthenticated$.next(true);
         this.user$.next(user);
         // user.getIdToken().then(token => (this.userToken = token));
-        this.fbAuth.idToken.subscribe(token => (this.userToken = token));
-
-        this.userMetaData = await this.getUserMetadata(user.uid);
-        console.dir(this.userMetaData);
+        this.fbAuth.idToken.subscribe(async token => {
+          this.userToken = token;
+          await this.getUserMetadata().then(meta => {
+            this.userMetaData$.next(meta);
+            // console.dir(this.userMetaData$);
+          });
+          this.router.navigateByUrl('/memberlist');
+        });
 
         this.picture$.next(user.photoURL);
         // this.displayName$.next(user.displayName || user.email);
@@ -68,18 +68,18 @@ export class FirebaseAuthService {
     });
   }
 
-  async getUserMetadata(uid): Promise<any> {
-    const val = await this.db
-      .getFilteredRecordList('Users', 'ProviderUserId', uid)
-      .first()
+  async getUserMetadata(): Promise<any> {
+    const url = environment.firebaseFunctionURL + 'getUserMetadata';
+
+    return this.http
+      .post(url, null)
       .toPromise()
-      .then(metadata => metadata);
-
-    if (val.length === 0) {
-      console.log('no metadata found for user');
-    }
-
-    return val;
+      .then(
+        res => res,
+        err => {
+          console.log(err);
+        }
+      );
   }
 
   createUserWithEmailAndPassword(email, password) {

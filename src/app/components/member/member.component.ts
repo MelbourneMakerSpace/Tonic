@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MemberService } from '../../services/member.service';
@@ -9,6 +9,7 @@ import { AlertDialogComponent } from '../shared/alert-dialog/alert-dialog.compon
 import { DbRecordService } from '../../services/db-record.service';
 import { AddKeyComponent } from '../add-key/add-key.component';
 import { AddTransactionComponent } from '../add-transaction/add-transaction.component';
+import { UploadFileService } from '../../services/upload-service.service';
 
 @Component({
   selector: 'app-member',
@@ -30,6 +31,8 @@ export class MemberComponent implements OnInit {
   Key = '';
   memberTypes = ['Officer', 'Member', 'Disabled'];
   openPlan = false;
+  memberPicture = '';
+  @ViewChild('fileInput') filecontrol: ElementRef[];
 
   constructor(
     private router: Router,
@@ -37,7 +40,8 @@ export class MemberComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private memberService: MemberService,
     private dialog: MatDialog,
-    private dbService: DbRecordService
+    private dbService: DbRecordService,
+    public uploadService: UploadFileService
   ) {
     this.form = this.fb.group({
       Key: [''],
@@ -91,6 +95,12 @@ export class MemberComponent implements OnInit {
       } else {
         this.headerText = 'New Member';
       }
+    });
+  }
+
+  uploadMemberImage(file) {
+    this.uploadService.uploadfile(file, 'setMemberImage', {
+      MemberKey: this.Key
     });
   }
 
@@ -175,6 +185,7 @@ export class MemberComponent implements OnInit {
           this.form.controls[KeyName].setValue(data[KeyName]);
         }
       });
+      this.memberPicture = data.picture || '';
     });
   }
 

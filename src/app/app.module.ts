@@ -30,6 +30,7 @@ import { AddTransactionComponent } from './components/add-transaction/add-transa
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GmailService } from './services/email/gmail.service';
 import { FirebaseHttpInterceptor } from './services/firebase.interceptor';
+import { UploadFileService } from './services/upload-service.service';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { FirebaseHttpInterceptor } from './services/firebase.interceptor';
     MemberService,
     DbRecordService,
     GmailService,
+    UploadFileService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: FirebaseHttpInterceptor,
