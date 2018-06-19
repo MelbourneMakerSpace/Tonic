@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import * as cors from 'cors';
+import * as gcs from '@google-cloud/storage';
 const fbauth = require('./fbauth');
 
 exports.getUserMetadata = functions.https.onRequest((req, res) => {
@@ -40,6 +41,7 @@ exports.setMemberImage = functions.https.onRequest((req, res) => {
     //const uid = await fbauth.checkFirebaseToken(req, res);
     //console.log('Member Key', req.body.MemberKey);
 
+    //save to user record (< 1mb)
     admin
       .firestore()
       .doc('Members/' + req.body.MemberKey)

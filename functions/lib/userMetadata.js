@@ -41,6 +41,7 @@ exports.setMemberImage = functions.https.onRequest((req, res) => {
     corsHandler(req, res, () => __awaiter(this, void 0, void 0, function* () {
         //const uid = await fbauth.checkFirebaseToken(req, res);
         //console.log('Member Key', req.body.MemberKey);
+        //save to user record (< 1mb)
         admin
             .firestore()
             .doc('Members/' + req.body.MemberKey)
