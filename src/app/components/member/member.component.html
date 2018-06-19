@@ -155,6 +155,7 @@
         <div fxflex style="padding:10px;max-width:250px;">
           <mat-card>
             <div style="text-align: center;">
+              <app-qr [CodeText]="'http://192.168.1.123:4200/member/' + Key"></app-qr>
               <img matCardImage style="width:100%" src="{{memberPicture}}">
             </div>
             <div style="margin-left:auto;margin-right:auto; ">

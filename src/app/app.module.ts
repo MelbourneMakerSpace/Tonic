@@ -31,6 +31,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GmailService } from './services/email/gmail.service';
 import { FirebaseHttpInterceptor } from './services/firebase.interceptor';
 import { UploadFileService } from './services/upload-service.service';
+import { QrComponent } from './components/qr/qr.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { UploadFileService } from './services/upload-service.service';
     AddEditMemberPlanComponent,
     AlertDialogComponent,
     AddKeyComponent,
-    AddTransactionComponent
+    AddTransactionComponent,
+    QrComponent
   ],
   imports: [
     AppRoutingModule,
