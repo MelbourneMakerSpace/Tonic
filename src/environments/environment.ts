@@ -10,7 +10,7 @@ export const environment = {
     authDomain: 'makertonic321.firebaseapp.com',
     databaseURL: 'https://makertonic321.firebaseio.com',
     projectId: 'makertonic321',
-    storageBucket: '',
+    storageBucket: 'makertonic321.appspot.com',
     messagingSenderId: '382050690528'
   },
   firebaseFunctionURL: 'http://localhost:5000/makertonic321/us-central1/',

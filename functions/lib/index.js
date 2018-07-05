@@ -8,6 +8,13 @@ let fbInstance;
 if (!fbInstance) {
     fbInstance = admin.initializeApp(functions.config().firebase);
 }
+exports.updatePaypal = functions.https.onRequest((req, res) => {
+    const corsHandler = cors({ origin: true });
+    return corsHandler(req, res, () => {
+        const funct = require('./pay-pal.service');
+        return funct.updatePaypal(req, res);
+    });
+});
 exports.setMemberImage = functions.https.onRequest((req, res) => {
     const corsHandler = cors({ origin: true });
     return corsHandler(req, res, () => {

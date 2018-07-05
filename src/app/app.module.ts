@@ -32,6 +32,7 @@ import { GmailService } from './services/email/gmail.service';
 import { FirebaseHttpInterceptor } from './services/firebase.interceptor';
 import { UploadFileService } from './services/upload-service.service';
 import { QrComponent } from './components/qr/qr.component';
+import { AngularFireStorage } from 'angularfire2/storage';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { QrComponent } from './components/qr/qr.component';
     DbRecordService,
     GmailService,
     UploadFileService,
+    AngularFireStorage,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: FirebaseHttpInterceptor,

@@ -99,9 +99,10 @@ export class MemberComponent implements OnInit {
   }
 
   uploadMemberImage(file) {
-    this.uploadService.uploadfile(file, 'setMemberImage', {
-      MemberKey: this.Key
-    });
+    // this.uploadService.uploadfile(file, 'setMemberImage', {
+    //   MemberKey: this.Key
+    // });
+    this.uploadService.uploadMemberImage(file, this.Key);
   }
 
   addKey() {
