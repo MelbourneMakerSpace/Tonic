@@ -2,7 +2,35 @@ Tonic - Makerspace Member Management
 
 ![Tonic Logo](https://github.com/MelbourneMakerSpace/Tonic/blob/master/src/assets/Logo.jpg?raw=true)
 
-This project uses Google Firebase as the back end. Modify the environments.js file to use your firebase project.
+---
+
+**Prerequisites Setup**
+
+1.  Install Node.js. Install the LTS option.
+
+2.  Open MS Code. Open terminal with Ctrl + ~.
+
+3.  cd to your base github folder for all your different projects.  When you clone it will create a new Tonic folder here.
+
+4.  Clone the tonic project from git.
+git clone https://github.com/MelbourneMakerSpace/Tonic.git
+
+5.  cd to the base github folder/Tonic.
+
+6.  npm install -g @angular/cli
+
+7.  npm install -g firebase
+
+8.  npm install
+
+9.  that will fetch and install the packages listed in the project's package.json file.
+
+10.  ng serve
+
+11.  this will transpile the code and start up a web server on port 4200.
+visit http://localhost:4200 to see the web app.
+
+12.  This project uses Google Firebase as the back end. Modify the environments.js file to use your firebase project.
 
 ---
 
@@ -13,7 +41,8 @@ This project uses Google Firebase as the back end. Modify the environments.js fi
 2.  Create a new firebase project on the main screen
 3.  Go to Database and make sure Cloud Firestore is selected as your database
 4.  On the project overview page, click the "Add firebase to your web app" button and copy your config information into the environment.ts file.
-5.  This completes the firebase database setup.
+5.  Go to the Authentication tab in your Firebase console, and click set up sign-in method.  You should enable Email/password at a minimum.  Login with Google is also supported.
+6.  This completes the firebase database setup.
 
 ---
 

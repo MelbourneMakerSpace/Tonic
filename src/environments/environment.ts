@@ -6,12 +6,12 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'AIzaSyAfmXnoqhPT7jPhPEEnTffkp35B0JUZxuU',
-    authDomain: 'makertonic321.firebaseapp.com',
-    databaseURL: 'https://makertonic321.firebaseio.com',
-    projectId: 'makertonic321',
-    storageBucket: 'makertonic321.appspot.com',
-    messagingSenderId: '382050690528'
+    apiKey: "AIzaSyBbeUVgqEft5uOP4OtUn38Ry_5qfhV5WAw",
+    authDomain: "tonic-78f09.firebaseapp.com",
+    databaseURL: "https://tonic-78f09.firebaseio.com",
+    projectId: "tonic-78f09",
+    storageBucket: "tonic-78f09.appspot.com",
+    messagingSenderId: "249660708496"
   },
   firebaseFunctionURL: 'http://localhost:5000/makertonic321/us-central1/',
   firebaseFunctionURLProd:
