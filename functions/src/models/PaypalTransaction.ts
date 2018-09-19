@@ -1,3 +1,4 @@
+// made by https://jvilk.com/MakeTypes/
 export interface PaypalTransaction {
   transaction_details?: (TransactionDetailsEntity)[] | null;
   account_number: string;

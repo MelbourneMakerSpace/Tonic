@@ -91,10 +91,12 @@
                   <ng-container matColumnDef="keySerial">
                     <mat-header-cell *matHeaderCellDef> Key Serial </mat-header-cell>
                     <mat-cell *matCellDef="let item">
-                      <button *ngIf="item.status == 'Inactive'" mat-icon-button color="primary" title="Reactivate Key" (click)="setKeyStatus(item, 'Active')">
+                      <button *ngIf="item.status == 'Inactive'" mat-icon-button color="primary" title="Reactivate Key"
+                        (click)="setKeyStatus(item, 'Active')">
                         <mat-icon>refresh</mat-icon>
                       </button>
-                      <button *ngIf="item.status == 'Active'" mat-icon-button color="warn" title="Deactivate Key" (click)="setKeyStatus(item, 'Inactive')">
+                      <button *ngIf="item.status == 'Active'" mat-icon-button color="warn" title="Deactivate Key"
+                        (click)="setKeyStatus(item, 'Inactive')">
                         <mat-icon>cancel</mat-icon>
                       </button> {{item.keySerial}} </mat-cell>
                   </ng-container>
@@ -155,13 +157,12 @@
         <div fxflex style="padding:10px;max-width:250px;">
           <mat-card>
             <div style="text-align: center;">
-              <app-qr [CodeText]="'http://192.168.1.128:4200/member/' + Key"></app-qr>
+              <app-qr [CodeText]="'http://192.168.1.50:4200/member/' + Key"></app-qr>
               <img matCardImage style="width:100%" src="{{memberPicture}}">
             </div>
             <div style="margin-left:auto;margin-right:auto; ">
               <div fxLayout="row">
-                <input mat-raised-button type="file" accept='.png, .jpg, .jpeg' #fileInput (change)="uploadMemberImage(fileInput.files[0])"
-                />
+                <input mat-raised-button type="file" accept='.png, .jpg, .jpeg' #fileInput (change)="uploadMemberImage(fileInput.files[0])" />
               </div>
               <div>
                 <mat-progress-bar *ngIf="uploadService.loading | async" [value]="uploadService.progress | async"></mat-progress-bar>

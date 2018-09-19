@@ -13,6 +13,7 @@
   "dependencies": {
     "@google-cloud/storage": "^1.7.0",
     "@types/google-cloud__storage": "^1.1.7",
+    "btoa": "^1.2.1",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "express": "^4.16.3",
@@ -22,7 +23,8 @@
     "firebase-tools": "^3.18.4",
     "jsonwebtoken": "^8.2.1",
     "nodemailer": "^4.6.4",
-    "sendgrid": "^5.2.3"
+    "sendgrid": "^5.2.3",
+    "web-request": "^1.0.7"
   },
   "devDependencies": {
     "tslint": "^5.8.0",
