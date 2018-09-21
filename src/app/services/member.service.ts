@@ -21,9 +21,11 @@ export class MemberService {
       });
   }
 
-  getMemberPlans(): Observable<MemberPlan[]> {
+  getMemberPlans(memberKey): Observable<MemberPlan[]> {
     return this.db
-      .collection<MemberPlan>('MemberPlans')
+      .collection<MemberPlan>('MemberPlans', ref =>
+        ref.where('memberKey', '==', memberKey)
+      )
       .snapshotChanges()
       .map(data => {
         return data.map(record => {

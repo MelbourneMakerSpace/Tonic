@@ -12,13 +12,11 @@
   <div class="content">
     <form [formGroup]="planForm">
       <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
-        <mat-form-field>
-          <mat-select formControlName="plan" placeholder="Plan">
-            <mat-option *ngFor="let plan of plans" [value]="plan">
-              ${{ plan }} / Month
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+        <mat-select formControlName="plan" placeholder="Plan">
+          <mat-option *ngFor="let plan of plans" [value]="plan">
+            ${{ plan }} / Month
+          </mat-option>
+        </mat-select>
       </div>
       <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
         <mat-form-field>

@@ -16,9 +16,9 @@ import { UploadFileService } from '../../services/upload-service.service';
   templateUrl: './member.component.html',
   styles: [
     `
-    .mediumField{
-      width:200px;
-    }
+      .mediumField {
+        width: 200px;
+      }
     `
   ]
 })
@@ -32,7 +32,8 @@ export class MemberComponent implements OnInit {
   memberTypes = ['Officer', 'Member', 'Disabled'];
   openPlan = false;
   memberPicture = '';
-  @ViewChild('fileInput') filecontrol: ElementRef[];
+  @ViewChild('fileInput')
+  filecontrol: ElementRef[];
 
   constructor(
     private router: Router,
@@ -69,7 +70,7 @@ export class MemberComponent implements OnInit {
             this.form.controls['LastName'].value;
         });
 
-        this.memberService.getMemberPlans().subscribe(data => {
+        this.memberService.getMemberPlans(this.Key).subscribe(data => {
           this.openPlan = false;
           this.memberPlans.data = data;
           data.forEach(record => {
@@ -171,7 +172,7 @@ export class MemberComponent implements OnInit {
     this.dialog
       .open(AddEditMemberPlanComponent, {
         disableClose: true,
-        data: { Key }
+        data: { Key, memberKey: this.Key }
       })
       .afterClosed()
       .subscribe(result => {

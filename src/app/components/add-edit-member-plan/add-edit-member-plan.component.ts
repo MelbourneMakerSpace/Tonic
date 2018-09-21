@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MemberService } from '../../services/member.service';
@@ -9,6 +9,9 @@ import { MemberService } from '../../services/member.service';
   styles: []
 })
 export class AddEditMemberPlanComponent implements OnInit {
+  @Input()
+  memberKey;
+
   plans = [50, 25, 0];
   planForm: FormGroup;
   error = '';
@@ -23,7 +26,8 @@ export class AddEditMemberPlanComponent implements OnInit {
       Key: [''],
       plan: ['', Validators.required],
       startDate: ['', Validators.required],
-      endDate: ['']
+      endDate: [''],
+      memberKey: [data.memberKey]
     });
 
     if (data.Key !== 'New') {
@@ -54,6 +58,9 @@ export class AddEditMemberPlanComponent implements OnInit {
   Save() {
     console.log('about to save:');
     console.dir(this.planForm.value);
+
+    // this.planForm["memberKey"] = this.memberService.
+
     if (this.planForm.valid) {
       this.memberService
         .savePlan(this.planForm.value)
