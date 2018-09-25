@@ -1,8 +1,8 @@
-import * as functions from 'firebase-functions';
-import * as admin from 'firebase-admin';
-import * as cors from 'cors';
-import * as gcs from '@google-cloud/storage';
-const fbauth = require('./fbauth');
+import * as functions from "firebase-functions";
+import * as admin from "firebase-admin";
+import * as cors from "cors";
+import * as gcs from "@google-cloud/storage";
+const fbauth = require("./fbauth");
 
 exports.getUserMetadata = functions.https.onRequest((req, res) => {
   const corsHandler = cors({ origin: true });
@@ -28,7 +28,7 @@ exports.getUserMetadata = functions.https.onRequest((req, res) => {
         res
           .status(500)
           .send(
-            'there was an error processing the request ' + JSON.stringify(err)
+            "there was an error processing the request " + JSON.stringify(err)
           );
       });
   });
@@ -44,15 +44,55 @@ exports.setMemberImage = functions.https.onRequest((req, res) => {
     //save to user record (< 1mb)
     admin
       .firestore()
-      .doc('Members/' + req.body.MemberKey)
+      .doc("Members/" + req.body.MemberKey)
       .set({ picture: req.body.fileData }, { merge: true })
       .then(result => {
-        return res.status(200).send(JSON.stringify('OK'));
+        return res.status(200).send(JSON.stringify("OK"));
       })
       .catch(err => {
         return res.status(500).send(err);
       });
   });
+});
+
+exports.getBalance = functions.https.onRequest(async (req, res) => {
+  const corsHandler = cors({ origin: true });
+  const memberKey = req.query.memberKey;
+  let balance: number = 0;
+
+  const result1 = await corsHandler(req, res, async () => {
+    const result = await admin
+      .firestore()
+      .collection("MemberPlans")
+      .where("memberKey", "==", memberKey)
+      .get()
+      .then(async snapshot => {
+        const test = await snapshot.forEach(async plan => {
+          const trackingDate = new Date(plan.data().startDate);
+
+          const endDate = new Date(plan.data().endDate || Date.now());
+
+          console.log("end date:", endDate);
+
+          let counter = 0;
+
+          while (
+            trackingDate <= endDate &&
+            counter < 1000 //pretect against endless loop because dates are funky sometimes...
+          ) {
+            balance += plan.data().plan;
+            console.log(trackingDate, " " + plan.data().plan);
+            trackingDate.setMonth(trackingDate.getMonth() + 1);
+            counter++;
+          }
+        });
+      })
+      .catch(reason => {
+        res.send(JSON.stringify(reason));
+      });
+    res.send(balance.toString());
+  });
+  //res.send(balance.toString());
 });
 
 async function lookupUser(uid) {
@@ -61,8 +101,8 @@ async function lookupUser(uid) {
   // }
   return await admin
     .firestore()
-    .collection('Users')
-    .where('ProviderUserId', '==', uid)
+    .collection("Users")
+    .where("ProviderUserId", "==", uid)
     .get()
     .then(snapshot => {
       //   console.dir(snapshot);
@@ -71,16 +111,16 @@ async function lookupUser(uid) {
         return snapshot.docs[0].data();
       } else {
         //create the metadata object
-        const newMetaData = { ProviderUserId: uid, Role: 'Pending' };
+        const newMetaData = { ProviderUserId: uid, Role: "Pending" };
         admin
           .firestore()
-          .collection('Users')
+          .collection("Users")
           .add(newMetaData);
         return newMetaData;
       }
     })
     .catch(err => {
-      console.log('Error getting documents', err);
+      console.log("Error getting documents", err);
       throw err;
     });
 }

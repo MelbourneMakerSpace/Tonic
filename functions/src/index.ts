@@ -17,6 +17,14 @@ exports.updatePaypal = functions.https.onRequest((req, res) => {
   });
 });
 
+exports.getBalance = functions.https.onRequest((req, res) => {
+  const corsHandler = cors({ origin: true });
+  return corsHandler(req, res, () => {
+    const funct = require('./userMetaData');
+    return funct.getBalance(req, res);
+  });
+});
+
 exports.setMemberImage = functions.https.onRequest((req, res) => {
   const corsHandler = cors({ origin: true });
   return corsHandler(req, res, () => {

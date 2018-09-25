@@ -11,7 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const cors = require("cors");
-const fbauth = require('./fbauth');
+const fbauth = require("./fbauth");
 exports.getUserMetadata = functions.https.onRequest((req, res) => {
     const corsHandler = cors({ origin: true });
     corsHandler(req, res, () => __awaiter(this, void 0, void 0, function* () {
@@ -32,7 +32,7 @@ exports.getUserMetadata = functions.https.onRequest((req, res) => {
             .catch(err => {
             res
                 .status(500)
-                .send('there was an error processing the request ' + JSON.stringify(err));
+                .send("there was an error processing the request " + JSON.stringify(err));
         });
     }));
 });
@@ -44,16 +44,49 @@ exports.setMemberImage = functions.https.onRequest((req, res) => {
         //save to user record (< 1mb)
         admin
             .firestore()
-            .doc('Members/' + req.body.MemberKey)
+            .doc("Members/" + req.body.MemberKey)
             .set({ picture: req.body.fileData }, { merge: true })
             .then(result => {
-            return res.status(200).send(JSON.stringify('OK'));
+            return res.status(200).send(JSON.stringify("OK"));
         })
             .catch(err => {
             return res.status(500).send(err);
         });
     }));
 });
+exports.getBalance = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
+    const corsHandler = cors({ origin: true });
+    const memberKey = req.query.memberKey;
+    let balance = 0;
+    const result1 = yield corsHandler(req, res, () => __awaiter(this, void 0, void 0, function* () {
+        const result = yield admin
+            .firestore()
+            .collection("MemberPlans")
+            .where("memberKey", "==", memberKey)
+            .get()
+            .then((snapshot) => __awaiter(this, void 0, void 0, function* () {
+            const test = yield snapshot.forEach((plan) => __awaiter(this, void 0, void 0, function* () {
+                const trackingDate = new Date(plan.data().startDate);
+                const endDate = new Date(plan.data().endDate || Date.now());
+                console.log("end date:", endDate);
+                let counter = 0;
+                while (trackingDate <= endDate &&
+                    counter < 1000 //pretect against endless loop because dates are funky sometimes...
+                ) {
+                    balance += plan.data().plan;
+                    console.log(trackingDate, " " + plan.data().plan);
+                    trackingDate.setMonth(trackingDate.getMonth() + 1);
+                    counter++;
+                }
+            }));
+        }))
+            .catch(reason => {
+            res.send(JSON.stringify(reason));
+        });
+        res.send(balance.toString());
+    }));
+    //res.send(balance.toString());
+}));
 function lookupUser(uid) {
     return __awaiter(this, void 0, void 0, function* () {
         // if (!fbInstance) {
@@ -61,8 +94,8 @@ function lookupUser(uid) {
         // }
         return yield admin
             .firestore()
-            .collection('Users')
-            .where('ProviderUserId', '==', uid)
+            .collection("Users")
+            .where("ProviderUserId", "==", uid)
             .get()
             .then(snapshot => {
             //   console.dir(snapshot);
@@ -72,16 +105,16 @@ function lookupUser(uid) {
             }
             else {
                 //create the metadata object
-                const newMetaData = { ProviderUserId: uid, Role: 'Pending' };
+                const newMetaData = { ProviderUserId: uid, Role: "Pending" };
                 admin
                     .firestore()
-                    .collection('Users')
+                    .collection("Users")
                     .add(newMetaData);
                 return newMetaData;
             }
         })
             .catch(err => {
-            console.log('Error getting documents', err);
+            console.log("Error getting documents", err);
             throw err;
         });
     });
