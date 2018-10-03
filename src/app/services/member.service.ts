@@ -3,10 +3,12 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { take } from 'rxjs/operators/take';
 import { DocumentReference } from '@firebase/firestore-types';
+import { environment } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class MemberService {
-  constructor(private db: AngularFirestore) {}
+  constructor(private db: AngularFirestore, private http: HttpClient) {}
 
   getMemberList(): Observable<any> {
     return this.db
@@ -19,6 +21,12 @@ export class MemberService {
           return { Key, ...payload };
         });
       });
+  }
+
+  getBalance(memberKey): Observable<number> {
+    const url =
+      environment.firebaseFunctionURL + 'getBalance?memberKey=' + memberKey;
+    return this.http.get<number>(url);
   }
 
   getMemberPlans(memberKey): Observable<MemberPlan[]> {

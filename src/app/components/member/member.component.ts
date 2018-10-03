@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MemberService } from '../../services/member.service';
 import { Observable } from 'rxjs/Observable';
+import { take } from 'rxjs/operators';
 import { MatTableDataSource, MatDialog } from '@angular/material';
 import { AddEditMemberPlanComponent } from '../add-edit-member-plan/add-edit-member-plan.component';
 import { AlertDialogComponent } from '../shared/alert-dialog/alert-dialog.component';
@@ -34,6 +35,8 @@ export class MemberComponent implements OnInit {
   memberPicture = '';
   @ViewChild('fileInput')
   filecontrol: ElementRef[];
+
+  memberBalance = '';
 
   constructor(
     private router: Router,
@@ -155,6 +158,7 @@ export class MemberComponent implements OnInit {
       .afterClosed()
       .subscribe(result => {
         console.dir(result);
+        this.updateMemberBalance();
       });
   }
 
@@ -191,7 +195,20 @@ export class MemberComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.updateMemberBalance();
+  }
+
+  updateMemberBalance() {
+    this.memberBalance = ' calculating...';
+
+    this.memberService
+      .getBalance(this.Key)
+      .pipe(take(1))
+      .subscribe(
+        value => (this.memberBalance = ' $ ' + value.toString() + '.00')
+      );
+  }
 
   back() {
     this.router.navigateByUrl('/memberlist');

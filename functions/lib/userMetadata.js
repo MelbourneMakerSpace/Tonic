@@ -54,10 +54,26 @@ exports.setMemberImage = functions.https.onRequest((req, res) => {
         });
     }));
 });
+function getSumOfPayments(memberKey) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let sumOfPayments = 0;
+        yield admin
+            .firestore()
+            .collection("Transactions")
+            .where("memberKey", "==", memberKey)
+            .get()
+            .then((snapshot) => __awaiter(this, void 0, void 0, function* () {
+            const test = yield snapshot.forEach(record => {
+                sumOfPayments += Number(record.data().amount);
+            });
+        }));
+        return sumOfPayments;
+    });
+}
 exports.getBalance = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
     const corsHandler = cors({ origin: true });
     const memberKey = req.query.memberKey;
-    let balance = 0;
+    let charges = 0;
     const result1 = yield corsHandler(req, res, () => __awaiter(this, void 0, void 0, function* () {
         const result = yield admin
             .firestore()
@@ -73,7 +89,7 @@ exports.getBalance = functions.https.onRequest((req, res) => __awaiter(this, voi
                 while (trackingDate <= endDate &&
                     counter < 1000 //pretect against endless loop because dates are funky sometimes...
                 ) {
-                    balance += plan.data().plan;
+                    charges += plan.data().plan;
                     console.log(trackingDate, " " + plan.data().plan);
                     trackingDate.setMonth(trackingDate.getMonth() + 1);
                     counter++;
@@ -83,6 +99,7 @@ exports.getBalance = functions.https.onRequest((req, res) => __awaiter(this, voi
             .catch(reason => {
             res.send(JSON.stringify(reason));
         });
+        const balance = charges - (yield getSumOfPayments(memberKey));
         res.send(balance.toString());
     }));
     //res.send(balance.toString());

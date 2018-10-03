@@ -1,6 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import * as cors from "cors";
+import * as moment from "moment";
 import * as gcs from "@google-cloud/storage";
 const fbauth = require("./fbauth");
 
@@ -55,10 +56,27 @@ exports.setMemberImage = functions.https.onRequest((req, res) => {
   });
 });
 
+async function getSumOfPayments(memberKey: string): Promise<number> {
+  let sumOfPayments = 0;
+
+  await admin
+    .firestore()
+    .collection("Transactions")
+    .where("memberKey", "==", memberKey)
+    .get()
+    .then(async snapshot => {
+      const test = await snapshot.forEach(record => {
+        sumOfPayments += Number(record.data().amount);
+      });
+    });
+
+  return sumOfPayments;
+}
+
 exports.getBalance = functions.https.onRequest(async (req, res) => {
   const corsHandler = cors({ origin: true });
   const memberKey = req.query.memberKey;
-  let balance: number = 0;
+  let charges: number = 0;
 
   const result1 = await corsHandler(req, res, async () => {
     const result = await admin
@@ -80,7 +98,7 @@ exports.getBalance = functions.https.onRequest(async (req, res) => {
             trackingDate <= endDate &&
             counter < 1000 //pretect against endless loop because dates are funky sometimes...
           ) {
-            balance += plan.data().plan;
+            charges += plan.data().plan;
             console.log(trackingDate, " " + plan.data().plan);
             trackingDate.setMonth(trackingDate.getMonth() + 1);
             counter++;
@@ -90,6 +108,8 @@ exports.getBalance = functions.https.onRequest(async (req, res) => {
       .catch(reason => {
         res.send(JSON.stringify(reason));
       });
+
+    const balance = charges - (await getSumOfPayments(memberKey));
     res.send(balance.toString());
   });
   //res.send(balance.toString());

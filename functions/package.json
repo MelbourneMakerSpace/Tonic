@@ -22,11 +22,13 @@
     "firebase-functions": "^1.0.2",
     "firebase-tools": "^3.18.4",
     "jsonwebtoken": "^8.2.1",
+    "moment": "^2.22.2",
     "nodemailer": "^4.6.4",
     "sendgrid": "^5.2.3",
     "web-request": "^1.0.7"
   },
   "devDependencies": {
+    "@types/moment": "^2.13.0",
     "tslint": "^5.8.0",
     "typescript": "^2.5.3"
   },

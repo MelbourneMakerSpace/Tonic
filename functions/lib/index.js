@@ -11,62 +11,62 @@ if (!fbInstance) {
 exports.updatePaypal = functions.https.onRequest((req, res) => {
     const corsHandler = cors({ origin: true });
     return corsHandler(req, res, () => {
-        const funct = require('./pay-pal.service');
+        const funct = require("./pay-pal.service");
         return funct.updatePaypal(req, res);
     });
 });
 exports.getBalance = functions.https.onRequest((req, res) => {
     const corsHandler = cors({ origin: true });
     return corsHandler(req, res, () => {
-        const funct = require('./userMetaData');
+        const funct = require("./userMetaData");
         return funct.getBalance(req, res);
     });
 });
 exports.setMemberImage = functions.https.onRequest((req, res) => {
     const corsHandler = cors({ origin: true });
     return corsHandler(req, res, () => {
-        const funct = require('./userMetaData');
+        const funct = require("./userMetaData");
         return funct.setMemberImage(req, res);
     });
 });
 exports.gmailEmail = functions.https.onRequest((req, res) => {
     const corsHandler = cors({ origin: true });
     return corsHandler(req, res, () => {
-        const gm = require('./gmail');
+        const gm = require("./gmail");
         return gm.gmailEmail(req, res);
     });
 });
 exports.getUserMetadata = functions.https.onRequest((req, res) => {
-    const funct = require('./userMetadata');
+    const funct = require("./userMetadata");
     return funct.getUserMetadata(req, res);
 });
 exports.checkVariables = functions.https.onRequest((req, res) => {
     console.log(functions.config().gmail.email);
     console.log(functions.config().gmail.password);
-    res.send('ok');
+    res.send("ok");
 });
 function parseBody(body) {
     const helper = sendgrid.mail;
     const fromEmail = new helper.Email(body.from);
     const toEmail = new helper.Email(body.to);
     const subject = body.subject;
-    const content = new helper.Content('text/html', body.content);
+    const content = new helper.Content("text/html", body.content);
     const mail = new helper.Mail(fromEmail, subject, toEmail, content);
     return mail.toJSON();
 }
 exports.sendgridEmail = functions.https.onRequest((req, res) => {
     const client = sendgrid(functions.config().sendgridemail.apikey);
-    console.log('method:' + req.method);
+    console.log("method:" + req.method);
     return Promise.resolve()
         .then(() => {
-        if (req.method !== 'POST') {
-            const error = new Error('Only POST requests are accepted');
+        if (req.method !== "POST") {
+            const error = new Error("Only POST requests are accepted");
             // error.code = 405;
             throw error;
         }
         const request = client.emptyRequest({
-            method: 'POST',
-            path: '/v3/mail/send',
+            method: "POST",
+            path: "/v3/mail/send",
             body: parseBody(JSON.parse(req.body))
         });
         return client.API(request);

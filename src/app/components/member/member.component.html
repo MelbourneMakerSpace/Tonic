@@ -114,7 +114,7 @@
           <div style="padding:2px;">
             <tb-card [LowElevation]="true" (addClick)=" addEditTransaction('New') ">
               <div class="headerText ">Payment History</div>
-              <div class="subheaderText "></div>
+              <div class="subheaderText ">Balance:{{memberBalance}}</div>
               <div class="content ">
                 <mat-table class="bglightgray" #table [dataSource]="memberTransactions">
                   <ng-container matColumnDef="transactionDate">
