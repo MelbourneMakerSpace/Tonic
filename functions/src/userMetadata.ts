@@ -79,40 +79,104 @@ exports.getBalance = functions.https.onRequest(async (req, res) => {
   let charges: number = 0;
 
   const result1 = await corsHandler(req, res, async () => {
-    const result = await admin
-      .firestore()
-      .collection("MemberPlans")
-      .where("memberKey", "==", memberKey)
-      .get()
-      .then(async snapshot => {
-        const test = await snapshot.forEach(async plan => {
-          const trackingDate = new Date(plan.data().startDate);
-
-          const endDate = new Date(plan.data().endDate || Date.now());
-
-          console.log("end date:", endDate);
-
-          let counter = 0;
-
-          while (
-            trackingDate <= endDate &&
-            counter < 1000 //pretect against endless loop because dates are funky sometimes...
-          ) {
-            charges += plan.data().plan;
-            console.log(trackingDate, " " + plan.data().plan);
-            trackingDate.setMonth(trackingDate.getMonth() + 1);
-            counter++;
-          }
-        });
-      })
-      .catch(reason => {
-        res.send(JSON.stringify(reason));
-      });
+    charges = await getSumOfCharges(memberKey);
 
     const balance = charges - (await getSumOfPayments(memberKey));
     res.send(balance.toString());
   });
   //res.send(balance.toString());
+});
+
+async function getSumOfCharges(memberKey) {
+  let charges = 0;
+  const result = await admin
+    .firestore()
+    .collection("MemberPlans")
+    .where("memberKey", "==", memberKey)
+    .get()
+    .then(async snapshot => {
+      const test = await snapshot.forEach(async plan => {
+        const trackingDate = new Date(plan.data().startDate);
+
+        const endDate = new Date(plan.data().endDate || Date.now());
+
+        console.log("end date:", endDate);
+
+        let counter = 0;
+
+        while (
+          trackingDate <= endDate &&
+          counter < 1000 //pretect against endless loop because dates are funky sometimes...
+        ) {
+          charges += plan.data().plan;
+          console.log(trackingDate, " " + plan.data().plan);
+          trackingDate.setMonth(trackingDate.getMonth() + 1);
+          counter++;
+        }
+      });
+    });
+  return charges;
+}
+
+exports.checkIfActive = functions.https.onRequest(async (req, res) => {
+  const corsHandler = cors({ origin: true });
+  const memberKey = req.query.memberKey;
+
+  const result1 = await corsHandler(req, res, async () => {
+    let maxBalance;
+
+    try {
+      const rate = await getMemberRate(memberKey);
+      if (rate.plan === -1) {
+        res.json(false);
+        return;
+      }
+      //res.json(rate);
+      maxBalance = rate.plan * 2; //we turn off a user if they are > 2 months overdue, so calculate 2 months.
+    } catch (ex) {
+      console.error(ex);
+      res.sendStatus(500).json("Error getting member rate");
+    }
+    const totalCharges = await getSumOfCharges(memberKey);
+    console.log("totalCharges:", totalCharges);
+    const totalPayments = await getSumOfPayments(memberKey);
+    console.log("totalPayments:", totalPayments);
+    res.json(totalCharges - totalPayments <= maxBalance);
+  });
+});
+
+async function getMemberRate(memberKey) {
+  let rate;
+  await admin
+    .firestore()
+    .collection("MemberPlans")
+    .where("memberKey", "==", memberKey)
+    .orderBy("endDate", "desc")
+    .limit(1)
+    .get()
+    .then(async snapshot => {
+      snapshot.forEach(async function(doc) {
+        console.log("data:", JSON.stringify(doc.data()));
+        rate = doc.data();
+        //short circuit if endDate in the past
+        console.log("endDate: ", rate.endDate, "now: ", Date.now());
+        if (rate.endDate !== "" && rate.endDate < Date.now()) {
+          console.log("end date is in the past!");
+          rate.plan = -1;
+        }
+      });
+    });
+  return rate;
+}
+
+exports.boilerplate = functions.https.onRequest(async (req, res) => {
+  const corsHandler = cors({ origin: true });
+  const memberKey = req.query.memberKey;
+
+  const result1 = await corsHandler(req, res, async () => {
+    res.send("boilerplate");
+  });
+  res.send("boilerplate");
 });
 
 async function lookupUser(uid) {

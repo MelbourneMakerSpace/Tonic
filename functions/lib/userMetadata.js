@@ -75,6 +75,15 @@ exports.getBalance = functions.https.onRequest((req, res) => __awaiter(this, voi
     const memberKey = req.query.memberKey;
     let charges = 0;
     const result1 = yield corsHandler(req, res, () => __awaiter(this, void 0, void 0, function* () {
+        charges = yield getSumOfCharges(memberKey);
+        const balance = charges - (yield getSumOfPayments(memberKey));
+        res.send(balance.toString());
+    }));
+    //res.send(balance.toString());
+}));
+function getSumOfCharges(memberKey) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let charges = 0;
         const result = yield admin
             .firestore()
             .collection("MemberPlans")
@@ -95,14 +104,69 @@ exports.getBalance = functions.https.onRequest((req, res) => __awaiter(this, voi
                     counter++;
                 }
             }));
-        }))
-            .catch(reason => {
-            res.send(JSON.stringify(reason));
-        });
-        const balance = charges - (yield getSumOfPayments(memberKey));
-        res.send(balance.toString());
+        }));
+        return charges;
+    });
+}
+exports.checkIfActive = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
+    const corsHandler = cors({ origin: true });
+    const memberKey = req.query.memberKey;
+    const result1 = yield corsHandler(req, res, () => __awaiter(this, void 0, void 0, function* () {
+        let maxBalance;
+        try {
+            const rate = yield getMemberRate(memberKey);
+            if (rate.plan === -1) {
+                res.json(false);
+                return;
+            }
+            //res.json(rate);
+            maxBalance = rate.plan * 2; //we turn off a user if they are > 2 months overdue, so calculate 2 months.
+        }
+        catch (ex) {
+            console.error(ex);
+            res.sendStatus(500).json("Error getting member rate");
+        }
+        const totalCharges = yield getSumOfCharges(memberKey);
+        console.log("totalCharges:", totalCharges);
+        const totalPayments = yield getSumOfPayments(memberKey);
+        console.log("totalPayments:", totalPayments);
+        res.json(totalCharges - totalPayments <= maxBalance);
     }));
-    //res.send(balance.toString());
+}));
+function getMemberRate(memberKey) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let rate;
+        yield admin
+            .firestore()
+            .collection("MemberPlans")
+            .where("memberKey", "==", memberKey)
+            .orderBy("endDate", "desc")
+            .limit(1)
+            .get()
+            .then((snapshot) => __awaiter(this, void 0, void 0, function* () {
+            snapshot.forEach(function (doc) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    console.log("data:", JSON.stringify(doc.data()));
+                    rate = doc.data();
+                    //short circuit if endDate in the past
+                    console.log("endDate: ", rate.endDate, "now: ", Date.now());
+                    if (rate.endDate !== "" && rate.endDate < Date.now()) {
+                        console.log("end date is in the past!");
+                        rate.plan = -1;
+                    }
+                });
+            });
+        }));
+        return rate;
+    });
+}
+exports.boilerplate = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
+    const corsHandler = cors({ origin: true });
+    const memberKey = req.query.memberKey;
+    const result1 = yield corsHandler(req, res, () => __awaiter(this, void 0, void 0, function* () {
+        res.send("boilerplate");
+    }));
+    res.send("boilerplate");
 }));
 function lookupUser(uid) {
     return __awaiter(this, void 0, void 0, function* () {

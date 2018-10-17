@@ -15,6 +15,13 @@ exports.updatePaypal = functions.https.onRequest((req, res) => {
         return funct.updatePaypal(req, res);
     });
 });
+exports.checkIfActive = functions.https.onRequest((req, res) => {
+    const corsHandler = cors({ origin: true });
+    return corsHandler(req, res, () => {
+        const funct = require("./userMetaData");
+        return funct.checkIfActive(req, res);
+    });
+});
 exports.getBalance = functions.https.onRequest((req, res) => {
     const corsHandler = cors({ origin: true });
     return corsHandler(req, res, () => {
