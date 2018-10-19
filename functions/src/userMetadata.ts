@@ -134,25 +134,29 @@ exports.checkIfActiveByKeySerial = functions.https.onRequest(
         if (snapshot.size === 1) {
           return snapshot.docs[0].data();
         } else {
-          res.status(500).json({
-            error: "did not find exactly one key for key " + keySerial
-          });
-          throw Error("key serial number did not find exactly one key");
+          throw Error(
+            "did not find an active key for key serial number " + keySerial
+          );
         }
       })
       .catch(ex => {
-        res.status(500).json({ error: ex });
+        throw Error(ex);
       });
 
-    keyData.then(key => {
-      checkIfActiveByMemberKey(key["memberKey"])
-        .then(isActive => {
-          res.send(isActive);
-        })
-        .catch(ex => {
-          res.status(500).json(ex);
-        });
-    });
+    keyData
+      .then(key => {
+        checkIfActiveByMemberKey(key["memberKey"])
+          .then(isActive => {
+            res.send(isActive);
+          })
+          .catch(ex => {
+            res.status(500).json(ex);
+          });
+      })
+      .catch(ex => {
+        console.error("ex:" + ex);
+        res.status(500).json(false);
+      });
   }
 );
 
