@@ -93,13 +93,13 @@ function getSumOfCharges(memberKey) {
             const test = yield snapshot.forEach((plan) => __awaiter(this, void 0, void 0, function* () {
                 const trackingDate = new Date(plan.data().startDate);
                 const endDate = new Date(plan.data().endDate || Date.now());
-                console.log("end date:", endDate);
+                //console.log("end date:", endDate);
                 let counter = 0;
                 while (trackingDate <= endDate &&
                     counter < 1000 //pretect against endless loop because dates are funky sometimes...
                 ) {
                     charges += plan.data().plan;
-                    console.log(trackingDate, " " + plan.data().plan);
+                    //console.log(trackingDate, " " + plan.data().plan);
                     trackingDate.setMonth(trackingDate.getMonth() + 1);
                     counter++;
                 }
@@ -108,31 +108,69 @@ function getSumOfCharges(memberKey) {
         return charges;
     });
 }
-exports.checkIfActive = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
+exports.checkIfActiveByKeySerial = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
     const corsHandler = cors({ origin: true });
-    const memberKey = req.query.memberKey;
-    const result1 = yield corsHandler(req, res, () => __awaiter(this, void 0, void 0, function* () {
+    const keySerial = req.query.keySerial;
+    const keyData = admin
+        .firestore()
+        .collection("MemberKeys")
+        .where("keySerial", "==", keySerial)
+        .where("status", "==", "Active")
+        .limit(1)
+        .get()
+        .then(snapshot => {
+        if (snapshot.size === 1) {
+            return snapshot.docs[0].data();
+        }
+        else {
+            res.status(500).json({
+                error: "did not find exactly one key for key " + keySerial
+            });
+            throw Error("key serial number did not find exactly one key");
+        }
+    })
+        .catch(ex => {
+        res.status(500).json({ error: ex });
+    });
+    keyData.then(key => {
+        checkIfActiveByMemberKey(key["memberKey"])
+            .then(isActive => {
+            res.send(isActive);
+        })
+            .catch(ex => {
+            res.status(500).json(ex);
+        });
+    });
+}));
+function checkIfActiveByMemberKey(memberKey) {
+    return __awaiter(this, void 0, void 0, function* () {
+        console.log("checking active status for member:", memberKey);
         let maxBalance;
         try {
             const rate = yield getMemberRate(memberKey);
             if (rate.plan === -1) {
-                res.json(false);
-                return;
+                //they do not have a current rate plan
+                return false;
+            }
+            else if (rate.plan === 0) {
+                //automatic entry if they have a current rate plan that is $0 (free membership)
+                return true;
             }
             //res.json(rate);
             maxBalance = rate.plan * 2; //we turn off a user if they are > 2 months overdue, so calculate 2 months.
+            console.log("maxbalance:", maxBalance);
         }
         catch (ex) {
             console.error(ex);
-            res.sendStatus(500).json("Error getting member rate");
+            throw ex;
         }
         const totalCharges = yield getSumOfCharges(memberKey);
         console.log("totalCharges:", totalCharges);
         const totalPayments = yield getSumOfPayments(memberKey);
         console.log("totalPayments:", totalPayments);
-        res.json(totalCharges - totalPayments <= maxBalance);
-    }));
-}));
+        return totalCharges - totalPayments <= maxBalance;
+    });
+}
 function getMemberRate(memberKey) {
     return __awaiter(this, void 0, void 0, function* () {
         let rate;
@@ -149,7 +187,7 @@ function getMemberRate(memberKey) {
                     console.log("data:", JSON.stringify(doc.data()));
                     rate = doc.data();
                     //short circuit if endDate in the past
-                    console.log("endDate: ", rate.endDate, "now: ", Date.now());
+                    //console.log("endDate: ", rate.endDate, "now: ", Date.now());
                     if (rate.endDate !== "" && rate.endDate < Date.now()) {
                         console.log("end date is in the past!");
                         rate.plan = -1;
@@ -157,6 +195,7 @@ function getMemberRate(memberKey) {
                 });
             });
         }));
+        console.log("rate:", rate);
         return rate;
     });
 }
