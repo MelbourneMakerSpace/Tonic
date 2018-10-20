@@ -42,10 +42,14 @@ export class AddEditMemberPlanComponent implements OnInit {
   loadExisting(Key) {
     this.memberService.getPlan(Key).subscribe(data => {
       Object.keys(data).forEach(KeyName => {
-        console.log('find: ', KeyName);
-        if (this.planForm.controls[KeyName]) {
-          console.log('set: ', KeyName, ' = ', data[KeyName]);
-          this.planForm.controls[KeyName].setValue(data[KeyName]);
+        if (data[KeyName].seconds) {
+          this.planForm.controls[KeyName].setValue(
+            new Date(data[KeyName].seconds * 1000)
+          );
+        } else {
+          if (this.planForm.controls[KeyName]) {
+            this.planForm.controls[KeyName].setValue(data[KeyName]);
+          }
         }
       });
     });

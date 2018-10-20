@@ -1,6 +1,6 @@
-<div [class.mat-elevation-z2]="!LowElevation">
+<div [class.mat-elevation-z2]="!LowElevation" fxLayout="column">
   <div style="height:10px" class="bgdark"></div>
-  <div class="bgprimary headerspan headerdiv" fxLayout="row">
+  <div class="bgprimary headerspan headerdiv">
     <div fxFlex="75">
       <ng-content select=".headerText"></ng-content>
     </div>
@@ -13,14 +13,14 @@
       </div>
     </div>
   </div>
-  <div fxFlex class="bggray" fxLayout="row">
+  <div fxFlex="100" class="bggray" fxLayout="row">
     <div fxFlex="75" fxLayoutAlign="start center" class="headerdiv">
       <div style="min-height:40px;" fxLayoutAlign="start center">
         <ng-content select=".subHeaderText"></ng-content>
       </div>
     </div>
   </div>
-  <div style="min-height:150px;" class="bglightgray">
+  <div fxFlex="100" style="min-height:150px;" class="bglightgray">
     <ng-content select=".content"></ng-content>
   </div>
 </div>

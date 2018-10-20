@@ -1,31 +1,31 @@
 <tb-card (addClick)="addMember($event)">
-  <div class="headerText">Members {{filter}}</div>
+  <div class="headerText">Members</div>
   <div class="subheaderText">
-    <div style="padding-top:20px;">
+    <div>
       <mat-form-field>
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
       </mat-form-field>
     </div>
   </div>
-  <div class="content">
-    <mat-table class="bglightgray" #table [dataSource]="memberSnapshot | async">
+  <div class="content" style="background-color:gray;">
+    <table mat-table class="bglightgray" #table [dataSource]="memberSnapshot | async" style="width:100%">
       <ng-container matColumnDef="Actions">
-        <mat-header-cell *matHeaderCellDef style="text-align: center;"> Actions </mat-header-cell>
-        <mat-cell *matCellDef="let item" style="text-align: center;">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Actions </th>
+        <td mat-cell *matCellDef="let item" style="text-align: center;">
           <button mat-icon-button color="primary" (click)="viewMember(item.Key)">
             <mat-icon aria-label="Update">folder_shared</mat-icon>
           </button>
-        </mat-cell>
+        </td>
       </ng-container>
       <ng-container matColumnDef="Name">
-        <mat-header-cell *matHeaderCellDef> Member </mat-header-cell>
-        <mat-cell *matCellDef="let item">
+        <th mat-header-cell *matHeaderCellDef> Member </th>
+        <td mat-cell *matCellDef="let item">
           <button mat-icon-button color="primary" (click)="viewMember(item.Key)">
             <mat-icon aria-label="Update">folder_shared</mat-icon>
-          </button> {{item.FirstName}} {{item.LastName}} </mat-cell>
+          </button> {{item.FirstName}} {{item.LastName}} </td>
       </ng-container>
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row class="trHover" [routerLink]="['/member/' + row.Key]" *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row class="trHover" [routerLink]="['/member/' + row.Key]" *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
   </div>
 </tb-card>

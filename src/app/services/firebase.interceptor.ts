@@ -1,6 +1,5 @@
 import { Injector, Injectable } from '@angular/core';
-import { fromPromise } from 'rxjs/observable/fromPromise';
-import { Observable } from 'rxjs/Observable';
+import { from as fromPromise ,  Observable } from 'rxjs';
 
 import {
   HttpInterceptor,

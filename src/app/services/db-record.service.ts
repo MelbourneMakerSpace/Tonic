@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from 'angularfire2/firestore';
-import { Observable } from 'rxjs/Observable';
-import { take } from 'rxjs/operators/take';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { take, map } from 'rxjs/operators';
 import { DocumentReference } from '@firebase/firestore-types';
 @Injectable()
 export class DbRecordService {
@@ -28,37 +28,43 @@ export class DbRecordService {
         ref.where(FilterField, '==', FilterValue)
       )
       .snapshotChanges()
-      .map(data => {
-        return data.map(record => {
-          const payload = record.payload.doc.data();
-          const Key = record.payload.doc.id;
-          return { Key, ...payload };
-        });
-      });
+      .pipe(
+        map(data => {
+          return data.map(record => {
+            const payload = record.payload.doc.data();
+            const Key = record.payload.doc.id;
+            return { Key, ...payload };
+          });
+        })
+      );
   }
 
   getRecordList(collectionName): Observable<any> {
     return this.db
       .collection(collectionName)
       .snapshotChanges()
-      .map(data => {
-        return data.map(record => {
-          const payload = record.payload.doc.data();
-          const Key = record.payload.doc.id;
-          return { Key, ...payload };
-        });
-      });
+      .pipe(
+        map(data => {
+          return data.map(record => {
+            const payload = record.payload.doc.data();
+            const Key = record.payload.doc.id;
+            return { Key, ...payload };
+          });
+        })
+      );
   }
 
   getRecord<T extends KeyedRecord>(Key, collectionName): Observable<T> {
     return this.db
       .doc(collectionName + '/' + Key)
       .snapshotChanges()
-      .map(record => {
-        const payload = record.payload.data();
-        // tslint:disable-next-line:no-shadowed-variable
-        const Key = record.payload.id;
-        return <T>{ Key, ...payload };
-      });
+      .pipe(
+        map(record => {
+          const payload = record.payload.data();
+          // tslint:disable-next-line:no-shadowed-variable
+          const Key = record.payload.id;
+          return <T>{ Key, ...payload };
+        })
+      );
   }
 }

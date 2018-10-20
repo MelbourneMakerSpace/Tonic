@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { TimerObservable } from 'rxjs/observable/TimerObservable';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';

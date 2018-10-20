@@ -3,10 +3,11 @@ import {
   AngularFirestore,
   AngularFirestoreCollection,
   AngularFirestoreDocument
-} from 'angularfire2/firestore';
-import { Observable } from 'rxjs/Observable';
+} from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { FirebaseAuthService } from '../../../services/security/firebase-auth.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-logged-in',
@@ -26,13 +27,15 @@ export class LoggedInComponent implements OnInit {
     this.itemsFromSnapshot = db
       .collection<Item>('ProtectedItems')
       .snapshotChanges()
-      .map(data => {
-        return data.map(record => {
-          const payload = record.payload.doc.data() as Item;
-          const Key = record.payload.doc.id;
-          return { Key, ...payload };
-        });
-      });
+      .pipe(
+        map(data => {
+          return data.map(record => {
+            const payload = record.payload.doc.data() as Item;
+            const Key = record.payload.doc.id;
+            return { Key, ...payload };
+          });
+        })
+      );
   }
 
   ngOnInit() {}

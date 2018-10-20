@@ -12,8 +12,10 @@
   </div>
   <div class="content">
     <form [formGroup]="form">
-      <div fxFlex fxLayoutAlign="start stretch">
-        <div fxFlex="80">
+      <div fxFlex="100" fxLayoutAlign="start stretch" fxLayout="row">
+        <!--Main Content-->
+        <div fxFlex="80" fxLayout="column">
+          <!--Left Side Content-->
           <fieldset>
             <legend>Member Information
             </legend>
@@ -37,22 +39,20 @@
               </mat-form-field>
             </div>
           </fieldset>
-          <div fxLayout="row wrap" fxFlex fxLayoutAlign="start stretch">
-            <fieldset style="width:100%">
-              <legend>Emergency Contact</legend>
-              <div fxLayout="row wrap" fxLayoutAlign="space-between start">
-                <mat-form-field class="mediumField">
-                  <input formControlName="emergencyName" matInput placeholder="Name">
-                </mat-form-field>
-                <mat-form-field class="mediumField">
-                  <input formControlName="emergencyEmail" matInput placeholder="Email">
-                </mat-form-field>
-                <mat-form-field class="mediumField">
-                  <input formControlName="emergencyPhone" matInput placeholder="Phone">
-                </mat-form-field>
-              </div>
-            </fieldset>
-          </div>
+          <fieldset>
+            <legend>Emergency Contact</legend>
+            <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+              <mat-form-field class="mediumField">
+                <input formControlName="emergencyName" matInput placeholder="Name">
+              </mat-form-field>
+              <mat-form-field class="mediumField">
+                <input formControlName="emergencyEmail" matInput placeholder="Email">
+              </mat-form-field>
+              <mat-form-field class="mediumField">
+                <input formControlName="emergencyPhone" matInput placeholder="Phone">
+              </mat-form-field>
+            </div>
+          </fieldset>
           <div style="padding:2px;">
             <tb-card [LowElevation]="true" (addClick)="addEditPlan('New')">
               <div class="headerText ">Plans</div>
@@ -69,12 +69,12 @@
                   <ng-container matColumnDef="StartDate">
                     <mat-header-cell *matHeaderCellDef> Start Date </mat-header-cell>
                     <mat-cell *matCellDef="let item">
-                      {{item.startDate | date}} </mat-cell>
+                      {{item.startDate.seconds * 1000 | date }} </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="EndDate">
                     <mat-header-cell *matHeaderCellDef> End Date </mat-header-cell>
                     <mat-cell *matCellDef="let item">
-                      {{item.endDate | date}} </mat-cell>
+                      {{item.endDate.seconds * 1000 | date}} </mat-cell>
                   </ng-container>
                   <mat-header-row *matHeaderRowDef="['Plan', 'StartDate','EndDate']"></mat-header-row>
                   <mat-row class="trHover" (click)="addEditPlan(item.Key)" *matRowDef="let item; columns: ['Plan', 'StartDate','EndDate'];"></mat-row>
@@ -124,7 +124,7 @@
                         <mat-icon>mode_edit</mat-icon>
 
                       </button>
-                      {{item.date | date}}
+                      {{item.date.seconds * 1000 | date}}
                     </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="amount">
@@ -153,11 +153,11 @@
           </div>
         </div>
         <!--Left Content-->
-        <!--Side nav-->
-        <div fxflex style="padding:10px;max-width:250px;">
+        <!-- Right Side nav-->
+        <div fxflex="20" style="padding:10px;max-width:250px;">
           <mat-card>
             <div style="text-align: center;">
-              <app-qr [CodeText]="'http://192.168.1.50:4200/member/' + Key"></app-qr>
+              QR Code Here
               <img matCardImage style="width:100%" src="{{memberPicture}}">
             </div>
             <div style="margin-left:auto;margin-right:auto; ">
@@ -184,8 +184,9 @@
 
             </mat-card-footer>
           </mat-card>
-        </div>
+        </div><!-- Right Side nav-->
       </div>
+      <!--Main Content-->
 
     </form>
   </div>

@@ -3,8 +3,11 @@ import { NgModule } from '@angular/core';
 import { AppMaterialModule } from './/app-material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireStorage } from '@angular/fire/storage';
+// import { AngularFireStorage } from '@angular/fire/storage';
+
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
 
@@ -12,7 +15,7 @@ import { environment } from '../environments/environment';
 
 import { FirebaseAuthService } from './services/security/firebase-auth.service';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/admin/login/login.component';
@@ -32,7 +35,6 @@ import { GmailService } from './services/email/gmail.service';
 import { FirebaseHttpInterceptor } from './services/firebase.interceptor';
 import { UploadFileService } from './services/upload-service.service';
 import { QrComponent } from './components/qr/qr.component';
-import { AngularFireStorage } from 'angularfire2/storage';
 
 @NgModule({
   declarations: [
@@ -44,8 +46,8 @@ import { AngularFireStorage } from 'angularfire2/storage';
     AddEditMemberPlanComponent,
     AlertDialogComponent,
     AddKeyComponent,
-    AddTransactionComponent,
-    QrComponent
+    AddTransactionComponent
+    // QrComponent
   ],
   imports: [
     AppRoutingModule,
@@ -55,7 +57,6 @@ import { AngularFireStorage } from 'angularfire2/storage';
     BrowserAnimationsModule,
     FlexLayoutModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule,
     AppRoutingModule,
     AppMaterialModule,
     ReactiveFormsModule
@@ -67,7 +68,9 @@ import { AngularFireStorage } from 'angularfire2/storage';
     DbRecordService,
     GmailService,
     UploadFileService,
+    AngularFirestore,
     AngularFireStorage,
+    // AngularFireStorage,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: FirebaseHttpInterceptor,

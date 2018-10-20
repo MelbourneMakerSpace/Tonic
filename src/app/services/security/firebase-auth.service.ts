@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { TimerObservable } from 'rxjs/observable/TimerObservable';
-import 'rxjs/add/operator/first';
+
 import { FirebaseAuth, User } from '@firebase/auth-types';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -14,7 +13,7 @@ import {
   AngularFirestoreDocument,
   AngularFirestoreCollection,
   DocumentChangeAction
-} from 'angularfire2/firestore';
+} from '@angular/fire/firestore';
 import { DbRecordService } from '../db-record.service';
 
 @Injectable()
@@ -100,7 +99,7 @@ export class FirebaseAuthService {
   loginWithGoogle() {
     this.fbAuth.auth
       .signInWithPopup(new firebase.auth.GoogleAuthProvider())
-      .then((user: FirebaseAuth) => {
+      .then(user => {
         console.log(user);
         this.router.navigate(['memberlist']);
       });

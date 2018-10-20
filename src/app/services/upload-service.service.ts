@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpRequest, HttpEventType } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { AngularFireStorage } from 'angularfire2/storage';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable()
 export class UploadFileService {
@@ -32,7 +31,7 @@ export class UploadFileService {
         this.progress = new BehaviorSubject(0);
       })
       .catch(err => console.log(err));
-    task.downloadURL().subscribe(url => this.updateUserRecord(url, MemberId));
+    task.then(url => this.updateUserRecord(url.downloadURL, MemberId));
   }
 
   private updateUserRecord(url: string, MemberId: string) {

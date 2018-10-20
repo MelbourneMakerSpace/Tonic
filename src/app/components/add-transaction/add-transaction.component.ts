@@ -42,7 +42,13 @@ export class AddTransactionComponent implements OnInit {
     this.dbService.getRecord(Key, 'Transactions').subscribe(data => {
       Object.keys(data).forEach(KeyName => {
         if (this.transactionForm.controls[KeyName]) {
-          this.transactionForm.controls[KeyName].setValue(data[KeyName]);
+          if (data[KeyName].seconds) {
+            this.transactionForm.controls[KeyName].setValue(
+              new Date(data[KeyName].seconds * 1000)
+            );
+          } else {
+            this.transactionForm.controls[KeyName].setValue(data[KeyName]);
+          }
         }
       });
     });

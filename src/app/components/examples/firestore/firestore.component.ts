@@ -3,8 +3,9 @@ import {
   AngularFirestore,
   AngularFirestoreCollection,
   AngularFirestoreDocument
-} from 'angularfire2/firestore';
-import { Observable } from 'rxjs/Observable';
+} from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-firestore',
   templateUrl: './firestore.component.html',
@@ -23,13 +24,15 @@ export class FirestoreComponent implements OnInit {
     this.itemsFromSnapshot = db
       .collection<Item>('SampleItems')
       .snapshotChanges()
-      .map(data => {
-        return data.map(record => {
-          const payload = record.payload.doc.data() as Item;
-          const Key = record.payload.doc.id;
-          return { Key, ...payload };
-        });
-      });
+      .pipe(
+        map(data => {
+          return data.map(record => {
+            const payload = record.payload.doc.data() as Item;
+            const Key = record.payload.doc.id;
+            return { Key, ...payload };
+          });
+        })
+      );
   }
 
   ngOnInit() {}

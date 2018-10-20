@@ -1,24 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { MemberService } from '../../services/member.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import { Subject } from 'rxjs/Subject';
-import { filter } from 'rxjs/operators/filter';
+import {
+  filter,
+  debounceTime,
+  distinctUntilChanged,
+  map
+} from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-memberlist',
   templateUrl: './memberlist.component.html',
   styles: [
-    `.headerdiv {
-    padding-left:10px;
-  }
-  .headerspan {
-    font-size:50px;
-    font-weight:bold;
-  }`
+    `
+      .headerdiv {
+        padding-left: 10px;
+      }
+      .headerspan {
+        font-size: 50px;
+        font-weight: bold;
+      }
+    `
   ]
 })
 export class MemberlistComponent implements OnInit {
@@ -31,22 +34,24 @@ export class MemberlistComponent implements OnInit {
   ngOnInit() {
     // this.memberSnapshot = this.memberService.getMemberList();
     this.filter$
-      .debounceTime(400)
-      .distinctUntilChanged()
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged()
+      )
       .subscribe(filterstring => {
         if (filterstring) {
           // this.memberSnapshot = this.memberService.getFilteredMemberList(
           //   filterstring
           // );
           this.filter = filterstring;
-          this.memberSnapshot = this.memberService
-            .getMemberList()
-            .map(members =>
+          this.memberSnapshot = this.memberService.getMemberList().pipe(
+            map(members =>
               members.filter((x: Member, idx) => {
                 // console.dir(x);
                 return x.FirstName.toLowerCase().startsWith(filterstring);
               })
-            );
+            )
+          );
         } else {
           this.memberSnapshot = this.memberService.getMemberList();
         }

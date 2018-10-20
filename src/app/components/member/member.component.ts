@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MemberService } from '../../services/member.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { MatTableDataSource, MatDialog } from '@angular/material';
 import { AddEditMemberPlanComponent } from '../add-edit-member-plan/add-edit-member-plan.component';
