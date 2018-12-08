@@ -1,5 +1,5 @@
 <tb-card>
-  <div class="headerText">{{headerText}}</div>
+  <div class="headerText">{{ headerText }}</div>
   <div class="subheaderText"></div>
   <div class="extraButtons">
     <button mat-mini-fab [disabled]="!form.valid" (click)="save()">
@@ -13,29 +13,40 @@
   <div class="content">
     <form [formGroup]="form">
       <div fxFlex="100" fxLayoutAlign="start stretch" fxLayout="row">
-        <!--Main Content-->
+        <!-- Main Content -->
         <div fxFlex="80" fxLayout="column">
-          <!--Left Side Content-->
+          <!-- Left Side Content -->
           <fieldset>
-            <legend>Member Information
-            </legend>
+            <legend>Member Information</legend>
             <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
               <mat-form-field>
-                <input formControlName="FirstName" matInput placeholder="First Name">
+                <input
+                  formControlName="FirstName"
+                  matInput
+                  placeholder="First Name"
+                />
               </mat-form-field>
               <mat-form-field>
-                <input formControlName="LastName" matInput placeholder="Last Name">
+                <input
+                  formControlName="LastName"
+                  matInput
+                  placeholder="Last Name"
+                />
               </mat-form-field>
               <mat-form-field>
-                <input formControlName="phone" matInput placeholder="Phone">
+                <input formControlName="phone" matInput placeholder="Phone" />
               </mat-form-field>
             </div>
             <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
               <mat-form-field style="width:300px">
-                <input formControlName="email" matInput placeholder="Email">
+                <input formControlName="email" matInput placeholder="Email" />
               </mat-form-field>
               <mat-form-field style="width:300px">
-                <input formControlName="paypalEmail" matInput placeholder="Paypal Email">
+                <input
+                  formControlName="paypalEmail"
+                  matInput
+                  placeholder="Paypal Email"
+                />
               </mat-form-field>
             </div>
           </fieldset>
@@ -43,13 +54,25 @@
             <legend>Emergency Contact</legend>
             <div fxLayout="row wrap" fxLayoutAlign="space-between start">
               <mat-form-field class="mediumField">
-                <input formControlName="emergencyName" matInput placeholder="Name">
+                <input
+                  formControlName="emergencyName"
+                  matInput
+                  placeholder="Name"
+                />
               </mat-form-field>
               <mat-form-field class="mediumField">
-                <input formControlName="emergencyEmail" matInput placeholder="Email">
+                <input
+                  formControlName="emergencyEmail"
+                  matInput
+                  placeholder="Email"
+                />
               </mat-form-field>
               <mat-form-field class="mediumField">
-                <input formControlName="emergencyPhone" matInput placeholder="Phone">
+                <input
+                  formControlName="emergencyPhone"
+                  matInput
+                  placeholder="Phone"
+                />
               </mat-form-field>
             </div>
           </fieldset>
@@ -58,26 +81,47 @@
               <div class="headerText ">Plans</div>
               <div class="subheaderText "></div>
               <div class="content ">
-                <mat-table class="bglightgray" #table [dataSource]="memberPlans">
+                <mat-table
+                  class="bglightgray"
+                  #table
+                  [dataSource]="memberPlans"
+                >
                   <ng-container matColumnDef="Plan">
                     <mat-header-cell *matHeaderCellDef> Plan </mat-header-cell>
                     <mat-cell *matCellDef="let item">
                       <button mat-icon-button color="primary">
                         <mat-icon aria-label="Update">mode_edit</mat-icon>
-                      </button> ${{item.plan}} / Month </mat-cell>
+                      </button>
+                      ${{ item.plan }} / Month
+                    </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="StartDate">
-                    <mat-header-cell *matHeaderCellDef> Start Date </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef>
+                      Start Date
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let item">
-                      {{item.startDate.seconds * 1000 | date }} </mat-cell>
+                      {{ item.startDate.seconds * 1000 | date }}
+                    </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="EndDate">
-                    <mat-header-cell *matHeaderCellDef> End Date </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef>
+                      End Date
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let item">
-                      {{item.endDate.seconds * 1000 | date}} </mat-cell>
+                      {{ item.endDate.seconds * 1000 | date }}
+                    </mat-cell>
                   </ng-container>
-                  <mat-header-row *matHeaderRowDef="['Plan', 'StartDate','EndDate']"></mat-header-row>
-                  <mat-row class="trHover" (click)="addEditPlan(item.Key)" *matRowDef="let item; columns: ['Plan', 'StartDate','EndDate'];"></mat-row>
+                  <mat-header-row
+                    *matHeaderRowDef="['Plan', 'StartDate', 'EndDate']"
+                  ></mat-header-row>
+                  <mat-row
+                    class="trHover"
+                    (click)="addEditPlan(item.Key)"
+                    *matRowDef="
+                      let item;
+                      columns: ['Plan', 'StartDate', 'EndDate']
+                    "
+                  ></mat-row>
                 </mat-table>
               </div>
             </tb-card>
@@ -89,105 +133,178 @@
               <div class="content ">
                 <mat-table class="bglightgray" #table [dataSource]="memberKeys">
                   <ng-container matColumnDef="keySerial">
-                    <mat-header-cell *matHeaderCellDef> Key Serial </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef>
+                      Key Serial
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let item">
-                      <button *ngIf="item.status == 'Inactive'" mat-icon-button color="primary" title="Reactivate Key"
-                        (click)="setKeyStatus(item, 'Active')">
+                      <button
+                        *ngIf="item.status == 'Inactive'"
+                        mat-icon-button
+                        color="primary"
+                        title="Reactivate Key"
+                        (click)="setKeyStatus(item, 'Active')"
+                      >
                         <mat-icon>refresh</mat-icon>
                       </button>
-                      <button *ngIf="item.status == 'Active'" mat-icon-button color="warn" title="Deactivate Key"
-                        (click)="setKeyStatus(item, 'Inactive')">
+                      <button
+                        *ngIf="item.status == 'Active'"
+                        mat-icon-button
+                        color="warn"
+                        title="Deactivate Key"
+                        (click)="setKeyStatus(item, 'Inactive')"
+                      >
                         <mat-icon>cancel</mat-icon>
-                      </button> {{item.keySerial}} </mat-cell>
+                      </button>
+                      {{ item.keySerial }}
+                    </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="status">
-                    <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef>
+                      Status
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let item">
-                      {{item.status}} </mat-cell>
+                      {{ item.status }}
+                    </mat-cell>
                   </ng-container>
-                  <mat-header-row *matHeaderRowDef="['keySerial', 'status']"></mat-header-row>
-                  <mat-row class="trHover" *matRowDef="let item; columns: ['keySerial', 'status'];"></mat-row>
+                  <mat-header-row
+                    *matHeaderRowDef="['keySerial', 'status']"
+                  ></mat-header-row>
+                  <mat-row
+                    class="trHover"
+                    *matRowDef="let item; columns: ['keySerial', 'status']"
+                  ></mat-row>
                 </mat-table>
               </div>
             </tb-card>
           </div>
           <div style="padding:2px;">
-            <tb-card [LowElevation]="true" (addClick)=" addEditTransaction('New') ">
+            <tb-card
+              [LowElevation]="true"
+              (addClick)="addEditTransaction('New')"
+            >
               <div class="headerText ">Payment History</div>
-              <div class="subheaderText ">Balance:{{memberBalance}}</div>
+              <div class="subheaderText ">Balance:{{ memberBalance }}</div>
               <div class="content ">
-                <mat-table class="bglightgray" #table [dataSource]="memberTransactions">
+                <mat-table
+                  class="bglightgray"
+                  #table
+                  [dataSource]="memberTransactions"
+                >
                   <ng-container matColumnDef="transactionDate">
                     <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
                     <mat-cell *matCellDef="let item">
-                      <button mat-icon-button color="primary" title="Edit Transaction" (click)="addEditTransaction(item.Key)">
+                      <button
+                        mat-icon-button
+                        color="primary"
+                        title="Edit Transaction"
+                        (click)="addEditTransaction(item.Key)"
+                      >
                         <mat-icon>mode_edit</mat-icon>
-
                       </button>
-                      {{item.date.seconds * 1000 | date}}
+                      {{ item.date.seconds * 1000 | date }}
                     </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="amount">
-                    <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef>
+                      Amount
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let item">
-                      {{item.amount}}
+                      {{ item.amount }}
                     </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="description">
-                    <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef>
+                      Description
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let item">
-                      {{item.description}}
+                      {{ item.description }}
                     </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="method">
-                    <mat-header-cell *matHeaderCellDef> Method </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef>
+                      Method
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let item">
-                      {{item.method}}
+                      {{ item.method }}
                     </mat-cell>
                   </ng-container>
-                  <mat-header-row *matHeaderRowDef="['transactionDate','amount','description','method']"></mat-header-row>
-                  <mat-row class="trHover" *matRowDef="let item; columns: ['transactionDate','amount','description','method'];"></mat-row>
+                  <mat-header-row
+                    *matHeaderRowDef="[
+                      'transactionDate',
+                      'amount',
+                      'description',
+                      'method'
+                    ]"
+                  ></mat-header-row>
+                  <mat-row
+                    class="trHover"
+                    *matRowDef="
+                      let item;
+                      columns: [
+                        'transactionDate',
+                        'amount',
+                        'description',
+                        'method'
+                      ]
+                    "
+                  ></mat-row>
                 </mat-table>
               </div>
             </tb-card>
           </div>
         </div>
-        <!--Left Content-->
-        <!-- Right Side nav-->
+        <!-- Left Content -->
+        <!-- Right Side nav -->
         <div fxflex="20" style="padding:10px;max-width:250px;">
           <mat-card>
             <div style="text-align: center;">
-              QR Code Here
-              <img matCardImage style="width:100%" src="{{memberPicture}}">
+              <img [src]="qrCode" title="Member QR Code" />
+              <img matCardImage style="width:100%" src="{{memberPicture}}" />
             </div>
             <div style="margin-left:auto;margin-right:auto; ">
               <div fxLayout="row">
-                <input mat-raised-button type="file" accept='.png, .jpg, .jpeg' #fileInput (change)="uploadMemberImage(fileInput.files[0])" />
+                <input
+                  mat-raised-button
+                  type="file"
+                  accept=".png, .jpg, .jpeg"
+                  #fileInput
+                  (change)="uploadMemberImage(fileInput.files[0])"
+                />
               </div>
               <div>
-                <mat-progress-bar *ngIf="uploadService.loading | async" [value]="uploadService.progress | async"></mat-progress-bar>
+                <mat-progress-bar
+                  *ngIf="(uploadService.loading | async)"
+                  [value]="uploadService.progress | async"
+                ></mat-progress-bar>
               </div>
             </div>
             <mat-card-content>
               <mat-form-field style="width:100%">
                 <mat-select formControlName="role" placeholder="Role">
-                  <mat-option *ngFor="let memberType of memberTypes" [value]="memberType">
-                    {{memberType}}
+                  <mat-option
+                    *ngFor="let memberType of memberTypes"
+                    [value]="memberType"
+                  >
+                    {{ memberType }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
               <mat-form-field style="width:100%">
-                <input formControlName="password" type="password" autocomplete="new-password" matInput placeholder="Password ">
+                <input
+                  formControlName="password"
+                  type="password"
+                  autocomplete="new-password"
+                  matInput
+                  placeholder="Password "
+                />
               </mat-form-field>
             </mat-card-content>
-            <mat-card-footer>
-
-            </mat-card-footer>
+            <mat-card-footer> </mat-card-footer>
           </mat-card>
-        </div><!-- Right Side nav-->
+        </div>
+        <!-- Right Side nav -->
       </div>
-      <!--Main Content-->
-
+      <!-- Main Content -->
     </form>
   </div>
 </tb-card>

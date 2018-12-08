@@ -12,6 +12,8 @@ import { AddKeyComponent } from '../add-key/add-key.component';
 import { AddTransactionComponent } from '../add-transaction/add-transaction.component';
 import { UploadFileService } from '../../services/upload-service.service';
 
+import * as qr from 'qrcode-generator';
+
 @Component({
   selector: 'app-member',
   templateUrl: './member.component.html',
@@ -35,6 +37,7 @@ export class MemberComponent implements OnInit {
   memberPicture = '';
   @ViewChild('fileInput')
   filecontrol: ElementRef[];
+  qrCode = '';
 
   memberBalance = '';
 
@@ -64,7 +67,9 @@ export class MemberComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.form.controls['Key'].setValue(params.Key);
       this.Key = params.Key;
+
       if (this.form.controls['Key'].value !== 'New') {
+        this.makeQRCode();
         this.loadValuesIfExisting(this.form.controls['Key'].value);
         this.form.valueChanges.subscribe(() => {
           this.headerText =
@@ -100,6 +105,13 @@ export class MemberComponent implements OnInit {
         this.headerText = 'New Member';
       }
     });
+  }
+
+  makeQRCode() {
+    const qrcode = qr(4, 'M');
+    qrcode.addData(this.Key);
+    qrcode.make();
+    this.qrCode = qrcode.createDataURL(3, 0);
   }
 
   uploadMemberImage(file) {
