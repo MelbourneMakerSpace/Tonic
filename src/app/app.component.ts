@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
 
   testgmail() {
     this.email.sendGmail(
-      'ockkqiuj@sharklasers.com',
+      'cjlkegvm@sharklasers.com',
       'noreply@tonic.com',
       'test subject',
       'test e-mail through service'

@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { finalize } from 'rxjs/operators';
 
 @Injectable()
 export class UploadFileService {
@@ -24,14 +25,22 @@ export class UploadFileService {
     this.loading.next(true);
     const task = this.afs.ref('MemberImages/' + MemberId).put(file);
     this.progress = task.percentageChanges();
-    task
-      .then(data => {
-        this.result.next(data);
-        this.loading.next(false);
-        this.progress = new BehaviorSubject(0);
-      })
-      .catch(err => console.log(err));
-    task.then(url => this.updateUserRecord(url.downloadURL, MemberId));
+    task.then(data => {
+      if (data.bytesTransferred === data.totalBytes) {
+        console.log(data);
+        const fileRef = this.afs
+          .ref(data.metadata.fullPath)
+          .getDownloadURL()
+          .toPromise()
+          .then(downloadUrl => {
+            console.log(downloadUrl);
+            this.result.next(data);
+            this.loading.next(false);
+            this.progress = new BehaviorSubject(0);
+            this.updateUserRecord(downloadUrl, MemberId);
+          });
+      }
+    });
   }
 
   private updateUserRecord(url: string, MemberId: string) {

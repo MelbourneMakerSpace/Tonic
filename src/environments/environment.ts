@@ -15,5 +15,7 @@ export const environment = {
   },
   firebaseFunctionURL: 'http://localhost:5000/makertonic321/us-central1/',
   firebaseFunctionURLProd:
-    'https://us-central1-makertonic321.cloudfunctions.net/'
+    'https://us-central1-makertonic321.cloudfunctions.net/',
+  SiteURL: 'http://localhost:4200',
+  AdminEmail: 'cjlkegvm@sharklasers.com'
 };

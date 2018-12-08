@@ -5,10 +5,18 @@ import { take, map } from 'rxjs/operators';
 import { DocumentReference } from '@firebase/firestore-types';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { GmailService } from './email/gmail.service';
+import { FirebaseAuthService } from './security/firebase-auth.service';
+import { FirebaseAuth, User } from '@firebase/auth-types';
 
 @Injectable()
 export class MemberService {
-  constructor(private db: AngularFirestore, private http: HttpClient) {}
+  constructor(
+    private db: AngularFirestore,
+    private http: HttpClient,
+    private gmail: GmailService,
+    private auth: FirebaseAuthService
+  ) {}
 
   getMemberList(): Observable<any> {
     return this.db
@@ -113,9 +121,42 @@ export class MemberService {
 
     console.dir(member);
     if (key === 'New') {
-      return this.db.collection('Members').add(member);
+      return this.db
+        .collection('Members')
+        .add(member)
+        .then(result => {
+          result.get().then(snapshot => {
+            this.sendNotificationOfNewMember(member, snapshot.ref.id);
+          });
+        });
     } else {
       return this.db.doc<Member>('Members/' + key).update(member);
     }
+  }
+
+  async sendNotificationOfNewMember(member: Member, id: string) {
+    let loggedInUser;
+
+    const user = await this.auth.user$
+      .pipe(take(1))
+      .toPromise()
+      .then((usr: User) => {
+        loggedInUser = usr.displayName;
+      });
+
+    const subject = `${member.FirstName} ${
+      member.LastName
+    } has joined Melbourne Makerspace!`;
+    const content = `View member at <a href="${
+      environment.SiteURL
+    }/member/${id}">Tonic</a><br>Entered by ${loggedInUser}`;
+
+    this.gmail.sendGmail(
+      environment.AdminEmail,
+      environment.AdminEmail,
+      subject,
+      content,
+      true
+    );
   }
 }
