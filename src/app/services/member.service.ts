@@ -147,7 +147,9 @@ export class MemberService {
     const subject = `${member.FirstName} ${
       member.LastName
     } has joined Melbourne Makerspace!`;
-    const content = `View member at <a href="${
+    const content = `
+    ${member.FirstName} ${member.LastName}&lt;${member.email}&gt;<br>
+    View member at <a href="${
       environment.SiteURL
     }/member/${id}">Tonic</a><br>Entered by ${loggedInUser}`;
 

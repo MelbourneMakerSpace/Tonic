@@ -18,7 +18,8 @@ export class GmailService {
       to: to,
       from: from,
       subject: subject,
-      content: body
+      content: body,
+      isHTML: isHTML
     };
 
     return this.http.post(url, JSON.stringify(envelope)).subscribe(

@@ -1,7 +1,7 @@
-import * as functions from 'firebase-functions';
-import * as sendgrid from 'sendgrid';
+import * as functions from "firebase-functions";
+import * as sendgrid from "sendgrid";
 
-const nodemailer = require('nodemailer');
+const nodemailer = require("nodemailer");
 
 // gmail note:
 // Set the gmail.emamail and gmail.password Google Cloud environment variables to match the email and password
@@ -30,34 +30,39 @@ exports.gmailEmail = functions.https.onRequest((req, res) => {
       const gmailEmail = functions.config().gmail.email;
       const gmailPassword = functions.config().gmail.password;
 
-      console.log('gmail user;', gmailEmail);
+      console.log("gmail user;", gmailEmail);
       console.log(gmailPassword);
 
       const mailTransport = nodemailer.createTransport({
-        service: 'gmail',
+        service: "gmail",
         auth: {
           user: gmailEmail,
           pass: gmailPassword
         }
       });
-      console.log('sending...');
+      console.log("sending...");
 
       const mailOptions = {
         from: `${mailProperties.from} <noreply@firebase.com>`,
         to: mailProperties.to,
-        subject: mailProperties.subject,
-        text: mailProperties.content
+        subject: mailProperties.subject
       };
+
+      if (mailProperties.isHTML) {
+        mailOptions["html"] = mailProperties.content;
+      } else {
+        mailOptions["text"] = mailProperties.content;
+      }
 
       console.dir(mailOptions);
 
       const response = mailTransport.sendMail(mailOptions).then(result => {
         console.log(result);
-        console.log('sent successfully!!');
+        console.log("sent successfully!!");
       });
 
-      console.log('done');
-      res.send('done');
+      console.log("done");
+      res.send("done");
     })
     .then(response => {
       return response;
