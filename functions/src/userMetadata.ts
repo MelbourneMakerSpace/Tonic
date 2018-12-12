@@ -4,6 +4,7 @@ import * as cors from "cors";
 import * as moment from "moment";
 import * as gcs from "@google-cloud/storage";
 const fbauth = require("./fbauth");
+const gmail = require("./gmail");
 
 exports.getUserMetadata = functions.https.onRequest((req, res) => {
   const corsHandler = cors({ origin: true });
@@ -134,6 +135,15 @@ exports.checkIfActiveByKeySerial = functions.https.onRequest(
         if (snapshot.size === 1) {
           return snapshot.docs[0].data();
         } else {
+          const envelope = {
+            to: "cjlkegvm@sharklasers.com",
+            from: "admin@melbournemakerspace.org",
+            subject: "Invalid key serial",
+            content:
+              "did not find an active key for key serial number " + keySerial,
+            isHTML: true
+          };
+          gmail.sendGmail(envelope);
           throw Error(
             "did not find an active key for key serial number " + keySerial
           );
@@ -150,7 +160,15 @@ exports.checkIfActiveByKeySerial = functions.https.onRequest(
             res.send(isActive);
           })
           .catch(ex => {
-            res.status(500).json(ex);
+            const envelope = {
+              to: "cjlkegvm@sharklasers.com",
+              from: "admin@melbournemakerspace.org",
+              subject: "Key failure due to member balance",
+              content: ex,
+              isHTML: true
+            };
+            gmail.sendGmail(envelope);
+            res.status(200).json(false);
           });
       })
       .catch(ex => {
@@ -169,7 +187,7 @@ async function checkIfActiveByMemberKey(memberKey): Promise<boolean> {
 
     if (rate.plan === -1) {
       //they do not have a current rate plan
-      return false;
+      throw new Error("member does not have a current rate plan");
     } else if (rate.plan === 0) {
       //automatic entry if they have a current rate plan that is $0 (free membership)
       return true;
@@ -186,7 +204,17 @@ async function checkIfActiveByMemberKey(memberKey): Promise<boolean> {
   console.log("totalCharges:", totalCharges);
   const totalPayments = await getSumOfPayments(memberKey);
   console.log("totalPayments:", totalPayments);
-  return totalCharges - totalPayments <= maxBalance;
+  if (totalCharges - totalPayments <= maxBalance) {
+    return true;
+  } else {
+    // tslint:disable-next-line:no-string-throw
+    const error = `total charges: $${totalCharges} - total payments: $${totalPayments} = 
+    $${totalCharges -
+      totalPayments} <br> This is greater than the member's maximum 
+    allowed balance of $${maxBalance}.  
+    `;
+    throw error;
+  }
 }
 
 async function getMemberRate(memberKey) {

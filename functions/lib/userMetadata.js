@@ -12,6 +12,7 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const cors = require("cors");
 const fbauth = require("./fbauth");
+const gmail = require("./gmail");
 exports.getUserMetadata = functions.https.onRequest((req, res) => {
     const corsHandler = cors({ origin: true });
     corsHandler(req, res, () => __awaiter(this, void 0, void 0, function* () {
@@ -123,6 +124,14 @@ exports.checkIfActiveByKeySerial = functions.https.onRequest((req, res) => __awa
             return snapshot.docs[0].data();
         }
         else {
+            const envelope = {
+                to: "cjlkegvm@sharklasers.com",
+                from: "admin@melbournemakerspace.org",
+                subject: "Invalid key serial",
+                content: "did not find an active key for key serial number " + keySerial,
+                isHTML: true
+            };
+            gmail.sendGmail(envelope);
             throw Error("did not find an active key for key serial number " + keySerial);
         }
     })
@@ -136,7 +145,15 @@ exports.checkIfActiveByKeySerial = functions.https.onRequest((req, res) => __awa
             res.send(isActive);
         })
             .catch(ex => {
-            res.status(500).json(ex);
+            const envelope = {
+                to: "cjlkegvm@sharklasers.com",
+                from: "admin@melbournemakerspace.org",
+                subject: "Key failure due to member balance",
+                content: ex,
+                isHTML: true
+            };
+            gmail.sendGmail(envelope);
+            res.status(200).json(false);
         });
     })
         .catch(ex => {
@@ -152,7 +169,7 @@ function checkIfActiveByMemberKey(memberKey) {
             const rate = yield getMemberRate(memberKey);
             if (rate.plan === -1) {
                 //they do not have a current rate plan
-                return false;
+                throw new Error("member does not have a current rate plan");
             }
             else if (rate.plan === 0) {
                 //automatic entry if they have a current rate plan that is $0 (free membership)
@@ -170,7 +187,18 @@ function checkIfActiveByMemberKey(memberKey) {
         console.log("totalCharges:", totalCharges);
         const totalPayments = yield getSumOfPayments(memberKey);
         console.log("totalPayments:", totalPayments);
-        return totalCharges - totalPayments <= maxBalance;
+        if (totalCharges - totalPayments <= maxBalance) {
+            return true;
+        }
+        else {
+            // tslint:disable-next-line:no-string-throw
+            const error = `total charges: $${totalCharges} - total payments: $${totalPayments} = 
+    $${totalCharges -
+                totalPayments} <br> This is greater than the member's maximum 
+    allowed balance of $${maxBalance}.  
+    `;
+            throw error;
+        }
     });
 }
 function getMemberRate(memberKey) {

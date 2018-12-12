@@ -21,45 +21,7 @@ exports.gmailEmail = functions.https.onRequest((req, res) => {
       const mailProperties = JSON.parse(req.body);
       console.dir(mailProperties);
 
-      // Configure the email transport using the default SMTP transport and a GMail account.
-      // For Gmail, enable these:
-      // 1. https://www.google.com/settings/security/lesssecureapps
-      // 2. https://accounts.google.com/DisplayUnlockCaptcha
-      // For other types of transports such as Sendgrid see https://nodemailer.com/transports/
-      // TODO: Configure the `gmail.email` and `gmail.password` Google Cloud environment variables.
-      const gmailEmail = functions.config().gmail.email;
-      const gmailPassword = functions.config().gmail.password;
-
-      console.log("gmail user;", gmailEmail);
-      console.log(gmailPassword);
-
-      const mailTransport = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: gmailEmail,
-          pass: gmailPassword
-        }
-      });
-      console.log("sending...");
-
-      const mailOptions = {
-        from: `${mailProperties.from} <noreply@firebase.com>`,
-        to: mailProperties.to,
-        subject: mailProperties.subject
-      };
-
-      if (mailProperties.isHTML) {
-        mailOptions["html"] = mailProperties.content;
-      } else {
-        mailOptions["text"] = mailProperties.content;
-      }
-
-      console.dir(mailOptions);
-
-      const response = mailTransport.sendMail(mailOptions).then(result => {
-        console.log(result);
-        console.log("sent successfully!!");
-      });
+      const response = sendGmail(mailProperties);
 
       console.log("done");
       res.send("done");
@@ -72,3 +34,51 @@ exports.gmailEmail = functions.https.onRequest((req, res) => {
       return Promise.reject(err);
     });
 });
+
+export function sendGmail(envelope) {
+  // Configure the email transport using the default SMTP transport and a GMail account.
+  // For Gmail, enable these:
+  // 1. https://www.google.com/settings/security/lesssecureapps
+  // 2. https://accounts.google.com/DisplayUnlockCaptcha
+  // For other types of transports such as Sendgrid see https://nodemailer.com/transports/
+  // TODO: Configure the `gmail.email` and `gmail.password` Google Cloud environment variables.
+
+  //expects the following envelope
+  // const envelope = {
+  //   to: to,
+  //   from: from,
+  //   subject: subject,
+  //   content: body,
+  //   isHTML: isHTML
+  // };
+
+  const mailOptions = {
+    from: `${envelope.from} <noreply@firebase.com>`,
+    to: envelope.to,
+    subject: envelope.subject
+  };
+
+  if (envelope.isHTML) {
+    mailOptions["html"] = envelope.content;
+  } else {
+    mailOptions["text"] = envelope.content;
+  }
+
+  const gmailEmail = functions.config().gmail.email;
+  const gmailPassword = functions.config().gmail.password;
+
+  const mailTransport = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: gmailEmail,
+      pass: gmailPassword
+    }
+  });
+  console.log("sending...");
+  console.dir(mailOptions);
+  const response = mailTransport.sendMail(mailOptions).then(result => {
+    console.log(result);
+    console.log("sent successfully!!");
+  });
+  return response;
+}
