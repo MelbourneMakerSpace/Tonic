@@ -73,6 +73,13 @@ firebase functions:config:set gmail.email="YourEmailAddress"
 firebase functions:config:set gmail.password="YourAPIKey"
 ```
 
+Execute this to set up a various required variables
+
+```
+firebase functions:config:set settings.admin_email="YourEmailAddress"
+firebase functions:config:set settings.from_email="YourEmailAddress"
+```
+
 **Testing Firebase Functions Locally**
 
 In a shell, navigate to your functions directory. Use the commands below to get a copy of your current firebase variables and execute the shell. Then you can call a shell command from an API or from the shell itself

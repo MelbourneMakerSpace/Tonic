@@ -64,6 +64,9 @@ export function sendGmail(envelope) {
     mailOptions["text"] = envelope.content;
   }
 
+  console.log("envelope:");
+  console.dir(envelope);
+
   const gmailEmail = functions.config().gmail.email;
   const gmailPassword = functions.config().gmail.password;
 

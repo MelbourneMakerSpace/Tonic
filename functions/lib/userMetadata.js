@@ -125,8 +125,8 @@ exports.checkIfActiveByKeySerial = functions.https.onRequest((req, res) => __awa
         }
         else {
             const envelope = {
-                to: "cjlkegvm@sharklasers.com",
-                from: "admin@melbournemakerspace.org",
+                to: functions.config().settings.admin_email,
+                from: functions.config().settings.from_email,
                 subject: "Invalid key serial",
                 content: "did not find an active key for key serial number " + keySerial,
                 isHTML: true
@@ -146,8 +146,8 @@ exports.checkIfActiveByKeySerial = functions.https.onRequest((req, res) => __awa
         })
             .catch(ex => {
             const envelope = {
-                to: "cjlkegvm@sharklasers.com",
-                from: "admin@melbournemakerspace.org",
+                to: functions.config().settings.admin_email,
+                from: functions.config().settings.from_email,
                 subject: "Key failure due to member balance",
                 content: ex,
                 isHTML: true
@@ -195,8 +195,7 @@ function checkIfActiveByMemberKey(memberKey) {
             const error = `total charges: $${totalCharges} - total payments: $${totalPayments} = 
     $${totalCharges -
                 totalPayments} <br> This is greater than the member's maximum 
-    allowed balance of $${maxBalance}.  
-    `;
+    allowed balance of $${maxBalance}.`;
             throw error;
         }
     });
