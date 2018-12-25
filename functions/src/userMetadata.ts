@@ -5,6 +5,7 @@ import * as moment from "moment";
 import * as gcs from "@google-cloud/storage";
 const fbauth = require("./fbauth");
 const gmail = require("./gmail");
+const logging = require("./logging");
 
 exports.getUserMetadata = functions.https.onRequest((req, res) => {
   const corsHandler = cors({ origin: true });
@@ -77,16 +78,35 @@ async function getSumOfPayments(memberKey: string): Promise<number> {
 exports.getBalance = functions.https.onRequest(async (req, res) => {
   const corsHandler = cors({ origin: true });
   const memberKey = req.query.memberKey;
-  let charges: number = 0;
 
   const result1 = await corsHandler(req, res, async () => {
-    charges = await getSumOfCharges(memberKey);
-
-    const balance = charges - (await getSumOfPayments(memberKey));
-    res.send(balance.toString());
+    res.send(await getMemberBalance(memberKey));
   });
-  //res.send(balance.toString());
 });
+
+export async function getMemberBalance(memberKey) {
+  let charges: number = 0;
+  charges = await getSumOfCharges(memberKey);
+
+  const balance = charges - (await getSumOfPayments(memberKey));
+  updateMemberBalanceDetails(memberKey, balance);
+  return balance.toString();
+}
+
+async function updateMemberBalanceDetails(memberKey, balance) {
+  const rate = await getMemberRate(memberKey);
+  const balanceUpToDate = balance <= rate.plan * 2;
+
+  admin
+    .firestore()
+    .doc("Members/" + memberKey)
+    .update({
+      balance: balance,
+      balanceUpdated: Date.now(),
+      balanceMaxAllowed: rate.plan * 2,
+      balanceUpToDate: balanceUpToDate
+    });
+}
 
 async function getSumOfCharges(memberKey) {
   let charges = 0;
@@ -143,6 +163,10 @@ exports.checkIfActiveByKeySerial = functions.https.onRequest(
               "did not find an active key for key serial number " + keySerial,
             isHTML: true
           };
+          logging.logKeyAccess(
+            keySerial,
+            "did not find an active key for key serial number " + keySerial
+          );
           gmail.sendGmail(envelope);
           throw Error(
             "did not find an active key for key serial number " + keySerial
@@ -157,6 +181,7 @@ exports.checkIfActiveByKeySerial = functions.https.onRequest(
       .then(key => {
         checkIfActiveByMemberKey(key["memberKey"])
           .then(isActive => {
+            logging.logKeyAccess(keySerial, "Success");
             res.send(isActive);
           })
           .catch(ex => {
@@ -167,13 +192,14 @@ exports.checkIfActiveByKeySerial = functions.https.onRequest(
               content: ex,
               isHTML: true
             };
+            logging.logKeyAccess(keySerial, ex);
             gmail.sendGmail(envelope);
             res.status(200).json(false);
           });
       })
       .catch(ex => {
         console.error("ex:" + ex);
-        res.status(500).json(false);
+        res.status(200).json(false);
       });
   }
 );
