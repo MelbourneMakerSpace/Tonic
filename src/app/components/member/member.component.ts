@@ -36,7 +36,7 @@ export class MemberComponent implements OnInit {
   memberTypes = ["Officer", "Member", "Disabled"];
   openPlan = false;
   memberPicture = "";
-  @ViewChild("fileInput", { static: false }) fileInput;
+  @ViewChild("fileInput") fileInput;
   filecontrol: ElementRef[];
   qrCode = "";
 
