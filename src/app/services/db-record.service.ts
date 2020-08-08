@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
-import { take, map } from 'rxjs/operators';
-import { DocumentReference } from '@firebase/firestore-types';
+import { Injectable } from "@angular/core";
+import { AngularFirestore } from "@angular/fire/firestore";
+import { Observable } from "rxjs";
+import { take, map } from "rxjs/operators";
+import { DocumentReference } from "@firebase/firestore-types";
+import { KeyedRecord } from "../models/keyedRecord";
 @Injectable()
 export class DbRecordService {
   constructor(private db: AngularFirestore) {}
@@ -11,10 +12,10 @@ export class DbRecordService {
     const key = record.Key;
     delete record.Key;
 
-    if (key === 'New') {
+    if (key === "New") {
       return this.db.collection(collectionName).add(record);
     } else {
-      return this.db.doc(collectionName + '/' + key).update(record);
+      return this.db.doc(collectionName + "/" + key).update(record);
     }
   }
 
@@ -24,14 +25,14 @@ export class DbRecordService {
     FilterValue
   ): Observable<any> {
     return this.db
-      .collection(collectionName, ref =>
-        ref.where(FilterField, '==', FilterValue)
+      .collection(collectionName, (ref) =>
+        ref.where(FilterField, "==", FilterValue)
       )
       .snapshotChanges()
       .pipe(
-        map(data => {
-          return data.map(record => {
-            const payload = record.payload.doc.data();
+        map((data) => {
+          return data.map((record) => {
+            const payload: any = record.payload.doc.data();
             const Key = record.payload.doc.id;
             return { Key, ...payload };
           });
@@ -44,9 +45,9 @@ export class DbRecordService {
       .collection(collectionName)
       .snapshotChanges()
       .pipe(
-        map(data => {
-          return data.map(record => {
-            const payload = record.payload.doc.data();
+        map((data) => {
+          return data.map((record) => {
+            const payload: any = record.payload.doc.data();
             const Key = record.payload.doc.id;
             return { Key, ...payload };
           });
@@ -56,11 +57,11 @@ export class DbRecordService {
 
   getRecord<T extends KeyedRecord>(Key, collectionName): Observable<T> {
     return this.db
-      .doc(collectionName + '/' + Key)
+      .doc(collectionName + "/" + Key)
       .snapshotChanges()
       .pipe(
-        map(record => {
-          const payload = record.payload.data();
+        map((record) => {
+          const payload: any = record.payload.data();
           // tslint:disable-next-line:no-shadowed-variable
           const Key = record.payload.id;
           return <T>{ Key, ...payload };

@@ -1,4 +1,4 @@
-class MemberKey {
+export class MemberKey {
   Key: string;
   keySerial: string;
   status: string;

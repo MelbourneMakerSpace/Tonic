@@ -1,4 +1,6 @@
-class Member extends KeyedRecord {
+import { KeyedRecord } from "./keyedRecord";
+
+export class Member extends KeyedRecord {
   FirstName: string;
   LastName: string;
   email: string;

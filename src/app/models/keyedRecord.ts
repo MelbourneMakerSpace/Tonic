@@ -1,3 +1,3 @@
-class KeyedRecord {
+export class KeyedRecord {
   Key: string;
 }

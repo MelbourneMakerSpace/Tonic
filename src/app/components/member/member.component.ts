@@ -14,6 +14,9 @@ import { AddTransactionComponent } from "../add-transaction/add-transaction.comp
 import { UploadFileService } from "../../services/upload-service.service";
 
 import * as qr from "qrcode-generator";
+import { MemberPlan } from "../../models/memberPlan";
+import { MemberKey } from "../../models/memberKey";
+import { Transaction } from "@google-cloud/firestore";
 
 @Component({
   selector: "app-member",

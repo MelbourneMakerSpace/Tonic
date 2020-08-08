@@ -1,13 +1,15 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
-import { take, map } from 'rxjs/operators';
-import { DocumentReference } from '@firebase/firestore-types';
-import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { GmailService } from './email/gmail.service';
-import { FirebaseAuthService } from './security/firebase-auth.service';
-import { FirebaseAuth, User } from '@firebase/auth-types';
+import { Injectable } from "@angular/core";
+import { AngularFirestore } from "@angular/fire/firestore";
+import { Observable } from "rxjs";
+import { take, map } from "rxjs/operators";
+import { DocumentReference } from "@firebase/firestore-types";
+import { environment } from "../../environments/environment";
+import { HttpClient } from "@angular/common/http";
+import { GmailService } from "./email/gmail.service";
+import { FirebaseAuthService } from "./security/firebase-auth.service";
+import { FirebaseAuth, User } from "@firebase/auth-types";
+import { Member } from "../models/member";
+import { MemberPlan } from "../models/memberPlan";
 
 @Injectable()
 export class MemberService {
@@ -20,11 +22,11 @@ export class MemberService {
 
   getMemberList(): Observable<any> {
     return this.db
-      .collection<Member>('Members')
+      .collection<Member>("Members")
       .snapshotChanges()
       .pipe(
-        map(data => {
-          return data.map(record => {
+        map((data) => {
+          return data.map((record) => {
             const payload = record.payload.doc.data();
             const Key = record.payload.doc.id;
             return { Key, ...payload };
@@ -35,19 +37,19 @@ export class MemberService {
 
   getBalance(memberKey): Observable<number> {
     const url =
-      environment.firebaseFunctionURL + 'getBalance?memberKey=' + memberKey;
+      environment.firebaseFunctionURL + "getBalance?memberKey=" + memberKey;
     return this.http.get<number>(url);
   }
 
   getMemberPlans(memberKey): Observable<MemberPlan[]> {
     return this.db
-      .collection<MemberPlan>('MemberPlans', ref =>
-        ref.where('memberKey', '==', memberKey)
+      .collection<MemberPlan>("MemberPlans", (ref) =>
+        ref.where("memberKey", "==", memberKey)
       )
       .snapshotChanges()
       .pipe(
-        map(data => {
-          return data.map(record => {
+        map((data) => {
+          return data.map((record) => {
             const payload = record.payload.doc.data();
             console.dir(payload);
             const Key = record.payload.doc.id;
@@ -59,10 +61,10 @@ export class MemberService {
 
   getPlan(key): Observable<MemberPlan> {
     return this.db
-      .doc<MemberPlan>('MemberPlans/' + key)
+      .doc<MemberPlan>("MemberPlans/" + key)
       .snapshotChanges()
       .pipe(
-        map(record => {
+        map((record) => {
           const payload = record.payload.data();
           const Key = record.payload.id;
           return <MemberPlan>{ Key, ...payload };
@@ -71,26 +73,26 @@ export class MemberService {
   }
 
   savePlan(plan: MemberPlan): Promise<any> {
-    console.log('Save Key', plan.Key);
+    console.log("Save Key", plan.Key);
     const key = plan.Key;
     delete plan.Key;
-    if (key === 'New') {
-      return this.db.collection('MemberPlans').add(plan);
+    if (key === "New") {
+      return this.db.collection("MemberPlans").add(plan);
     } else {
-      return this.db.doc<MemberPlan>('MemberPlans/' + key).update(plan);
+      return this.db.doc<MemberPlan>("MemberPlans/" + key).update(plan);
     }
   }
 
   // gets a filtered list, but is case sensative
   getFilteredMemberList(filter: string): Observable<any> {
     return this.db
-      .collection<Member>('Members', ref =>
-        ref.where('FirstName', '>=', filter)
+      .collection<Member>("Members", (ref) =>
+        ref.where("FirstName", ">=", filter)
       )
       .snapshotChanges()
       .pipe(
-        map(data => {
-          return data.map(record => {
+        map((data) => {
+          return data.map((record) => {
             const payload = record.payload.doc.data();
             const Key = record.payload.doc.id;
             return { Key, ...payload };
@@ -100,12 +102,12 @@ export class MemberService {
   }
 
   getMember(Key): Observable<any> {
-    console.log('getting: ', `Members/${Key}`);
+    console.log("getting: ", `Members/${Key}`);
     return this.db
-      .doc<Member>('Members/' + Key)
+      .doc<Member>("Members/" + Key)
       .snapshotChanges()
       .pipe(
-        map(record => {
+        map((record) => {
           const payload = record.payload.data();
           // tslint:disable-next-line:no-shadowed-variable
           const Key = record.payload.id;
@@ -115,22 +117,22 @@ export class MemberService {
   }
 
   saveMember(member: Member): Promise<any> {
-    console.log('Save Key', member.Key);
+    console.log("Save Key", member.Key);
     const key = member.Key;
     delete member.Key;
 
     console.dir(member);
-    if (key === 'New') {
+    if (key === "New") {
       return this.db
-        .collection('Members')
+        .collection("Members")
         .add(member)
-        .then(result => {
-          result.get().then(snapshot => {
+        .then((result) => {
+          result.get().then((snapshot) => {
             this.sendNotificationOfNewMember(member, snapshot.ref.id);
           });
         });
     } else {
-      return this.db.doc<Member>('Members/' + key).update(member);
+      return this.db.doc<Member>("Members/" + key).update(member);
     }
   }
 
@@ -144,14 +146,10 @@ export class MemberService {
         loggedInUser = usr.displayName;
       });
 
-    const subject = `${member.FirstName} ${
-      member.LastName
-    } has joined Melbourne Makerspace!`;
+    const subject = `${member.FirstName} ${member.LastName} has joined Melbourne Makerspace!`;
     const content = `
     ${member.FirstName} ${member.LastName}&lt;${member.email}&gt;<br>
-    View member at <a href="${
-      environment.SiteURL
-    }/member/${id}">Tonic</a><br>Entered by ${loggedInUser}`;
+    View member at <a href="${environment.SiteURL}/member/${id}">Tonic</a><br>Entered by ${loggedInUser}`;
 
     this.gmail.sendGmail(
       environment.AdminEmail,

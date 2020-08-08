@@ -1,4 +1,4 @@
-class MemberPlan {
+export class MemberPlan {
   Key: string;
   memberKey: string;
   plan: string;

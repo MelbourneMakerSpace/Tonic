@@ -1,4 +1,4 @@
-class Transaction {
+export class Transaction {
   Key: string;
   memberKey: string;
   date: Date;
