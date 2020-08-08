@@ -18,6 +18,8 @@ export class LoginComponent implements OnInit {
     private authService: FirebaseAuthService,
     private router: Router
   ) {
+    this.authService.logout();
+
     this.form = this.fb.group({
       email: ['', Validators.required],
       password: ['', Validators.required]
