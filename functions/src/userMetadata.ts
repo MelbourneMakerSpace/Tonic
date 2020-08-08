@@ -17,17 +17,17 @@ exports.getUserMetadata = functions.https.onRequest((req, res) => {
     return Promise.resolve()
       .then(async () => {
         const user = await lookupUser(uid)
-          .then(metadata => {
+          .then((metadata) => {
             return metadata;
           })
-          .catch(err => {
+          .catch((err) => {
             console.log(err);
             res.status(500).send(err);
           });
 
         res.status(200).send(user);
       })
-      .catch(err => {
+      .catch((err) => {
         res
           .status(500)
           .send(
@@ -49,10 +49,10 @@ exports.setMemberImage = functions.https.onRequest((req, res) => {
       .firestore()
       .doc("Members/" + req.body.MemberKey)
       .set({ picture: req.body.fileData }, { merge: true })
-      .then(result => {
+      .then((result) => {
         return res.status(200).send(JSON.stringify("OK"));
       })
-      .catch(err => {
+      .catch((err) => {
         return res.status(500).send(err);
       });
   });
@@ -66,8 +66,8 @@ async function getSumOfPayments(memberKey: string): Promise<number> {
     .collection("Transactions")
     .where("memberKey", "==", memberKey)
     .get()
-    .then(async snapshot => {
-      const test = await snapshot.forEach(record => {
+    .then(async (snapshot) => {
+      const test = await snapshot.forEach((record) => {
         sumOfPayments += Number(record.data().amount);
       });
     });
@@ -89,8 +89,9 @@ export async function getMemberBalance(memberKey) {
   charges = await getSumOfCharges(memberKey);
 
   const balance = charges - (await getSumOfPayments(memberKey));
-  updateMemberBalanceDetails(memberKey, balance);
-  return balance.toString();
+  updateMemberBalanceDetails(memberKey, balance).then((x) => {
+    return balance.toString();
+  });
 }
 
 async function updateMemberBalanceDetails(memberKey, balance) {
@@ -104,7 +105,7 @@ async function updateMemberBalanceDetails(memberKey, balance) {
       balance: balance,
       balanceUpdated: Date.now(),
       balanceMaxAllowed: rate.plan * 2,
-      balanceUpToDate: balanceUpToDate
+      balanceUpToDate: balanceUpToDate,
     });
 }
 
@@ -115,8 +116,8 @@ async function getSumOfCharges(memberKey) {
     .collection("MemberPlans")
     .where("memberKey", "==", memberKey)
     .get()
-    .then(async snapshot => {
-      const test = await snapshot.forEach(async plan => {
+    .then(async (snapshot) => {
+      const test = await snapshot.forEach(async (plan) => {
         const trackingDate = new Date(plan.data().startDate);
 
         const endDate = new Date(plan.data().endDate || Date.now());
@@ -151,7 +152,7 @@ exports.checkIfActiveByKeySerial = functions.https.onRequest(
       .where("status", "==", "Active")
       .limit(1)
       .get()
-      .then(snapshot => {
+      .then((snapshot) => {
         if (snapshot.size === 1) {
           return snapshot.docs[0].data();
         } else {
@@ -161,7 +162,7 @@ exports.checkIfActiveByKeySerial = functions.https.onRequest(
             subject: "Invalid key serial",
             content:
               "did not find an active key for key serial number " + keySerial,
-            isHTML: true
+            isHTML: true,
           };
           logging.logKeyAccess(
             keySerial,
@@ -173,31 +174,31 @@ exports.checkIfActiveByKeySerial = functions.https.onRequest(
           );
         }
       })
-      .catch(ex => {
+      .catch((ex) => {
         throw Error(ex);
       });
 
     keyData
-      .then(key => {
+      .then((key) => {
         checkIfActiveByMemberKey(key["memberKey"])
-          .then(isActive => {
+          .then((isActive) => {
             logging.logKeyAccess(keySerial, "Success");
             res.send(isActive);
           })
-          .catch(ex => {
+          .catch((ex) => {
             const envelope = {
               to: functions.config().settings.admin_email,
               from: functions.config().settings.from_email,
               subject: "Key failure due to member balance",
               content: ex,
-              isHTML: true
+              isHTML: true,
             };
             logging.logKeyAccess(keySerial, ex);
             gmail.sendGmail(envelope);
             res.status(200).json(false);
           });
       })
-      .catch(ex => {
+      .catch((ex) => {
         console.error("ex:" + ex);
         res.status(200).json(false);
       });
@@ -235,8 +236,9 @@ async function checkIfActiveByMemberKey(memberKey): Promise<boolean> {
   } else {
     // tslint:disable-next-line:no-string-throw
     const error = `total charges: $${totalCharges} - total payments: $${totalPayments} = 
-    $${totalCharges -
-      totalPayments} <br> This is greater than the member's maximum 
+    $${
+      totalCharges - totalPayments
+    } <br> This is greater than the member's maximum 
     allowed balance of $${maxBalance}.`;
     throw error;
   }
@@ -251,8 +253,8 @@ async function getMemberRate(memberKey) {
     .orderBy("endDate", "desc")
     .limit(1)
     .get()
-    .then(async snapshot => {
-      snapshot.forEach(async function(doc) {
+    .then(async (snapshot) => {
+      snapshot.forEach(async function (doc) {
         console.log("data:", JSON.stringify(doc.data()));
         rate = doc.data();
         //short circuit if endDate in the past
@@ -286,7 +288,7 @@ async function lookupUser(uid) {
     .collection("Users")
     .where("ProviderUserId", "==", uid)
     .get()
-    .then(snapshot => {
+    .then((snapshot) => {
       //   console.dir(snapshot);
       if (snapshot.size === 1) {
         //send the metadata object
@@ -294,14 +296,11 @@ async function lookupUser(uid) {
       } else {
         //create the metadata object
         const newMetaData = { ProviderUserId: uid, Role: "Pending" };
-        admin
-          .firestore()
-          .collection("Users")
-          .add(newMetaData);
+        admin.firestore().collection("Users").add(newMetaData);
         return newMetaData;
       }
     })
-    .catch(err => {
+    .catch((err) => {
       console.log("Error getting documents", err);
       throw err;
     });
