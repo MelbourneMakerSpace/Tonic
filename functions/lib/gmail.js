@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendGmail = void 0;
 const functions = require("firebase-functions");
 const nodemailer = require("nodemailer");
 // gmail note:

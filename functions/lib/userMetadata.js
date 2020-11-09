@@ -1,13 +1,15 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getMemberBalance = void 0;
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const cors = require("cors");
@@ -16,22 +18,22 @@ const gmail = require("./gmail");
 const logging = require("./logging");
 exports.getUserMetadata = functions.https.onRequest((req, res) => {
     const corsHandler = cors({ origin: true });
-    corsHandler(req, res, () => __awaiter(this, void 0, void 0, function* () {
+    corsHandler(req, res, () => __awaiter(void 0, void 0, void 0, function* () {
         const uid = yield fbauth.checkFirebaseToken(req, res);
         //console.log('userData:', uid);
         return Promise.resolve()
-            .then(() => __awaiter(this, void 0, void 0, function* () {
+            .then(() => __awaiter(void 0, void 0, void 0, function* () {
             const user = yield lookupUser(uid)
-                .then(metadata => {
+                .then((metadata) => {
                 return metadata;
             })
-                .catch(err => {
+                .catch((err) => {
                 console.log(err);
                 res.status(500).send(err);
             });
             res.status(200).send(user);
         }))
-            .catch(err => {
+            .catch((err) => {
             res
                 .status(500)
                 .send("there was an error processing the request " + JSON.stringify(err));
@@ -40,7 +42,7 @@ exports.getUserMetadata = functions.https.onRequest((req, res) => {
 });
 exports.setMemberImage = functions.https.onRequest((req, res) => {
     const corsHandler = cors({ origin: true });
-    corsHandler(req, res, () => __awaiter(this, void 0, void 0, function* () {
+    corsHandler(req, res, () => __awaiter(void 0, void 0, void 0, function* () {
         //const uid = await fbauth.checkFirebaseToken(req, res);
         //console.log('Member Key', req.body.MemberKey);
         //save to user record (< 1mb)
@@ -48,10 +50,10 @@ exports.setMemberImage = functions.https.onRequest((req, res) => {
             .firestore()
             .doc("Members/" + req.body.MemberKey)
             .set({ picture: req.body.fileData }, { merge: true })
-            .then(result => {
+            .then((result) => {
             return res.status(200).send(JSON.stringify("OK"));
         })
-            .catch(err => {
+            .catch((err) => {
             return res.status(500).send(err);
         });
     }));
@@ -65,17 +67,17 @@ function getSumOfPayments(memberKey) {
             .where("memberKey", "==", memberKey)
             .get()
             .then((snapshot) => __awaiter(this, void 0, void 0, function* () {
-            const test = yield snapshot.forEach(record => {
+            const test = yield snapshot.forEach((record) => {
                 sumOfPayments += Number(record.data().amount);
             });
         }));
         return sumOfPayments;
     });
 }
-exports.getBalance = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
+exports.getBalance = functions.https.onRequest((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const corsHandler = cors({ origin: true });
     const memberKey = req.query.memberKey;
-    const result1 = yield corsHandler(req, res, () => __awaiter(this, void 0, void 0, function* () {
+    const result1 = yield corsHandler(req, res, () => __awaiter(void 0, void 0, void 0, function* () {
         res.send(yield getMemberBalance(memberKey));
     }));
 }));
@@ -84,8 +86,9 @@ function getMemberBalance(memberKey) {
         let charges = 0;
         charges = yield getSumOfCharges(memberKey);
         const balance = charges - (yield getSumOfPayments(memberKey));
-        updateMemberBalanceDetails(memberKey, balance);
-        return balance.toString();
+        updateMemberBalanceDetails(memberKey, balance).then((x) => {
+            return balance.toString();
+        });
     });
 }
 exports.getMemberBalance = getMemberBalance;
@@ -100,7 +103,7 @@ function updateMemberBalanceDetails(memberKey, balance) {
             balance: balance,
             balanceUpdated: Date.now(),
             balanceMaxAllowed: rate.plan * 2,
-            balanceUpToDate: balanceUpToDate
+            balanceUpToDate: balanceUpToDate,
         });
     });
 }
@@ -131,7 +134,7 @@ function getSumOfCharges(memberKey) {
         return charges;
     });
 }
-exports.checkIfActiveByKeySerial = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
+exports.checkIfActiveByKeySerial = functions.https.onRequest((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const corsHandler = cors({ origin: true });
     const keySerial = req.query.keySerial;
     const keyData = admin
@@ -141,7 +144,7 @@ exports.checkIfActiveByKeySerial = functions.https.onRequest((req, res) => __awa
         .where("status", "==", "Active")
         .limit(1)
         .get()
-        .then(snapshot => {
+        .then((snapshot) => {
         if (snapshot.size === 1) {
             return snapshot.docs[0].data();
         }
@@ -151,37 +154,37 @@ exports.checkIfActiveByKeySerial = functions.https.onRequest((req, res) => __awa
                 from: functions.config().settings.from_email,
                 subject: "Invalid key serial",
                 content: "did not find an active key for key serial number " + keySerial,
-                isHTML: true
+                isHTML: true,
             };
             logging.logKeyAccess(keySerial, "did not find an active key for key serial number " + keySerial);
             gmail.sendGmail(envelope);
             throw Error("did not find an active key for key serial number " + keySerial);
         }
     })
-        .catch(ex => {
+        .catch((ex) => {
         throw Error(ex);
     });
     keyData
-        .then(key => {
+        .then((key) => {
         checkIfActiveByMemberKey(key["memberKey"])
-            .then(isActive => {
+            .then((isActive) => {
             logging.logKeyAccess(keySerial, "Success");
             res.send(isActive);
         })
-            .catch(ex => {
+            .catch((ex) => {
             const envelope = {
                 to: functions.config().settings.admin_email,
                 from: functions.config().settings.from_email,
                 subject: "Key failure due to member balance",
                 content: ex,
-                isHTML: true
+                isHTML: true,
             };
             logging.logKeyAccess(keySerial, ex);
             gmail.sendGmail(envelope);
             res.status(200).json(false);
         });
     })
-        .catch(ex => {
+        .catch((ex) => {
         console.error("ex:" + ex);
         res.status(200).json(false);
     });
@@ -218,8 +221,7 @@ function checkIfActiveByMemberKey(memberKey) {
         else {
             // tslint:disable-next-line:no-string-throw
             const error = `total charges: $${totalCharges} - total payments: $${totalPayments} = 
-    $${totalCharges -
-                totalPayments} <br> This is greater than the member's maximum 
+    $${totalCharges - totalPayments} <br> This is greater than the member's maximum 
     allowed balance of $${maxBalance}.`;
             throw error;
         }
@@ -253,10 +255,10 @@ function getMemberRate(memberKey) {
         return rate;
     });
 }
-exports.boilerplate = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
+exports.boilerplate = functions.https.onRequest((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const corsHandler = cors({ origin: true });
     const memberKey = req.query.memberKey;
-    const result1 = yield corsHandler(req, res, () => __awaiter(this, void 0, void 0, function* () {
+    const result1 = yield corsHandler(req, res, () => __awaiter(void 0, void 0, void 0, function* () {
         res.send("boilerplate");
     }));
     res.send("boilerplate");
@@ -271,7 +273,7 @@ function lookupUser(uid) {
             .collection("Users")
             .where("ProviderUserId", "==", uid)
             .get()
-            .then(snapshot => {
+            .then((snapshot) => {
             //   console.dir(snapshot);
             if (snapshot.size === 1) {
                 //send the metadata object
@@ -280,14 +282,11 @@ function lookupUser(uid) {
             else {
                 //create the metadata object
                 const newMetaData = { ProviderUserId: uid, Role: "Pending" };
-                admin
-                    .firestore()
-                    .collection("Users")
-                    .add(newMetaData);
+                admin.firestore().collection("Users").add(newMetaData);
                 return newMetaData;
             }
         })
-            .catch(err => {
+            .catch((err) => {
             console.log("Error getting documents", err);
             throw err;
         });
