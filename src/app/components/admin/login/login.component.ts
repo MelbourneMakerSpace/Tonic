@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { FirebaseAuthService } from "../../../services/security/firebase-auth.service";
 import { Router } from "@angular/router";
-import * as firebase from "firebase/app";
+import { AuthService } from "../../../services/security/auth.service";
+import { take } from "rxjs/operators";
 
 @Component({
   selector: "app-login",
@@ -15,10 +15,10 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private authService: FirebaseAuthService,
+    private auth: AuthService,
     private router: Router
   ) {
-    this.authService.logout();
+    //this.auth.logout();
 
     this.form = this.fb.group({
       email: ["", Validators.required],
@@ -28,21 +28,20 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {}
 
-  loginWithGoogle() {
-    this.authService.loginWithGoogle();
-  }
-
   login() {
-    //   const formValues = this.form.value;
-    //   this.authService
-    //     .login(formValues.email, formValues.password)
-    //     .then((user) => {
-    //       this.router.navigate(['memberlist']);
-    //       // this.router.navigate(['loggedIn']);
-    //       // console.dir(result);
-    //     })
-    //     .catch(error => {
-    //       this.loginError = error.message;
-    //     });
+    const formValues = this.form.value;
+
+    this.auth
+      .login(formValues.email, formValues.password)
+      .pipe(take(1))
+      .subscribe(
+        (result) => {
+          this.router.navigate(["memberlist"]);
+        },
+        (err) => {
+          console.log(err);
+          this.loginError = err.message;
+        }
+      );
   }
 }

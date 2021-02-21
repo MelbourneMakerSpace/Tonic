@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { FirebaseAuthService } from './services/security/firebase-auth.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../environments/environment';
-import { GmailService } from './services/email/gmail.service';
-import { User } from '@firebase/auth-types';
+import { Component, OnInit } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { environment } from "../environments/environment";
+import { GmailService } from "./services/email/gmail.service";
+import { User } from "@firebase/auth-types";
+import { AuthService } from "./services/security/auth.service";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['../sass/_variables.scss']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["../sass/_variables.scss"],
 })
 export class AppComponent implements OnInit {
   isLoggedIn = false;
@@ -17,46 +17,33 @@ export class AppComponent implements OnInit {
   photoURL: string;
 
   constructor(
-    private authService: FirebaseAuthService,
+    private authService: AuthService,
     private http: HttpClient,
     private email: GmailService
   ) {}
 
   logout() {
     // console.log('logging out the user...');
-    this.userRole = '';
-    this.authService.logout();
+    this.userRole = "";
+    //this.authService.logout();
   }
 
-  ngOnInit() {
-    this.authService.initAuthListener();
-    this.authService.isAuthenticated$.subscribe(isAuth => {
-      this.isLoggedIn = isAuth;
-    });
-    this.authService.user$.subscribe((identity: User) => {
-      // console.log('identity:', identity);
-      this.identity = identity.displayName || identity.email;
-      this.photoURL = identity.photoURL;
-    });
-    this.authService.userMetaData$.subscribe(
-      meta => (this.userRole = meta.Role)
-    );
-  }
+  ngOnInit() {}
 
   testgmail() {
     this.email.sendGmail(
-      'cjlkegvm@sharklasers.com',
-      'noreply@tonic.com',
-      'test subject',
-      'test e-mail through service'
+      "cjlkegvm@sharklasers.com",
+      "noreply@tonic.com",
+      "test subject",
+      "test e-mail through service"
     );
   }
 
   testMail() {
-    const emailAddress = 'ykvhveij@sharklasers.com';
+    const emailAddress = "ykvhveij@sharklasers.com";
     // const url = 'https://us-central1-makertonic321.cloudfunctions.net/httpEmail';
 
-    const url = 'http://localhost:5000/makertonic321/us-central1/sendgridEmail';
+    const url = "http://localhost:5000/makertonic321/us-central1/sendgridEmail";
     // const params: URLSearchParams = new URLSearchParams();
 
     // params.set('to', emailAddress);
@@ -66,22 +53,22 @@ export class AppComponent implements OnInit {
 
     const body = {
       to: emailAddress,
-      from: 'hello@tonic.com',
-      subject: 'test-email at 917',
-      content: 'some content here'
+      from: "hello@tonic.com",
+      subject: "test-email at 917",
+      content: "some content here",
     };
 
     const postHeaders = new HttpHeaders().set(
-      'Content-Type',
-      'application/json'
+      "Content-Type",
+      "application/json"
     ); // create header object
     // postHeaders = postHeaders.append('Access-Control-Allow-Origin', '*'); // add a new header, creating a new object
 
     return this.http.post(url, JSON.stringify(body)).subscribe(
-      res => {
+      (res) => {
         console.log(res);
       },
-      err => console.log(err)
+      (err) => console.log(err)
     );
   }
 }

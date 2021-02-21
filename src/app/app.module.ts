@@ -13,7 +13,6 @@ import { RouterModule } from "@angular/router";
 
 import { environment } from "../environments/environment";
 
-import { FirebaseAuthService } from "./services/security/firebase-auth.service";
 import { ReactiveFormsModule } from "@angular/forms";
 import { AngularFireAuth } from "@angular/fire/auth";
 
@@ -35,6 +34,7 @@ import { GmailService } from "./services/email/gmail.service";
 import { AuthInterceptor } from "./services/AuthInterceptor";
 import { UploadFileService } from "./services/upload-service.service";
 import { QrComponent } from "./components/qr/qr.component";
+import { AuthService } from "./services/security/auth.service";
 
 @NgModule({
   declarations: [
@@ -62,7 +62,7 @@ import { QrComponent } from "./components/qr/qr.component";
     ReactiveFormsModule,
   ],
   providers: [
-    FirebaseAuthService,
+    AuthService,
     AngularFireAuth,
     MemberService,
     DbRecordService,
@@ -70,7 +70,6 @@ import { QrComponent } from "./components/qr/qr.component";
     UploadFileService,
     AngularFirestore,
     AngularFireStorage,
-    // AngularFireStorage,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
