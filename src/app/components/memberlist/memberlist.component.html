@@ -3,29 +3,52 @@
   <div class="subheaderText">
     <div>
       <mat-form-field>
-        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        <input
+          matInput
+          (keyup)="applyFilter($event.target.value)"
+          placeholder="Filter"
+        />
       </mat-form-field>
     </div>
   </div>
-  <div class="content" style="background-color:gray;">
-    <table mat-table class="bglightgray" #table [dataSource]="memberSnapshot | async" style="width:100%">
+  <div class="content" style="background-color: gray">
+    <table
+      mat-table
+      class="bglightgray"
+      #table
+      [dataSource]="memberList"
+      style="width: 100%"
+    >
       <ng-container matColumnDef="Actions">
-        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Actions </th>
-        <td mat-cell *matCellDef="let item" style="text-align: center;">
-          <button mat-icon-button color="primary" (click)="viewMember(item.Key)">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center">
+          Actions
+        </th>
+        <td mat-cell *matCellDef="let item" style="text-align: center">
+          <button mat-icon-button color="primary" (click)="viewMember(item.id)">
             <mat-icon aria-label="Update">folder_shared</mat-icon>
           </button>
         </td>
       </ng-container>
       <ng-container matColumnDef="Name">
-        <th mat-header-cell *matHeaderCellDef> Member </th>
+        <th mat-header-cell *matHeaderCellDef>Member</th>
         <td mat-cell *matCellDef="let item">
-          <button mat-icon-button color="primary" (click)="viewMember(item.Key)">
+          <button mat-icon-button color="primary" (click)="viewMember(item.id)">
             <mat-icon aria-label="Update">folder_shared</mat-icon>
-          </button> {{item.FirstName}} {{item.LastName}} </td>
+          </button>
+          {{ item.firstName }} {{ item.lastName }}
+        </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row class="trHover" [routerLink]="['/member/' + row.Key]" *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr
+        mat-row
+        class="trHover"
+        [routerLink]="['/member/' + row.id]"
+        *matRowDef="let row; columns: displayedColumns"
+      ></tr>
     </table>
   </div>
 </tb-card>
+
+<pre>
+<code>{{ this.memberList | async | json }}</code>
+</pre>

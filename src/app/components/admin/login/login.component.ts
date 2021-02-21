@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FirebaseAuthService } from '../../../services/security/firebase-auth.service';
-import { Router } from '@angular/router';
-import * as firebase from 'firebase/app';
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FirebaseAuthService } from "../../../services/security/firebase-auth.service";
+import { Router } from "@angular/router";
+import * as firebase from "firebase/app";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styles: []
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styles: [],
 })
 export class LoginComponent implements OnInit {
   form: FormGroup;
@@ -21,8 +21,8 @@ export class LoginComponent implements OnInit {
     this.authService.logout();
 
     this.form = this.fb.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required]
+      email: ["", Validators.required],
+      password: ["", Validators.required],
     });
   }
 
@@ -33,17 +33,16 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    const formValues = this.form.value;
-
-    this.authService
-      .login(formValues.email, formValues.password)
-      .then((user: firebase.auth.UserCredential) => {
-        this.router.navigate(['memberlist']);
-        // this.router.navigate(['loggedIn']);
-        // console.dir(result);
-      })
-      .catch(error => {
-        this.loginError = error.message;
-      });
+    //   const formValues = this.form.value;
+    //   this.authService
+    //     .login(formValues.email, formValues.password)
+    //     .then((user) => {
+    //       this.router.navigate(['memberlist']);
+    //       // this.router.navigate(['loggedIn']);
+    //       // console.dir(result);
+    //     })
+    //     .catch(error => {
+    //       this.loginError = error.message;
+    //     });
   }
 }

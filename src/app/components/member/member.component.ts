@@ -83,28 +83,28 @@ export class MemberComponent implements OnInit {
         });
 
         this.memberService.getMemberPlans(this.Key).subscribe((data) => {
-          this.openPlan = false;
-          this.memberPlans.data = data;
-          data.forEach((record) => {
-            if (!record.endDate) {
-              this.openPlan = true;
-            }
-          });
+          // this.openPlan = false;
+          // this.memberPlans.data = data;
+          // data.forEach((record) => {
+          //   if (!record.endDate) {
+          //     this.openPlan = true;
+          //   }
+          // });
         });
 
         // load member keys
-        this.dbService
-          .getFilteredRecordList("MemberKeys", "memberKey", this.Key)
-          .subscribe((keys) => {
-            this.memberKeys.data = keys;
-          });
+        // this.dbService
+        //   .getFilteredRecordList("MemberKeys", "memberKey", this.Key)
+        //   .subscribe((keys) => {
+        //     this.memberKeys.data = keys;
+        //   });
 
         // load member transactions
-        this.dbService
-          .getFilteredRecordList("Transactions", "memberKey", this.Key)
-          .subscribe((transactions) => {
-            this.memberTransactions.data = transactions;
-          });
+        // this.dbService
+        //   .getFilteredRecordList("Transactions", "memberKey", this.Key)
+        //   .subscribe((transactions) => {
+        //     this.memberTransactions.data = transactions;
+        //   });
       } else {
         this.headerText = "New Member";
       }
@@ -126,16 +126,16 @@ export class MemberComponent implements OnInit {
   }
 
   addKey() {
-    console.log("add key for member:", this.Key);
-    this.dialog
-      .open(AddKeyComponent, {
-        disableClose: true,
-        data: { memberKey: this.Key },
-      })
-      .afterClosed()
-      .subscribe((result) => {
-        console.dir(result);
-      });
+    // console.log("add key for member:", this.Key);
+    // this.dialog
+    //   .open(AddKeyComponent, {
+    //     disableClose: true,
+    //     data: { memberKey: this.Key },
+    //   })
+    //   .afterClosed()
+    //   .subscribe((result) => {
+    //     console.dir(result);
+    //   });
   }
 
   setKeyStatus(Key, status) {
@@ -155,13 +155,13 @@ export class MemberComponent implements OnInit {
       })
       .afterClosed()
       .subscribe((result) => {
-        if (result === "ok") {
-          const keyToUpdate = Key;
-          keyToUpdate.status = status;
-          this.dbService
-            .saveRecord(keyToUpdate, "MemberKeys")
-            .then(() => console.log("key inactivated"));
-        }
+        // if (result === "ok") {
+        //   const keyToUpdate = Key;
+        //   keyToUpdate.status = status;
+        //   this.dbService
+        //     .saveRecord(keyToUpdate, "MemberKeys")
+        //     .then(() => console.log("key inactivated"));
+        // }
       });
   }
 
@@ -180,12 +180,12 @@ export class MemberComponent implements OnInit {
 
   addEditPlan(Key) {
     if (Key === "New" && this.openPlan) {
-      this.dialog.open(AlertDialogComponent, {
-        data: {
-          message:
-            "This member already has a plan.  Add an end date to the existing plan before adding a new one.",
-        },
-      });
+      // this.dialog.open(AlertDialogComponent, {
+      //   data: {
+      //     message:
+      //       "This member already has a plan.  Add an end date to the existing plan before adding a new one.",
+      //   },
+      // });
       return;
     }
 
@@ -201,29 +201,29 @@ export class MemberComponent implements OnInit {
   }
 
   loadValuesIfExisting(Key) {
-    this.memberService.getMember(Key).subscribe((data) => {
-      Object.keys(data).forEach((KeyName) => {
-        if (this.form.controls[KeyName]) {
-          this.form.controls[KeyName].setValue(data[KeyName]);
-        }
-      });
-      this.memberPicture = data.picture || "";
-    });
+    // this.memberService.getMember(Key).subscribe((data) => {
+    //   Object.keys(data).forEach((KeyName) => {
+    //     if (this.form.controls[KeyName]) {
+    //       this.form.controls[KeyName].setValue(data[KeyName]);
+    //     }
+    //   });
+    //   this.memberPicture = data.picture || "";
+    // });
   }
 
   ngOnInit() {
-    this.updateMemberBalance();
+    //this.updateMemberBalance();
   }
 
   updateMemberBalance() {
     this.memberBalance = " calculating...";
 
-    this.memberService
-      .getBalance(this.Key)
-      .pipe(take(1))
-      .subscribe(
-        (value) => (this.memberBalance = " $ " + value.toString() + ".00")
-      );
+    // this.memberService
+    //   .getBalance(this.Key)
+    //   .pipe(take(1))
+    //   .subscribe(
+    //     (value) => (this.memberBalance = " $ " + value.toString() + ".00")
+    //   );
   }
 
   back() {
@@ -232,15 +232,13 @@ export class MemberComponent implements OnInit {
 
   save() {
     // console.dir(this.form);
-
-    this.memberService
-      .saveMember(this.form.value)
-      .then((result) => {
-        console.dir(result);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    // this.memberService.blah(this.form.value);
+    // this.memberService
+    //   .saveMember(this.form.value)
+    //   .then((result) => {
+    //     console.dir(result);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
   }
 }

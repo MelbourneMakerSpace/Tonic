@@ -1,59 +1,62 @@
-import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { AngularFireAuth } from '@angular/fire/auth';
-import * as firebase from 'firebase/app';
-import { Router } from '@angular/router';
-import { TimerObservable } from 'rxjs/observable/TimerObservable';
+import { Injectable } from "@angular/core";
+import { Observable, BehaviorSubject } from "rxjs";
 
-import { FirebaseAuth, User } from '@firebase/auth-types';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { AngularFireAuth } from "@angular/fire/auth";
+import firebase from "firebase/app";
+import "firebase/auth";
+
+import { Router } from "@angular/router";
+import { TimerObservable } from "rxjs/observable/TimerObservable";
+
+import { FirebaseAuth, User } from "@firebase/auth-types";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { environment } from "../../../environments/environment";
 import {
   AngularFirestore,
   AngularFirestoreDocument,
   AngularFirestoreCollection,
-  DocumentChangeAction
-} from '@angular/fire/firestore';
-import { DbRecordService } from '../db-record.service';
+  DocumentChangeAction,
+} from "@angular/fire/firestore";
+import { DbRecordService } from "../db-record.service";
 
 @Injectable()
 export class FirebaseAuthService {
   isAuthenticated: boolean;
-  user$: BehaviorSubject<any | User> = new BehaviorSubject<any | User>('');
-  picture$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  user$: BehaviorSubject<any | User> = new BehaviorSubject<any | User>("");
+  picture$: BehaviorSubject<string> = new BehaviorSubject<string>("");
   userMetaData$: BehaviorSubject<any> = new BehaviorSubject<any>({});
-  public userToken = '';
+  public userToken = "";
   // displayName$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   isAuthenticated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
 
   constructor(
-    public fbAuth: AngularFireAuth,
+    public auth: AngularFireAuth,
     private router: Router,
     private db: DbRecordService,
     private http: HttpClient
   ) {}
 
-  login(email, password): Promise<any> {
-    return this.fbAuth.auth.signInWithEmailAndPassword(email, password);
-  }
+  // login(email, password): Promise<any> {
+  //   return this.auth().signInWithEmailAndPassword(email, password);
+  // }
 
   initAuthListener() {
-    this.fbAuth.authState.subscribe(async user => {
+    this.auth.authState.subscribe(async (user) => {
       if (user) {
-        console.log('auth listener: authenticated');
+        console.log("auth listener: authenticated");
         this.isAuthenticated = true;
         this.isAuthenticated$.next(true);
         this.user$.next(user);
         // user.getIdToken().then(token => (this.userToken = token));
-        this.fbAuth.idToken.subscribe(async token => {
+        this.auth.idToken.subscribe(async (token) => {
           this.userToken = token;
-          await this.getUserMetadata().then(meta => {
-            this.userMetaData$.next(meta);
-            // console.dir(this.userMetaData$);
-          });
-          this.router.navigateByUrl('/memberlist');
+          // await this.getUserMetadata().then((meta) => {
+          //   this.userMetaData$.next(meta);
+          //   // console.dir(this.userMetaData$);
+          // });
+          this.router.navigateByUrl("/memberlist");
         });
 
         this.picture$.next(user.photoURL);
@@ -61,47 +64,47 @@ export class FirebaseAuthService {
       } else {
         this.isAuthenticated = false;
         this.isAuthenticated$.next(false);
-        console.log('auth listener: NOT authenticated');
-        this.router.navigate(['app-login']);
+        console.log("auth listener: NOT authenticated");
+        this.router.navigate(["app-login"]);
       }
     });
   }
 
   async getUserMetadata(): Promise<any> {
-    const url = environment.firebaseFunctionURL + 'getUserMetadata';
+    const url = environment.firebaseFunctionURL + "getUserMetadata";
 
     return this.http
       .post(url, null)
       .toPromise()
       .then(
-        res => res,
-        err => {
+        (res) => res,
+        (err) => {
           console.log(err);
         }
       );
   }
 
-  createUserWithEmailAndPassword(email, password) {
-    this.fbAuth.auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(result => {
-        console.dir(result);
-      })
-      .catch(error => {
-        console.error(error.message);
-      });
-  }
+  // createUserWithEmailAndPassword(email, password) {
+  //   this.auth
+  //     .createUserWithEmailAndPassword(email, password)
+  //     .then((result) => {
+  //       console.dir(result);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error.message);
+  //     });
+  // }
 
   logout() {
-    this.fbAuth.auth.signOut();
+    this.auth.signOut();
   }
 
-  loginWithGoogle() {
-    this.fbAuth.auth
+  public loginWithGoogle() {
+    this.auth
       .signInWithPopup(new firebase.auth.GoogleAuthProvider())
-      .then(user => {
+      .then((user) => {
         console.log(user);
-        this.router.navigate(['memberlist']);
+        this.router.navigate(["memberlist"]);
       });
   }
 }

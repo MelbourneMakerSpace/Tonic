@@ -6,10 +6,10 @@ import {
   debounceTime,
   distinctUntilChanged,
   map,
+  take,
 } from "rxjs/operators";
 import { Router } from "@angular/router";
-import { Member } from "../../models/member";
-
+import { Member } from "../../entities/member";
 @Component({
   selector: "app-memberlist",
   templateUrl: "./memberlist.component.html",
@@ -26,7 +26,7 @@ import { Member } from "../../models/member";
   ],
 })
 export class MemberlistComponent implements OnInit {
-  memberSnapshot: Observable<Member>;
+  public memberList: Observable<Member[]>;
   displayedColumns = ["Name"];
   filter$ = new BehaviorSubject(null);
   filter = "";
@@ -38,20 +38,9 @@ export class MemberlistComponent implements OnInit {
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((filterstring) => {
         if (filterstring) {
-          // this.memberSnapshot = this.memberService.getFilteredMemberList(
-          //   filterstring
-          // );
-          this.filter = filterstring;
-          this.memberSnapshot = this.memberService.getMemberList().pipe(
-            map((members) =>
-              members.filter((x: Member, idx) => {
-                // console.dir(x);
-                return x.FirstName.toLowerCase().startsWith(filterstring);
-              })
-            )
-          );
+          console.log("add filter ability");
         } else {
-          this.memberSnapshot = this.memberService.getMemberList();
+          this.memberList = this.memberService.getMemberList();
         }
       });
   }

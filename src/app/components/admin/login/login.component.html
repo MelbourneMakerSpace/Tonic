@@ -1,30 +1,55 @@
-<form fxLayout="column" fxFlex fxLayoutAlign="center center" autocomplete="off" novalidate class="login-form" [formGroup]="form">
-  <mat-card fxLayout="column" fxLayoutAlign="space-around stretch" style="width:350px;">
+<form
+  fxLayout="column"
+  fxFlex
+  fxLayoutAlign="center center"
+  autocomplete="off"
+  novalidate
+  class="login-form"
+  [formGroup]="form"
+>
+  <mat-card
+    fxLayout="column"
+    fxLayoutAlign="space-around stretch"
+    style="width: 350px"
+  >
     <mat-card-header>
-      <div style="width:100%;">
-        <img style="width:95%;height:auto;" src="assets/Logo.jpg" />
+      <div style="width: 100%">
+        <img style="width: 95%; height: auto" src="assets/Logo.jpg" />
       </div>
     </mat-card-header>
     <mat-form-field>
-      <input name="email" formControlName="email" matInput placeholder="Email">
+      <input
+        name="email"
+        formControlName="email"
+        matInput
+        placeholder="Email"
+      />
     </mat-form-field>
     <mat-form-field>
-      <input name="password" formControlName="password" type="password" matInput placeholder="Password">
+      <input
+        name="password"
+        formControlName="password"
+        type="password"
+        matInput
+        placeholder="Password"
+      />
     </mat-form-field>
     <button mat-raised-button (click)="login()">Login</button>
-    <br>
+    <br />
     <button mat-raised-button (click)="loginWithGoogle()">
-      <img src="assets/GoogleLogIn.png" style="height:auto;width:100%;" />
+      <img src="assets/GoogleLogIn.png" style="height: auto; width: 100%" />
     </button>
   </mat-card>
-  <div *ngIf="loginError" style="width:300px;">
+  <div *ngIf="loginError" style="width: 300px">
     <mat-card>
       <mat-card-title-group>
         <mat-card-title>
-          <mat-icon style="color:red;">warning</mat-icon> Login Error</mat-card-title>
+          <mat-icon style="color: red">warning</mat-icon> Login
+          Error</mat-card-title
+        >
       </mat-card-title-group>
       <mat-card-content>
-        {{loginError}}
+        {{ loginError }}
       </mat-card-content>
     </mat-card>
   </div>
