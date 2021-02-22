@@ -21,14 +21,14 @@
             <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
               <mat-form-field>
                 <input
-                  formControlName="FirstName"
+                  formControlName="firstName"
                   matInput
                   placeholder="First Name"
                 />
               </mat-form-field>
               <mat-form-field>
                 <input
-                  formControlName="LastName"
+                  formControlName="lastName"
                   matInput
                   placeholder="Last Name"
                 />
@@ -38,10 +38,10 @@
               </mat-form-field>
             </div>
             <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
-              <mat-form-field style="width:300px">
+              <mat-form-field style="width: 300px">
                 <input formControlName="email" matInput placeholder="Email" />
               </mat-form-field>
-              <mat-form-field style="width:300px">
+              <mat-form-field style="width: 300px">
                 <input
                   formControlName="paypalEmail"
                   matInput
@@ -55,7 +55,7 @@
             <div fxLayout="row wrap" fxLayoutAlign="space-between start">
               <mat-form-field class="mediumField">
                 <input
-                  formControlName="emergencyName"
+                  formControlName="emergencyContact"
                   matInput
                   placeholder="Name"
                 />
@@ -76,11 +76,11 @@
               </mat-form-field>
             </div>
           </fieldset>
-          <div style="padding:2px;">
+          <div style="padding: 2px">
             <tb-card [LowElevation]="true" (addClick)="addEditPlan('New')">
-              <div class="headerText ">Plans</div>
-              <div class="subheaderText "></div>
-              <div class="content ">
+              <div class="headerText">Plans</div>
+              <div class="subheaderText"></div>
+              <div class="content">
                 <mat-table
                   class="bglightgray"
                   #table
@@ -116,7 +116,7 @@
                   ></mat-header-row>
                   <mat-row
                     class="trHover"
-                    (click)="addEditPlan(item.Key)"
+                    (click)="addEditPlan(item.id)"
                     *matRowDef="
                       let item;
                       columns: ['Plan', 'StartDate', 'EndDate']
@@ -126,11 +126,11 @@
               </div>
             </tb-card>
           </div>
-          <div style="padding:2px;">
+          <div style="padding: 2px">
             <tb-card [LowElevation]="true" (addClick)="addKey()">
-              <div class="headerText ">Keys</div>
-              <div class="subheaderText "></div>
-              <div class="content ">
+              <div class="headerText">Keys</div>
+              <div class="subheaderText"></div>
+              <div class="content">
                 <mat-table class="bglightgray" #table [dataSource]="memberKeys">
                   <ng-container matColumnDef="keySerial">
                     <mat-header-cell *matHeaderCellDef>
@@ -177,14 +177,14 @@
               </div>
             </tb-card>
           </div>
-          <div style="padding:2px;">
+          <div style="padding: 2px">
             <tb-card
               [LowElevation]="true"
               (addClick)="addEditTransaction('New')"
             >
-              <div class="headerText ">Payment History</div>
-              <div class="subheaderText ">Balance:{{ memberBalance }}</div>
-              <div class="content ">
+              <div class="headerText">Payment History</div>
+              <div class="subheaderText">Balance:{{ memberBalance }}</div>
+              <div class="content">
                 <mat-table
                   class="bglightgray"
                   #table
@@ -197,7 +197,7 @@
                         mat-icon-button
                         color="primary"
                         title="Edit Transaction"
-                        (click)="addEditTransaction(item.Key)"
+                        (click)="addEditTransaction(item.id)"
                       >
                         <mat-icon>mode_edit</mat-icon>
                       </button>
@@ -255,13 +255,13 @@
         </div>
         <!-- Left Content -->
         <!-- Right Side nav -->
-        <div fxflex="20" style="padding:10px;max-width:250px;">
+        <div fxflex="20" style="padding: 10px; max-width: 250px">
           <mat-card>
-            <div style="text-align: center;">
+            <div style="text-align: center">
               <img [src]="qrCode" title="Member QR Code" />
-              <img matCardImage style="width:100%" src="{{memberPicture}}" />
+              <img matCardImage style="width: 100%" src="{{ memberPicture }}" />
             </div>
-            <div style="margin-left:auto;margin-right:auto; ">
+            <div style="margin-left: auto; margin-right: auto">
               <div fxLayout="row">
                 <input
                   mat-raised-button
@@ -273,13 +273,13 @@
               </div>
               <div>
                 <mat-progress-bar
-                  *ngIf="(uploadService.loading | async)"
+                  *ngIf="uploadService.loading | async"
                   [value]="uploadService.progress | async"
                 ></mat-progress-bar>
               </div>
             </div>
             <mat-card-content>
-              <mat-form-field style="width:100%">
+              <mat-form-field style="width: 100%">
                 <mat-select formControlName="role" placeholder="Role">
                   <mat-option
                     *ngFor="let memberType of memberTypes"
@@ -289,7 +289,7 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <mat-form-field style="width:100%">
+              <mat-form-field style="width: 100%">
                 <input
                   formControlName="password"
                   type="password"

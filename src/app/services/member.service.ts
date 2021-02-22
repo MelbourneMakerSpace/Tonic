@@ -68,43 +68,20 @@ export class MemberService {
     //   );
   }
 
-  getMember(Key): Observable<Member> {
-    console.log("getting: ", `Members/${Key}`);
-    return new Observable<Member>();
-
-    // return this.db
-    //   .doc<Member>("Members/" + Key)
-    //   .snapshotChanges()
-    //   .pipe(
-    //     map((record) => {
-    //       const payload = record.payload.data();
-    //       // tslint:disable-next-line:no-shadowed-variable
-    //       const Key = record.payload.id;
-    //       return { Key, ...payload };
-    //     })
-    //   );
+  getMember(id): Observable<Member> {
+    console.log("getting: ", `Members/${id}`);
+    return this.http.get<Member>(environment.TonicAPIURL + `member/` + id);
   }
 
-  saveMember(member: Member): Promise<any> {
-    console.log("Save Key", member.id);
-    return Promise.resolve();
+  saveMember(member: Member): Observable<any> {
+    console.dir("saving", member);
 
-    // const key = member.Key;
-    // delete member.Key;
-
-    // console.dir(member);
-    // if (key === "New") {
-    //   return this.db
-    //     .collection("Members")
-    //     .add(member)
-    //     .then((result) => {
-    //       result.get().then((snapshot) => {
-    //         this.sendNotificationOfNewMember(member, snapshot.ref.id);
-    //       });
-    //     });
-    // } else {
-    //   return this.db.doc<Member>("Members/" + key).update(member);
-    // }
+    if (member.id == "New") {
+      return this.http.post<Member>(environment.TonicAPIURL + "member", member);
+      //      this.sendNotificationOfNewMember(member, snapshot.ref.id);
+    } else {
+      return this.http.put<Member>(environment.TonicAPIURL + "member", member);
+    }
   }
 
   async sendNotificationOfNewMember(member: Member, id: string) {}

@@ -1,30 +1,32 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit, Input, Inject } from "@angular/core";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 @Component({
-  selector: 'app-alert-dialog',
-  templateUrl: './alert-dialog.component.html',
-  styles: []
+  selector: "app-alert-dialog",
+  templateUrl: "./alert-dialog.component.html",
+  styles: [],
 })
 export class AlertDialogComponent implements OnInit {
   message;
   OkCancel = false;
+  header = "";
   constructor(
     public dialogRef: MatDialogRef<AlertDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.message = data.message;
     this.OkCancel = data.OkCancel;
+    this.header = data.header || "Warning";
   }
 
   ngOnInit() {}
 
   cancel() {
-    this.dialogRef.close('cancel');
+    this.dialogRef.close("cancel");
   }
 
   ok() {
-    this.dialogRef.close('ok');
+    this.dialogRef.close("ok");
   }
 
   close() {

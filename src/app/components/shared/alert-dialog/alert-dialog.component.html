@@ -1,5 +1,5 @@
 <tb-card>
-  <div class="headerText" style="min-width:300px;">Warning</div>
+  <div class="headerText" style="min-width: 300px">{{ header }}</div>
   <div class="subheaderText"></div>
   <div class="extraButtons">
     <button *ngIf="!OkCancel" mat-mini-fab (click)="close()" tabindex="-1">
@@ -7,11 +7,15 @@
     </button>
   </div>
   <div class="content">
-    <div fxLayout="column" fxLayoutAlign="center center" style="height:150px;padding-left:15px;padding-right:15px;">
-      <mat-icon color='warn' style="font-size:40px;">warning</mat-icon>
-      <br>
-      <span style="font-size:20px;">{{message}}</span>
-      <br>
+    <div
+      fxLayout="column"
+      fxLayoutAlign="center center"
+      style="height: 150px; padding-left: 15px; padding-right: 15px"
+    >
+      <mat-icon color="warn" style="font-size: 40px">warning</mat-icon>
+      <br />
+      <span style="font-size: 20px">{{ message }}</span>
+      <br />
       <div *ngIf="OkCancel">
         <button mat-raised-button (click)="cancel()" tabindex="-1" color="warn">
           <mat-icon class="mat-18">cancel</mat-icon> No, Cancel

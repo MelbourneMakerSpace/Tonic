@@ -17,6 +17,8 @@ import * as qr from "qrcode-generator";
 import { MemberPlan } from "../../models/memberPlan";
 import { MemberKey } from "../../models/memberKey";
 import { Transaction } from "@google-cloud/firestore";
+import { HttpErrorResponse } from "@angular/common/http";
+import { Member } from "../../entities/member";
 
 @Component({
   selector: "app-member",
@@ -35,7 +37,7 @@ export class MemberComponent implements OnInit {
   memberPlans = new MatTableDataSource<MemberPlan>();
   memberKeys = new MatTableDataSource<MemberKey>();
   memberTransactions = new MatTableDataSource<Transaction>();
-  Key = "";
+  memberId = "";
   memberTypes = ["Officer", "Member", "Disabled"];
   openPlan = false;
   memberPicture = "";
@@ -55,34 +57,36 @@ export class MemberComponent implements OnInit {
     public uploadService: UploadFileService
   ) {
     this.form = this.fb.group({
-      Key: [""],
-      FirstName: ["", Validators.required],
-      LastName: ["", Validators.required],
+      id: [""],
+      firstName: ["", Validators.required],
+      lastName: ["", Validators.required],
       email: [""],
       phone: [""],
       paypalEmail: [""],
-      emergencyName: [""],
+      emergencyContact: [""],
       emergencyEmail: ["", Validators.email],
       emergencyPhone: [""],
       role: [""],
       password: [""],
     });
 
-    this.activatedRoute.params.subscribe((params) => {
-      this.form.controls["Key"].setValue(params.Key);
-      this.Key = params.Key;
+    console.log("subscribe to route");
 
-      if (this.form.controls["Key"].value !== "New") {
+    this.activatedRoute.params.subscribe((params) => {
+      this.form.controls["id"].setValue(params.id);
+      this.memberId = params.id;
+
+      if (this.form.controls["id"].value !== "New") {
         this.makeQRCode();
-        this.loadValuesIfExisting(this.form.controls["Key"].value);
+        this.loadValuesIfExisting(this.form.controls["id"].value);
         this.form.valueChanges.subscribe(() => {
           this.headerText =
-            this.form.controls["FirstName"].value +
+            this.form.controls["firstName"].value +
             " " +
-            this.form.controls["LastName"].value;
+            this.form.controls["lastName"].value;
         });
 
-        this.memberService.getMemberPlans(this.Key).subscribe((data) => {
+        this.memberService.getMemberPlans(this.memberId).subscribe((data) => {
           // this.openPlan = false;
           // this.memberPlans.data = data;
           // data.forEach((record) => {
@@ -113,7 +117,7 @@ export class MemberComponent implements OnInit {
 
   makeQRCode() {
     const qrcode = qr(4, "M");
-    qrcode.addData(this.Key);
+    qrcode.addData(this.memberId);
     qrcode.make();
     this.qrCode = qrcode.createDataURL(3, 0);
   }
@@ -122,7 +126,7 @@ export class MemberComponent implements OnInit {
     // this.uploadService.uploadfile(file, 'setMemberImage', {
     //   MemberKey: this.Key
     // });
-    this.uploadService.uploadMemberImage(file, this.Key);
+    this.uploadService.uploadMemberImage(file, this.memberId);
   }
 
   addKey() {
@@ -169,7 +173,7 @@ export class MemberComponent implements OnInit {
     this.dialog
       .open(AddTransactionComponent, {
         disableClose: true,
-        data: { Key: Key, memberKey: this.Key },
+        data: { Key: Key, memberKey: this.memberId },
       })
       .afterClosed()
       .subscribe((result) => {
@@ -192,7 +196,7 @@ export class MemberComponent implements OnInit {
     this.dialog
       .open(AddEditMemberPlanComponent, {
         disableClose: true,
-        data: { Key, memberKey: this.Key },
+        data: { Key, memberKey: this.memberId },
       })
       .afterClosed()
       .subscribe((result) => {
@@ -200,15 +204,16 @@ export class MemberComponent implements OnInit {
       });
   }
 
-  loadValuesIfExisting(Key) {
-    // this.memberService.getMember(Key).subscribe((data) => {
-    //   Object.keys(data).forEach((KeyName) => {
-    //     if (this.form.controls[KeyName]) {
-    //       this.form.controls[KeyName].setValue(data[KeyName]);
-    //     }
-    //   });
-    //   this.memberPicture = data.picture || "";
-    // });
+  loadValuesIfExisting(memberId) {
+    this.memberService.getMember(memberId).subscribe((data) => {
+      console.log("received:", data);
+      Object.keys(data).forEach((KeyName) => {
+        if (this.form.controls[KeyName]) {
+          this.form.controls[KeyName].setValue(data[KeyName]);
+        }
+      });
+      this.memberPicture = data.picture || "";
+    });
   }
 
   ngOnInit() {
@@ -231,14 +236,26 @@ export class MemberComponent implements OnInit {
   }
 
   save() {
-    // console.dir(this.form);
-    // this.memberService
-    //   .saveMember(this.form.value)
-    //   .then((result) => {
-    //     console.dir(result);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    console.dir(this.form);
+    this.memberService
+      .saveMember(this.form.value)
+      .pipe(take(1))
+      .subscribe(
+        (data: Member) => {
+          this.form.controls["id"].setValue(data.id);
+        },
+        (err: HttpErrorResponse) => {
+          console.dir(err);
+          this.dialog.open(AlertDialogComponent, {
+            disableClose: true,
+
+            data: {
+              OkCancel: false,
+              message: err.error.message,
+              header: "Save Error",
+            },
+          });
+        }
+      );
   }
 }
