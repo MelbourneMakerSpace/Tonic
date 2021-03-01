@@ -35,6 +35,7 @@ import { AuthInterceptor } from "./services/AuthInterceptor";
 import { UploadFileService } from "./services/upload-service.service";
 import { QrComponent } from "./components/qr/qr.component";
 import { AuthService } from "./services/security/auth.service";
+import { PlanService } from "./services/plan.service";
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { AuthService } from "./services/security/auth.service";
     AuthService,
     AngularFireAuth,
     MemberService,
+    PlanService,
     DbRecordService,
     GmailService,
     UploadFileService,

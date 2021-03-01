@@ -92,7 +92,8 @@
                       <button mat-icon-button color="primary">
                         <mat-icon aria-label="Update">mode_edit</mat-icon>
                       </button>
-                      ${{ item.plan }} / Month
+                      {{ item.plan.name }} - ${{ item.plan.monthlyCost }} /
+                      Month
                     </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="StartDate">
@@ -100,7 +101,7 @@
                       Start Date
                     </mat-header-cell>
                     <mat-cell *matCellDef="let item">
-                      {{ item.startDate.seconds * 1000 | date }}
+                      {{ item.startDate | date }}
                     </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="EndDate">
@@ -108,7 +109,7 @@
                       End Date
                     </mat-header-cell>
                     <mat-cell *matCellDef="let item">
-                      {{ item.endDate.seconds * 1000 | date }}
+                      {{ item.endDate | date }}
                     </mat-cell>
                   </ng-container>
                   <mat-header-row

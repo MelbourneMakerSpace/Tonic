@@ -2,17 +2,20 @@ import { Component, OnInit, Inject, Input } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MemberService } from '../../services/member.service';
+import { PlanService } from '../../services/plan.service';
+import { Observable } from 'rxjs';
+import { Plan } from '../../entities/plan';
 
 @Component({
   selector: 'app-add-edit-member-plan',
   templateUrl: './add-edit-member-plan.component.html',
-  styles: []
+  styles: [],
 })
 export class AddEditMemberPlanComponent implements OnInit {
   @Input()
   memberKey;
 
-  plans = [50, 25, 0];
+  plans = new Observable<Plan[]>();
   planForm: FormGroup;
   error = '';
 
@@ -20,38 +23,28 @@ export class AddEditMemberPlanComponent implements OnInit {
     public dialogRef: MatDialogRef<AddEditMemberPlanComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private memberService: MemberService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private planService: PlanService
   ) {
     this.planForm = this.fb.group({
-      Key: [''],
-      plan: ['', Validators.required],
+      id: [''],
+      planId: ['', Validators.required],
       startDate: ['', Validators.required],
       endDate: [''],
-      memberKey: [data.memberKey]
+      memberId: [data.memberId],
     });
 
-    if (data.Key !== 'New') {
-      this.loadExisting(data.Key);
+    if (data.Id !== 'New') {
+      this.loadExisting(data.Id);
     } else {
-      this.planForm.controls['Key'].setValue('New');
+      this.planForm.controls['id'].setValue('New');
       this.planForm.controls['startDate'].setValue(new Date());
-      this.planForm.controls['plan'].setValue(50);
     }
   }
 
-  loadExisting(Key) {
-    this.memberService.getPlan(Key).subscribe(data => {
-      Object.keys(data).forEach(KeyName => {
-        if (data[KeyName].seconds) {
-          this.planForm.controls[KeyName].setValue(
-            new Date(data[KeyName].seconds * 1000)
-          );
-        } else {
-          if (this.planForm.controls[KeyName]) {
-            this.planForm.controls[KeyName].setValue(data[KeyName]);
-          }
-        }
-      });
+  loadExisting(Id) {
+    this.memberService.getPlan(Id).subscribe((data) => {
+      this.planForm.patchValue(data);
     });
   }
 
@@ -60,18 +53,13 @@ export class AddEditMemberPlanComponent implements OnInit {
   }
 
   Save() {
-    console.log('about to save:');
-    console.dir(this.planForm.value);
-
-    // this.planForm["memberKey"] = this.memberService.
-
     if (this.planForm.valid) {
       this.memberService
         .savePlan(this.planForm.value)
-        .then(result => {
+        .then((result) => {
           this.dialogRef.close('Saved');
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     } else {
@@ -79,5 +67,7 @@ export class AddEditMemberPlanComponent implements OnInit {
     }
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.plans = this.planService.getPlanList();
+  }
 }

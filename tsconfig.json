@@ -12,5 +12,9 @@
     "lib": ["es2017", "dom"],
     "module": "es2020",
     "baseUrl": "./"
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictTeplates": true
   }
 }

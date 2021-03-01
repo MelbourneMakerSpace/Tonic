@@ -8,7 +8,9 @@ import { AuthService } from "./services/security/auth.service";
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
-  styleUrls: ["../sass/_variables.scss"],
+  styles: [
+    ".mainContainer{ max-width:1000px; margin-left: auto; margin-right:auto;}",
+  ],
 })
 export class AppComponent implements OnInit {
   isLoggedIn = false;

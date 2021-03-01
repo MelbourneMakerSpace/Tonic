@@ -1,19 +1,24 @@
-import { Component, OnInit, Output, Input } from '@angular/core';
-import { EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, Input } from "@angular/core";
+import { EventEmitter } from "@angular/core";
 
 @Component({
-  selector: 'tb-card',
-  templateUrl: './tb-card.component.html',
+  selector: "tb-card",
+  templateUrl: "./tb-card.component.html",
   styles: [
-    `.headerdiv {
-    padding-left:10px;
-  }
-  .headerspan {
-    font-size:30px;
-    padding-top:5px;
-    color:white;
-  }`
-  ]
+    `
+      .headerdiv {
+        padding-left: 10px;
+      }
+      .headerspan {
+        font-size: 30px;
+        padding-top: 5px;
+        color: white;
+      }
+      .cardcontent {
+        padding: 1em;
+      }
+    `,
+  ],
 })
 export class TbCardComponent implements OnInit {
   @Output() addClick = new EventEmitter();

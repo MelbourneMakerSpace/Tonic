@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@import "~@angular/material/theming";
 // Plus imports for other components in your app.
 
 //tonic-green generated at http://mcg.mbitson.com/#!?tonicgreen=%233ea849&themename=tonic-greeen with material 2 export
@@ -17,23 +17,22 @@ $tonic-green: (
   A200: #f4d804,
   A400: #51ff5a,
   A700: #37ff42,
-  contrast:
-    (
-      50: #000000,
-      100: #000000,
-      200: #000000,
-      300: #000000,
-      400: #000000,
-      500: #ffffff,
-      600: #ffffff,
-      700: #ffffff,
-      800: #ffffff,
-      900: #ffffff,
-      A100: #000000,
-      A200: #000000,
-      A400: #000000,
-      A700: #000000
-    )
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
 );
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -67,4 +66,8 @@ $tonic-app-theme: mat-light-theme(
 }
 .trHover:hover {
   background-color: #e1e2e1;
+}
+
+.extraButtons button {
+  margin-left: 10px;
 }

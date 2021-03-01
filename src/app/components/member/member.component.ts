@@ -1,51 +1,57 @@
-import { Component, OnInit, ElementRef, ViewChild } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { MemberService } from "../../services/member.service";
-import { Observable } from "rxjs";
-import { take } from "rxjs/operators";
-import { MatDialog } from "@angular/material/dialog";
-import { MatTableDataSource } from "@angular/material/table";
-import { AddEditMemberPlanComponent } from "../add-edit-member-plan/add-edit-member-plan.component";
-import { AlertDialogComponent } from "../shared/alert-dialog/alert-dialog.component";
-import { DbRecordService } from "../../services/db-record.service";
-import { AddKeyComponent } from "../add-key/add-key.component";
-import { AddTransactionComponent } from "../add-transaction/add-transaction.component";
-import { UploadFileService } from "../../services/upload-service.service";
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MemberService } from '../../services/member.service';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { AddEditMemberPlanComponent } from '../add-edit-member-plan/add-edit-member-plan.component';
+import { AlertDialogComponent } from '../shared/alert-dialog/alert-dialog.component';
+import { DbRecordService } from '../../services/db-record.service';
+import { AddKeyComponent } from '../add-key/add-key.component';
+import { AddTransactionComponent } from '../add-transaction/add-transaction.component';
+import { UploadFileService } from '../../services/upload-service.service';
 
-import * as qr from "qrcode-generator";
-import { MemberPlan } from "../../models/memberPlan";
-import { MemberKey } from "../../models/memberKey";
-import { Transaction } from "@google-cloud/firestore";
-import { HttpErrorResponse } from "@angular/common/http";
-import { Member } from "../../entities/member";
+import * as qr from 'qrcode-generator';
+import { Key } from '../../entities/memberKey';
+import { Transaction } from '@google-cloud/firestore';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Member } from '../../entities/member';
+import { MemberKey } from '../../models/memberKey';
+import { MemberPlan } from '../../entities/memberPlan';
 
 @Component({
-  selector: "app-member",
-  templateUrl: "./member.component.html",
+  selector: 'app-member',
+  templateUrl: './member.component.html',
   styles: [
     `
       .mediumField {
         width: 200px;
+      }
+
+      .mat-column-Plan {
+        width: 50%;
+        flex: none;
       }
     `,
   ],
 })
 export class MemberComponent implements OnInit {
   form: FormGroup;
-  headerText = "";
+  headerText = '';
   memberPlans = new MatTableDataSource<MemberPlan>();
   memberKeys = new MatTableDataSource<MemberKey>();
   memberTransactions = new MatTableDataSource<Transaction>();
-  memberId = "";
-  memberTypes = ["Officer", "Member", "Disabled"];
+  memberId = '';
+  memberTypes = ['Officer', 'Member', 'Disabled'];
   openPlan = false;
-  memberPicture = "";
-  @ViewChild("fileInput") fileInput;
+  memberPicture = '';
+  @ViewChild('fileInput') fileInput;
   filecontrol: ElementRef[];
-  qrCode = "";
+  qrCode = '';
 
-  memberBalance = "";
+  memberBalance = '';
 
   constructor(
     private router: Router,
@@ -57,44 +63,36 @@ export class MemberComponent implements OnInit {
     public uploadService: UploadFileService
   ) {
     this.form = this.fb.group({
-      id: [""],
-      firstName: ["", Validators.required],
-      lastName: ["", Validators.required],
-      email: [""],
-      phone: [""],
-      paypalEmail: [""],
-      emergencyContact: [""],
-      emergencyEmail: ["", Validators.email],
-      emergencyPhone: [""],
-      role: [""],
-      password: [""],
+      id: [''],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: [''],
+      phone: [''],
+      paypalEmail: [''],
+      emergencyContact: [''],
+      emergencyEmail: ['', Validators.email],
+      emergencyPhone: [''],
+      role: [''],
+      password: [''],
     });
 
-    console.log("subscribe to route");
+    console.log('subscribe to route');
 
     this.activatedRoute.params.subscribe((params) => {
-      this.form.controls["id"].setValue(params.id);
+      this.form.controls['id'].setValue(params.id);
       this.memberId = params.id;
 
-      if (this.form.controls["id"].value !== "New") {
+      if (this.form.controls['id'].value !== 'New') {
         this.makeQRCode();
-        this.loadValuesIfExisting(this.form.controls["id"].value);
+        this.loadValuesIfExisting(this.form.controls['id'].value);
         this.form.valueChanges.subscribe(() => {
           this.headerText =
-            this.form.controls["firstName"].value +
-            " " +
-            this.form.controls["lastName"].value;
+            this.form.controls['firstName'].value +
+            ' ' +
+            this.form.controls['lastName'].value;
         });
 
-        this.memberService.getMemberPlans(this.memberId).subscribe((data) => {
-          // this.openPlan = false;
-          // this.memberPlans.data = data;
-          // data.forEach((record) => {
-          //   if (!record.endDate) {
-          //     this.openPlan = true;
-          //   }
-          // });
-        });
+        this.loadPlans();
 
         // load member keys
         // this.dbService
@@ -110,13 +108,29 @@ export class MemberComponent implements OnInit {
         //     this.memberTransactions.data = transactions;
         //   });
       } else {
-        this.headerText = "New Member";
+        this.headerText = 'New Member';
       }
     });
   }
 
+  private loadPlans() {
+    this.memberService
+      .getMemberPlans(this.memberId)
+      .pipe(take(1))
+      .subscribe((data) => {
+        this.openPlan = false;
+        this.memberPlans.data = data;
+        console.log('plans', data);
+        data.forEach((record) => {
+          if (!record.endDate) {
+            this.openPlan = true;
+          }
+        });
+      });
+  }
+
   makeQRCode() {
-    const qrcode = qr(4, "M");
+    const qrcode = qr(4, 'M');
     qrcode.addData(this.memberId);
     qrcode.make();
     this.qrCode = qrcode.createDataURL(3, 0);
@@ -143,10 +157,10 @@ export class MemberComponent implements OnInit {
   }
 
   setKeyStatus(Key, status) {
-    let messageText = "Are you sure you want to deactivate this key?";
+    let messageText = 'Are you sure you want to deactivate this key?';
 
-    if (status === "Active") {
-      messageText = "Are you sure you want to reactivate this key?";
+    if (status === 'Active') {
+      messageText = 'Are you sure you want to reactivate this key?';
     }
 
     this.dialog
@@ -182,37 +196,36 @@ export class MemberComponent implements OnInit {
       });
   }
 
-  addEditPlan(Key) {
-    if (Key === "New" && this.openPlan) {
-      // this.dialog.open(AlertDialogComponent, {
-      //   data: {
-      //     message:
-      //       "This member already has a plan.  Add an end date to the existing plan before adding a new one.",
-      //   },
-      // });
+  addEditPlan(Id) {
+    if (Id === 'New' && this.openPlan) {
+      this.dialog.open(AlertDialogComponent, {
+        data: {
+          message:
+            'This member already has a plan.  Add an end date to the existing plan before adding a new one.',
+        },
+      });
       return;
     }
 
     this.dialog
       .open(AddEditMemberPlanComponent, {
         disableClose: true,
-        data: { Key, memberKey: this.memberId },
+        data: { Id: Id, memberId: this.memberId },
       })
       .afterClosed()
       .subscribe((result) => {
-        console.dir(result);
+        this.loadPlans();
       });
   }
 
   loadValuesIfExisting(memberId) {
     this.memberService.getMember(memberId).subscribe((data) => {
-      console.log("received:", data);
       Object.keys(data).forEach((KeyName) => {
         if (this.form.controls[KeyName]) {
           this.form.controls[KeyName].setValue(data[KeyName]);
         }
       });
-      this.memberPicture = data.picture || "";
+      this.memberPicture = data.picture || '';
     });
   }
 
@@ -221,7 +234,7 @@ export class MemberComponent implements OnInit {
   }
 
   updateMemberBalance() {
-    this.memberBalance = " calculating...";
+    this.memberBalance = ' calculating...';
 
     // this.memberService
     //   .getBalance(this.Key)
@@ -232,7 +245,7 @@ export class MemberComponent implements OnInit {
   }
 
   back() {
-    this.router.navigateByUrl("/memberlist");
+    this.router.navigateByUrl('/memberlist');
   }
 
   save() {
@@ -242,7 +255,7 @@ export class MemberComponent implements OnInit {
       .pipe(take(1))
       .subscribe(
         (data: Member) => {
-          this.form.controls["id"].setValue(data.id);
+          this.form.controls['id'].setValue(data.id);
         },
         (err: HttpErrorResponse) => {
           console.dir(err);
@@ -252,7 +265,7 @@ export class MemberComponent implements OnInit {
             data: {
               OkCancel: false,
               message: err.error.message,
-              header: "Save Error",
+              header: 'Save Error',
             },
           });
         }
