@@ -12,14 +12,15 @@ import { DbRecordService } from '../../services/db-record.service';
 import { AddKeyComponent } from '../add-key/add-key.component';
 import { AddTransactionComponent } from '../add-transaction/add-transaction.component';
 import { UploadFileService } from '../../services/upload-service.service';
-
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 import * as qr from 'qrcode-generator';
 import { Key } from '../../entities/memberKey';
 import { Transaction } from '@google-cloud/firestore';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Member } from '../../entities/member';
-import { MemberKey } from '../../models/memberKey';
 import { MemberPlan } from '../../entities/memberPlan';
+import { KeyService } from '../../services/key.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-member',
@@ -30,7 +31,7 @@ import { MemberPlan } from '../../entities/memberPlan';
         width: 200px;
       }
 
-      .mat-column-Plan {
+      .mat-column-serialNumber {
         width: 50%;
         flex: none;
       }
@@ -41,7 +42,7 @@ export class MemberComponent implements OnInit {
   form: FormGroup;
   headerText = '';
   memberPlans = new MatTableDataSource<MemberPlan>();
-  memberKeys = new MatTableDataSource<MemberKey>();
+  memberKeys = new MatTableDataSource<Key>();
   memberTransactions = new MatTableDataSource<Transaction>();
   memberId = '';
   memberTypes = ['Officer', 'Member', 'Disabled'];
@@ -58,9 +59,11 @@ export class MemberComponent implements OnInit {
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private memberService: MemberService,
+    private keyService: KeyService,
     private dialog: MatDialog,
     private dbService: DbRecordService,
-    public uploadService: UploadFileService
+    public uploadService: UploadFileService,
+    private snackBar: MatSnackBar
   ) {
     this.form = this.fb.group({
       id: [''],
@@ -94,12 +97,7 @@ export class MemberComponent implements OnInit {
 
         this.loadPlans();
 
-        // load member keys
-        // this.dbService
-        //   .getFilteredRecordList("MemberKeys", "memberKey", this.Key)
-        //   .subscribe((keys) => {
-        //     this.memberKeys.data = keys;
-        //   });
+        this.loadKeys();
 
         // load member transactions
         // this.dbService
@@ -129,6 +127,16 @@ export class MemberComponent implements OnInit {
       });
   }
 
+  private loadKeys() {
+    this.keyService
+      .getMemberKeyList(this.memberId)
+      .pipe(take(1))
+      .subscribe((data) => {
+        this.memberKeys.data = data;
+        console.log('keys', data);
+      });
+  }
+
   makeQRCode() {
     const qrcode = qr(4, 'M');
     qrcode.addData(this.memberId);
@@ -144,24 +152,33 @@ export class MemberComponent implements OnInit {
   }
 
   addKey() {
-    // console.log("add key for member:", this.Key);
-    // this.dialog
-    //   .open(AddKeyComponent, {
-    //     disableClose: true,
-    //     data: { memberKey: this.Key },
-    //   })
-    //   .afterClosed()
-    //   .subscribe((result) => {
-    //     console.dir(result);
-    //   });
+    this.dialog
+      .open(AddKeyComponent, {
+        disableClose: true,
+        data: { memberKey: this.memberId },
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        this.loadKeys();
+      });
   }
 
-  setKeyStatus(Key, status) {
-    let messageText = 'Are you sure you want to deactivate this key?';
-
-    if (status === 'Active') {
-      messageText = 'Are you sure you want to reactivate this key?';
+  setKeyStatus(key: Key) {
+    if (key.status == 'Active') {
+      key.status = 'Inactive';
+    } else {
+      key.status = 'Active';
     }
+
+    this.keyService.saveKey(key).then(() => {
+      this.snackBar.open(`key set to ${key.status}`, null, {
+        duration: 1500,
+      });
+    });
+  }
+
+  deleteKey(key: Key) {
+    const messageText = 'Are you sure you want to delete this key?';
 
     this.dialog
       .open(AlertDialogComponent, {
@@ -173,13 +190,23 @@ export class MemberComponent implements OnInit {
       })
       .afterClosed()
       .subscribe((result) => {
-        // if (result === "ok") {
-        //   const keyToUpdate = Key;
-        //   keyToUpdate.status = status;
-        //   this.dbService
-        //     .saveRecord(keyToUpdate, "MemberKeys")
-        //     .then(() => console.log("key inactivated"));
-        // }
+        if (result === 'ok') {
+          const keyToUpdate = key;
+          this.keyService.deleteKey(keyToUpdate).then(
+            () => {
+              this.loadKeys();
+              this.snackBar.open('key deleted', null, {
+                duration: 1500,
+              });
+            },
+            (err) => {
+              this.snackBar.open('error deleting key, check console.', null, {
+                duration: 1500,
+              });
+              console.error(err);
+            }
+          );
+        }
       });
   }
 

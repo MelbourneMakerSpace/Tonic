@@ -1,5 +1,5 @@
 <tb-card>
-  <div class="headerText" style="min-width:300px;">Add Key</div>
+  <div class="headerText" style="min-width: 300px">Add Key</div>
   <div class="subheaderText"></div>
   <div class="extraButtons">
     <button mat-mini-fab tabindex="-1" title="Save" (click)="Save()">
@@ -13,11 +13,15 @@
     <form [formGroup]="keyForm">
       <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
         <mat-form-field>
-          <input formControlName="keySerial" matInput placeholder="Key Serial Number">
+          <input
+            formControlName="serialNumber"
+            matInput
+            placeholder="Key Serial Number"
+          />
         </mat-form-field>
       </div>
-      <div fxLayout="row" fxLayoutAlign="center center" style="color:red">
-        {{error}}
+      <div fxLayout="row" fxLayoutAlign="center center" style="color: red">
+        {{ error }}
       </div>
     </form>
   </div>

@@ -133,49 +133,55 @@
               <div class="subheaderText"></div>
               <div class="content">
                 <mat-table class="bglightgray" #table [dataSource]="memberKeys">
-                  <ng-container matColumnDef="keySerial">
+                  <ng-container matColumnDef="delete">
+                    <mat-header-cell *matHeaderCellDef>
+                      Delete
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                      <button
+                        mat-icon-button
+                        color="warn"
+                        title="Delete"
+                        (click)="deleteKey(item)"
+                      >
+                        <mat-icon>cancel</mat-icon>
+                      </button>
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="serialNumber">
                     <mat-header-cell *matHeaderCellDef>
                       Key Serial
                     </mat-header-cell>
                     <mat-cell *matCellDef="let item">
-                      <button
-                        *ngIf="item.status == 'Inactive'"
-                        mat-icon-button
-                        color="primary"
-                        title="Reactivate Key"
-                        (click)="setKeyStatus(item, 'Active')"
-                      >
-                        <mat-icon>refresh</mat-icon>
-                      </button>
-                      <button
-                        *ngIf="item.status == 'Active'"
-                        mat-icon-button
-                        color="warn"
-                        title="Deactivate Key"
-                        (click)="setKeyStatus(item, 'Inactive')"
-                      >
-                        <mat-icon>cancel</mat-icon>
-                      </button>
-                      {{ item.keySerial }}
+                      {{ item.serialNumber }}
                     </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="status">
                     <mat-header-cell *matHeaderCellDef>
-                      Status
+                      Active
                     </mat-header-cell>
                     <mat-cell *matCellDef="let item">
-                      {{ item.status }}
+                      <mat-slide-toggle
+                        [checked]="item.status == 'Active'"
+                        (toggleChange)="setKeyStatus(item)"
+                        color="primary"
+                      >
+                      </mat-slide-toggle>
                     </mat-cell>
                   </ng-container>
                   <mat-header-row
-                    *matHeaderRowDef="['keySerial', 'status']"
+                    *matHeaderRowDef="['delete', 'status', 'serialNumber']"
                   ></mat-header-row>
                   <mat-row
                     class="trHover"
-                    *matRowDef="let item; columns: ['keySerial', 'status']"
+                    *matRowDef="
+                      let item;
+                      columns: ['delete', 'status', 'serialNumber']
+                    "
                   ></mat-row>
                 </mat-table>
               </div>
+              `
             </tb-card>
           </div>
           <div style="padding: 2px">

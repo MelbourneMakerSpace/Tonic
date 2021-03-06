@@ -3,11 +3,12 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MemberService } from '../../services/member.service';
 import { DbRecordService } from '../../services/db-record.service';
+import { KeyService } from '../../services/key.service';
 
 @Component({
   selector: 'app-add-key',
   templateUrl: './add-key.component.html',
-  styles: []
+  styles: [],
 })
 export class AddKeyComponent implements OnInit {
   keyForm: FormGroup;
@@ -15,18 +16,18 @@ export class AddKeyComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<AddKeyComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dbService: DbRecordService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private keyService: KeyService
   ) {
     this.keyForm = this.fb.group({
-      Key: [''],
-      keySerial: ['', Validators.required],
-      memberKey: [''],
-      status: ['']
+      id: [''],
+      serialNumber: ['', Validators.required],
+      memberId: [''],
+      status: [''],
     });
 
-    this.keyForm.controls['Key'].setValue('New');
-    this.keyForm.controls['memberKey'].setValue(data.memberKey);
+    this.keyForm.controls['id'].setValue('New');
+    this.keyForm.controls['memberId'].setValue(data.memberKey);
     this.keyForm.controls['status'].setValue('Active');
   }
 
@@ -34,12 +35,12 @@ export class AddKeyComponent implements OnInit {
     console.log('about to save:');
     console.dir(this.keyForm.value);
     if (this.keyForm.valid) {
-      this.dbService
-        .saveRecord(this.keyForm.value, 'MemberKeys')
-        .then(result => {
-          this.dialogRef.close('Saved');
+      this.keyService
+        .saveKey(this.keyForm.value)
+        .then((result) => {
+          this.dialogRef.close('ok');
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     } else {

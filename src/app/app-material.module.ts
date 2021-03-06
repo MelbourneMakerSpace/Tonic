@@ -12,6 +12,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   imports: [
@@ -27,7 +29,9 @@ import { MatTableModule } from '@angular/material/table';
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
   ],
   exports: [
     MatButtonModule,
@@ -42,7 +46,9 @@ import { MatTableModule } from '@angular/material/table';
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatProgressBarModule
-  ]
+    MatProgressBarModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
+  ],
 })
 export class AppMaterialModule {}
