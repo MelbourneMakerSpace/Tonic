@@ -1,35 +1,24 @@
-import { Component, OnInit } from "@angular/core";
-import { Observable, BehaviorSubject, Subject } from "rxjs";
-import { MemberService } from "../../services/member.service";
+import { Component, OnInit } from '@angular/core';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
+import { MemberService } from '../../services/member.service';
 import {
   filter,
   debounceTime,
   distinctUntilChanged,
   map,
   take,
-} from "rxjs/operators";
-import { Router } from "@angular/router";
-import { Member } from "../../entities/member";
+} from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { Member } from '../../entities/member';
 @Component({
-  selector: "app-memberlist",
-  templateUrl: "./memberlist.component.html",
-  styles: [
-    `
-      .headerdiv {
-        padding-left: 10px;
-      }
-      .headerspan {
-        font-size: 50px;
-        font-weight: bold;
-      }
-    `,
-  ],
+  selector: 'app-memberlist',
+  templateUrl: './memberlist.component.html',
+  styles: [],
 })
 export class MemberlistComponent implements OnInit {
-  public memberList: Observable<Member[]>;
-  displayedColumns = ["Name"];
-  filter$ = new BehaviorSubject(null);
-  filter = "";
+  public memberList: Member[];
+  displayedColumns = ['Name'];
+  public filter$ = new BehaviorSubject(null);
   constructor(private memberService: MemberService, private router: Router) {}
 
   ngOnInit() {
@@ -37,10 +26,20 @@ export class MemberlistComponent implements OnInit {
     this.filter$
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((filterstring) => {
-        if (filterstring) {
-          console.log("add filter ability");
+        if (filterstring?.length > 0) {
+          this.memberList = this.memberList.filter(
+            (member) =>
+              member.firstName
+                .toLowerCase()
+                .startsWith(filterstring.toLowerCase()) ||
+              member.lastName
+                .toLowerCase()
+                .startsWith(filterstring.toLowerCase())
+          );
         } else {
-          this.memberList = this.memberService.getMemberList();
+          this.memberService
+            .getMemberList()
+            .subscribe((members) => (this.memberList = members));
         }
       });
   }
@@ -49,11 +48,12 @@ export class MemberlistComponent implements OnInit {
     this.filter$.next(filterstring);
   }
 
-  viewMember(Key) {
-    console.dir(Key);
+  clearFilter(filter) {
+    this.filter$.next('');
+    filter.value = '';
   }
 
   addMember(event) {
-    this.router.navigate(["member/New"]);
+    this.router.navigate(['member/New']);
   }
 }

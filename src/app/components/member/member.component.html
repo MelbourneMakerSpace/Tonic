@@ -282,7 +282,9 @@
                 title="Member QR Code"
                 *ngIf="memberPicture.length < 1; else memberImage"
               />
-              <img #memberImage src="{{ memberPicture }}" />
+              <ng-template #memberImage>
+                <img src="{{ memberPicture }}" />
+              </ng-template>
             </div>
             <div style="margin-left: auto; margin-right: auto; padding: 1em">
               <div fxLayout="row">

@@ -1,17 +1,19 @@
 <tb-card (addClick)="addMember($event)">
   <div class="headerText">Members</div>
   <div class="subheaderText">
-    <div>
-      <mat-form-field>
-        <input
-          matInput
-          (keyup)="applyFilter($event.target.value)"
-          placeholder="Filter"
-        />
-      </mat-form-field>
-    </div>
+    <mat-form-field style="margin-left: 1em">
+      <input
+        matInput
+        (keyup)="applyFilter($event.target.value)"
+        placeholder="Filter"
+        #filter
+      />
+    </mat-form-field>
+    <a mat-icon-button (click)="clearFilter(filter)">
+      <mat-icon class="mat-18" color="primary">clear</mat-icon>
+    </a>
   </div>
-  <div class="content" style="background-color: gray">
+  <div class="content">
     <table
       mat-table
       class="bglightgray"
@@ -24,7 +26,7 @@
           Actions
         </th>
         <td mat-cell *matCellDef="let item" style="text-align: center">
-          <button mat-icon-button color="primary" (click)="viewMember(item.id)">
+          <button mat-icon-button color="primary">
             <mat-icon aria-label="Update">folder_shared</mat-icon>
           </button>
         </td>
@@ -32,7 +34,7 @@
       <ng-container matColumnDef="Name">
         <th mat-header-cell *matHeaderCellDef>Member</th>
         <td mat-cell *matCellDef="let item">
-          <button mat-icon-button color="primary" (click)="viewMember(item.id)">
+          <button mat-icon-button color="primary">
             <mat-icon aria-label="Update">folder_shared</mat-icon>
           </button>
           {{ item.firstName }} {{ item.lastName }}
@@ -48,7 +50,3 @@
     </table>
   </div>
 </tb-card>
-
-<pre>
-<code>{{ this.memberList | async | json }}</code>
-</pre>
