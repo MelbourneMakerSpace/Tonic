@@ -17,6 +17,7 @@ import { EventEmitter } from '@angular/core';
       }
       .card {
         margin-top: 1em;
+        margin-bottom: 1em;
       }
       .cardButtonContainer {
         position: relative;

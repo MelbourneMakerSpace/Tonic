@@ -17,10 +17,22 @@
       <span style="font-size: 20px">{{ message }}</span>
       <br />
       <div *ngIf="OkCancel">
-        <button mat-raised-button (click)="cancel()" tabindex="-1" color="warn">
+        <button
+          style="width: 150px"
+          mat-raised-button
+          (click)="cancel()"
+          tabindex="-1"
+          color="warn"
+        >
           <mat-icon class="mat-18">cancel</mat-icon> No, Cancel
         </button>
-        <button mat-raised-button (click)="ok()" tabindex="-1" color="primary">
+        <button
+          style="margin-left: 50px; width: 150px"
+          mat-raised-button
+          (click)="ok()"
+          tabindex="-1"
+          color="primary"
+        >
           <mat-icon class="mat-18">check_circle</mat-icon> Yes
         </button>
       </div>

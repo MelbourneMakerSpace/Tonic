@@ -176,7 +176,7 @@ export class MemberComponent implements OnInit {
     }
 
     this.keyService.saveKey(key).then(() => {
-      this.snackBar.open(`key set to ${key.status}`, null, {
+      this.snackBar.open(`Key set to ${key.status}`, null, {
         duration: 1500,
       });
     });
