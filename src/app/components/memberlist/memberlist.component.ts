@@ -48,9 +48,9 @@ export class MemberlistComponent implements OnInit {
     this.filter$.next(filterstring);
   }
 
-  clearFilter(filter) {
+  clearFilter(filterInput) {
     this.filter$.next('');
-    filter.value = '';
+    filterInput.value = '';
   }
 
   addMember(event) {

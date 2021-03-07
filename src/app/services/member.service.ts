@@ -38,34 +38,14 @@ export class MemberService {
   }
 
   savePlan(plan: MemberPlan): Promise<any> {
-    console.log('saving plan', plan);
+    //console.log('saving plan', plan);
     return this.http
       .post(environment.TonicAPIURL + 'plan/memberplan', plan)
       .toPromise();
   }
 
-  // gets a filtered list, but is case sensative
-  getFilteredMemberList(filter: string): Observable<Member[]> {
-    return new Observable<Member[]>();
-
-    // return this.db
-    //   .collection<Member>("Members", (ref) =>
-    //     ref.where("FirstName", ">=", filter)
-    //   )
-    //   .snapshotChanges()
-    //   .pipe(
-    //     map((data) => {
-    //       return data.map((record) => {
-    //         const payload = record.payload.doc.data();
-    //         const Key = record.payload.doc.id;
-    //         return { Key, ...payload };
-    //       });
-    //     })
-    //   );
-  }
-
   getMember(id): Observable<Member> {
-    console.log('getting: ', `Members/${id}`);
+    //console.log('getting: ', `Members/${id}`);
     return this.http.get<Member>(environment.TonicAPIURL + `member/` + id);
   }
 

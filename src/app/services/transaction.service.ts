@@ -23,7 +23,6 @@ export class TransactionService {
   }
 
   saveTransaction(transaction: Transaction): Promise<any> {
-    console.log('saving Transaction to web service', transaction);
     return this.http
       .post(environment.TonicAPIURL + 'Transaction', transaction)
       .toPromise();

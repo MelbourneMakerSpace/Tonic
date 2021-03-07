@@ -80,7 +80,7 @@ export class MemberComponent implements OnInit {
       password: [''],
     });
 
-    console.log('subscribe to route');
+    //console.log('subscribe to route');
 
     this.activatedRoute.params.subscribe((params) => {
       this.form.controls['id'].setValue(params.id);
@@ -123,7 +123,7 @@ export class MemberComponent implements OnInit {
       .subscribe((data) => {
         this.openPlan = false;
         this.memberPlans.data = data;
-        console.log('plans', data);
+        //console.log('plans', data);
         data.forEach((record) => {
           if (!record.endDate) {
             this.openPlan = true;
@@ -138,7 +138,7 @@ export class MemberComponent implements OnInit {
       .pipe(take(1))
       .subscribe((data) => {
         this.memberKeys.data = data;
-        console.log('keys', data);
+        //console.log('keys', data);
       });
   }
 
