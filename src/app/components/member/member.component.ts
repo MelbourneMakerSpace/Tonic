@@ -15,12 +15,13 @@ import { UploadFileService } from '../../services/upload-service.service';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import * as qr from 'qrcode-generator';
 import { Key } from '../../entities/memberKey';
-import { Transaction } from '@google-cloud/firestore';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Member } from '../../entities/member';
 import { MemberPlan } from '../../entities/memberPlan';
 import { KeyService } from '../../services/key.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TransactionService } from '../../services/transaction.service';
+import { Transaction } from '../../entities/transaction';
 
 @Component({
   selector: 'app-member',
@@ -61,7 +62,7 @@ export class MemberComponent implements OnInit {
     private memberService: MemberService,
     private keyService: KeyService,
     private dialog: MatDialog,
-    private dbService: DbRecordService,
+    private transactionService: TransactionService,
     public uploadService: UploadFileService,
     private snackBar: MatSnackBar
   ) {
@@ -99,16 +100,20 @@ export class MemberComponent implements OnInit {
 
         this.loadKeys();
 
-        // load member transactions
-        // this.dbService
-        //   .getFilteredRecordList("Transactions", "memberKey", this.Key)
-        //   .subscribe((transactions) => {
-        //     this.memberTransactions.data = transactions;
-        //   });
+        this.loadTransactions();
       } else {
         this.headerText = 'New Member';
       }
     });
+  }
+
+  private loadTransactions() {
+    // load member transactions
+    this.transactionService
+      .getMemberTransactionList(this.memberId)
+      .subscribe((transactions) => {
+        this.memberTransactions.data = transactions;
+      });
   }
 
   private loadPlans() {
@@ -210,16 +215,16 @@ export class MemberComponent implements OnInit {
       });
   }
 
-  addEditTransaction(Key) {
+  addEditTransaction(id) {
     this.dialog
       .open(AddTransactionComponent, {
         disableClose: true,
-        data: { Key: Key, memberKey: this.memberId },
+        data: { id: id, memberId: this.memberId },
       })
       .afterClosed()
       .subscribe((result) => {
         console.dir(result);
-        this.updateMemberBalance();
+        this.loadTransactions();
       });
   }
 
@@ -283,6 +288,7 @@ export class MemberComponent implements OnInit {
       .subscribe(
         (data: Member) => {
           this.form.controls['id'].setValue(data.id);
+          this.snackBar.open('Member Saved', null, { duration: 1500 });
         },
         (err: HttpErrorResponse) => {
           console.dir(err);

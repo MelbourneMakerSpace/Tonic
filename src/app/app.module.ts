@@ -37,6 +37,7 @@ import { QrComponent } from './components/qr/qr.component';
 import { AuthService } from './services/security/auth.service';
 import { PlanService } from './services/plan.service';
 import { KeyService } from './services/key.service';
+import { TransactionService } from './services/transaction.service';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { KeyService } from './services/key.service';
     DbRecordService,
     GmailService,
     UploadFileService,
+    TransactionService,
     AngularFirestore,
     AngularFireStorage,
     {

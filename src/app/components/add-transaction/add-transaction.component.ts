@@ -2,11 +2,12 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DbRecordService } from '../../services/db-record.service';
+import { TransactionService } from '../../services/transaction.service';
 
 @Component({
   selector: 'app-add-transaction',
   templateUrl: './add-transaction.component.html',
-  styles: []
+  styles: [],
 })
 export class AddTransactionComponent implements OnInit {
   transactionForm: FormGroup;
@@ -15,53 +16,43 @@ export class AddTransactionComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<AddTransactionComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dbService: DbRecordService,
+    private transactionService: TransactionService,
     private fb: FormBuilder
   ) {
     this.transactionForm = this.fb.group({
-      Key: [''],
-      memberKey: ['', Validators.required],
-      date: ['', Validators.required],
+      id: [''],
+      memberId: ['', Validators.required],
+      transactionDate: ['', Validators.required],
       description: [''],
       amount: ['', Validators.required],
       method: [''],
       confirmation: [''],
-      notes: ['']
+      notes: [''],
     });
 
-    if (data.Key === 'New') {
-      this.transactionForm.controls['Key'].setValue(data.Key);
-      this.transactionForm.controls['memberKey'].setValue(data.memberKey);
-      this.transactionForm.controls['date'].setValue(new Date());
+    if (data.id === 'New') {
+      this.transactionForm.controls['id'].setValue(data.id);
+      this.transactionForm.controls['memberId'].setValue(data.memberId);
+      this.transactionForm.controls['transactionDate'].setValue(new Date());
     } else {
-      this.loadValuesIfExisting(data.Key);
+      this.loadTransaction(data.id);
     }
   }
 
-  loadValuesIfExisting(Key) {
-    this.dbService.getRecord(Key, 'Transactions').subscribe(data => {
-      Object.keys(data).forEach(KeyName => {
-        if (this.transactionForm.controls[KeyName]) {
-          if (data[KeyName].seconds) {
-            this.transactionForm.controls[KeyName].setValue(
-              new Date(data[KeyName].seconds * 1000)
-            );
-          } else {
-            this.transactionForm.controls[KeyName].setValue(data[KeyName]);
-          }
-        }
-      });
+  loadTransaction(id) {
+    this.transactionService.getTransaction(id).subscribe((data) => {
+      this.transactionForm.patchValue(data);
     });
   }
 
   Save() {
     if (this.transactionForm.valid) {
-      this.dbService
-        .saveRecord(this.transactionForm.value, 'Transactions')
-        .then(result => {
+      this.transactionService
+        .saveTransaction(this.transactionForm.value)
+        .then((result) => {
           this.dialogRef.close('Saved');
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     } else {

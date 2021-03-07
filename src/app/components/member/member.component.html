@@ -50,7 +50,7 @@
               </mat-form-field>
             </div>
           </fieldset>
-          <fieldset>
+          <fieldset style="margin-top: 1em">
             <legend>Emergency Contact</legend>
             <div fxLayout="row wrap" fxLayoutAlign="space-between start">
               <mat-form-field class="mediumField">
@@ -76,199 +76,215 @@
               </mat-form-field>
             </div>
           </fieldset>
-          <div style="padding: 2px">
-            <tb-card [LowElevation]="true" (addClick)="addEditPlan('New')">
-              <div class="headerText">Plans</div>
-              <div class="subheaderText"></div>
-              <div class="content">
-                <mat-table
-                  class="bglightgray"
-                  #table
-                  [dataSource]="memberPlans"
-                >
-                  <ng-container matColumnDef="Plan">
-                    <mat-header-cell *matHeaderCellDef> Plan </mat-header-cell>
-                    <mat-cell *matCellDef="let item">
-                      <button mat-icon-button color="primary">
-                        <mat-icon aria-label="Update">mode_edit</mat-icon>
-                      </button>
-                      {{ item.plan.name }} - ${{ item.plan.monthlyCost }} /
-                      Month
-                    </mat-cell>
-                  </ng-container>
-                  <ng-container matColumnDef="StartDate">
-                    <mat-header-cell *matHeaderCellDef>
-                      Start Date
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let item">
-                      {{ item.startDate | date }}
-                    </mat-cell>
-                  </ng-container>
-                  <ng-container matColumnDef="EndDate">
-                    <mat-header-cell *matHeaderCellDef>
-                      End Date
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let item">
-                      {{ item.endDate | date }}
-                    </mat-cell>
-                  </ng-container>
-                  <mat-header-row
-                    *matHeaderRowDef="['Plan', 'StartDate', 'EndDate']"
-                  ></mat-header-row>
-                  <mat-row
-                    class="trHover"
-                    (click)="addEditPlan(item.id)"
-                    *matRowDef="
-                      let item;
-                      columns: ['Plan', 'StartDate', 'EndDate']
-                    "
-                  ></mat-row>
-                </mat-table>
-              </div>
-            </tb-card>
-          </div>
-          <div style="padding: 2px">
-            <tb-card [LowElevation]="true" (addClick)="addKey()">
-              <div class="headerText">Keys</div>
-              <div class="subheaderText"></div>
-              <div class="content">
-                <mat-table class="bglightgray" #table [dataSource]="memberKeys">
-                  <ng-container matColumnDef="delete">
-                    <mat-header-cell *matHeaderCellDef>
-                      Delete
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let item">
-                      <button
-                        mat-icon-button
-                        color="warn"
-                        title="Delete"
-                        (click)="deleteKey(item)"
-                      >
-                        <mat-icon>cancel</mat-icon>
-                      </button>
-                    </mat-cell>
-                  </ng-container>
-                  <ng-container matColumnDef="serialNumber">
-                    <mat-header-cell *matHeaderCellDef>
-                      Key Serial
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let item">
-                      {{ item.serialNumber }}
-                    </mat-cell>
-                  </ng-container>
-                  <ng-container matColumnDef="status">
-                    <mat-header-cell *matHeaderCellDef>
-                      Active
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let item">
-                      <mat-slide-toggle
-                        [checked]="item.status == 'Active'"
-                        (toggleChange)="setKeyStatus(item)"
-                        color="primary"
-                      >
-                      </mat-slide-toggle>
-                    </mat-cell>
-                  </ng-container>
-                  <mat-header-row
-                    *matHeaderRowDef="['delete', 'status', 'serialNumber']"
-                  ></mat-header-row>
-                  <mat-row
-                    class="trHover"
-                    *matRowDef="
-                      let item;
-                      columns: ['delete', 'status', 'serialNumber']
-                    "
-                  ></mat-row>
-                </mat-table>
-              </div>
-              `
-            </tb-card>
-          </div>
-          <div style="padding: 2px">
-            <tb-card
-              [LowElevation]="true"
-              (addClick)="addEditTransaction('New')"
-            >
-              <div class="headerText">Payment History</div>
-              <div class="subheaderText">Balance:{{ memberBalance }}</div>
-              <div class="content">
-                <mat-table
-                  class="bglightgray"
-                  #table
-                  [dataSource]="memberTransactions"
-                >
-                  <ng-container matColumnDef="transactionDate">
-                    <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
-                    <mat-cell *matCellDef="let item">
-                      <button
-                        mat-icon-button
-                        color="primary"
-                        title="Edit Transaction"
-                        (click)="addEditTransaction(item.id)"
-                      >
-                        <mat-icon>mode_edit</mat-icon>
-                      </button>
-                      {{ item.date.seconds * 1000 | date }}
-                    </mat-cell>
-                  </ng-container>
-                  <ng-container matColumnDef="amount">
-                    <mat-header-cell *matHeaderCellDef>
-                      Amount
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let item">
-                      {{ item.amount }}
-                    </mat-cell>
-                  </ng-container>
-                  <ng-container matColumnDef="description">
-                    <mat-header-cell *matHeaderCellDef>
-                      Description
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let item">
-                      {{ item.description }}
-                    </mat-cell>
-                  </ng-container>
-                  <ng-container matColumnDef="method">
-                    <mat-header-cell *matHeaderCellDef>
-                      Method
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let item">
-                      {{ item.method }}
-                    </mat-cell>
-                  </ng-container>
-                  <mat-header-row
-                    *matHeaderRowDef="[
-                      'transactionDate',
-                      'amount',
-                      'description',
-                      'method'
-                    ]"
-                  ></mat-header-row>
-                  <mat-row
-                    class="trHover"
-                    *matRowDef="
-                      let item;
-                      columns: [
+          <div *ngIf="this.memberId != 'New'">
+            <div style="padding: 2px">
+              <tb-card [LowElevation]="true" (addClick)="addEditPlan('New')">
+                <div class="headerText">Plans</div>
+                <div class="subheaderText"></div>
+                <div class="content">
+                  <mat-table
+                    class="bglightgray"
+                    #table
+                    [dataSource]="memberPlans"
+                  >
+                    <ng-container matColumnDef="Plan">
+                      <mat-header-cell *matHeaderCellDef>
+                        Plan
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let item">
+                        <button mat-icon-button color="primary">
+                          <mat-icon aria-label="Update">mode_edit</mat-icon>
+                        </button>
+                        {{ item.plan.name }} - ${{ item.plan.monthlyCost }} /
+                        Month
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="StartDate">
+                      <mat-header-cell *matHeaderCellDef>
+                        Start Date
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let item">
+                        {{ item.startDate | date }}
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="EndDate">
+                      <mat-header-cell *matHeaderCellDef>
+                        End Date
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let item">
+                        {{ item.endDate | date }}
+                      </mat-cell>
+                    </ng-container>
+                    <mat-header-row
+                      *matHeaderRowDef="['Plan', 'StartDate', 'EndDate']"
+                    ></mat-header-row>
+                    <mat-row
+                      class="trHover"
+                      (click)="addEditPlan(item.id)"
+                      *matRowDef="
+                        let item;
+                        columns: ['Plan', 'StartDate', 'EndDate']
+                      "
+                    ></mat-row>
+                  </mat-table>
+                </div>
+              </tb-card>
+            </div>
+            <div style="padding: 2px">
+              <tb-card [LowElevation]="true" (addClick)="addKey()">
+                <div class="headerText">Keys</div>
+                <div class="subheaderText"></div>
+                <div class="content">
+                  <mat-table
+                    class="bglightgray"
+                    #table
+                    [dataSource]="memberKeys"
+                  >
+                    <ng-container matColumnDef="delete">
+                      <mat-header-cell *matHeaderCellDef>
+                        Delete
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let item">
+                        <button
+                          mat-icon-button
+                          color="warn"
+                          title="Delete"
+                          (click)="deleteKey(item)"
+                        >
+                          <mat-icon>cancel</mat-icon>
+                        </button>
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="serialNumber">
+                      <mat-header-cell *matHeaderCellDef>
+                        Key Serial
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let item">
+                        {{ item.serialNumber }}
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                      <mat-header-cell *matHeaderCellDef>
+                        Active
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let item">
+                        <mat-slide-toggle
+                          [checked]="item.status == 'Active'"
+                          (toggleChange)="setKeyStatus(item)"
+                          color="primary"
+                        >
+                        </mat-slide-toggle>
+                      </mat-cell>
+                    </ng-container>
+                    <mat-header-row
+                      *matHeaderRowDef="['delete', 'status', 'serialNumber']"
+                    ></mat-header-row>
+                    <mat-row
+                      class="trHover"
+                      *matRowDef="
+                        let item;
+                        columns: ['delete', 'status', 'serialNumber']
+                      "
+                    ></mat-row>
+                  </mat-table>
+                </div>
+                `
+              </tb-card>
+            </div>
+            <div style="padding: 2px">
+              <tb-card
+                [LowElevation]="true"
+                (addClick)="addEditTransaction('New')"
+              >
+                <div class="headerText">Payment History</div>
+                <div class="subheaderText">Balance:{{ memberBalance }}</div>
+                <div class="content">
+                  <mat-table
+                    class="bglightgray"
+                    #table
+                    [dataSource]="memberTransactions"
+                  >
+                    <ng-container matColumnDef="transactionDate">
+                      <mat-header-cell *matHeaderCellDef>
+                        Date
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let item">
+                        <button
+                          mat-icon-button
+                          color="primary"
+                          title="Edit Transaction"
+                          (click)="addEditTransaction(item.id)"
+                        >
+                          <mat-icon>mode_edit</mat-icon>
+                        </button>
+                        {{ item.transactionDate | date }}
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="amount">
+                      <mat-header-cell *matHeaderCellDef>
+                        Amount
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let item">
+                        {{ item.amount | currency }}
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="description">
+                      <mat-header-cell *matHeaderCellDef>
+                        Description
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let item">
+                        {{ item.description }}
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="method">
+                      <mat-header-cell *matHeaderCellDef>
+                        Method
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let item">
+                        {{ item.method }}
+                      </mat-cell>
+                    </ng-container>
+                    <mat-header-row
+                      *matHeaderRowDef="[
                         'transactionDate',
                         'amount',
                         'description',
                         'method'
-                      ]
-                    "
-                  ></mat-row>
-                </mat-table>
-              </div>
-            </tb-card>
+                      ]"
+                    ></mat-header-row>
+                    <mat-row
+                      class="trHover"
+                      *matRowDef="
+                        let item;
+                        columns: [
+                          'transactionDate',
+                          'amount',
+                          'description',
+                          'method'
+                        ]
+                      "
+                    ></mat-row>
+                  </mat-table>
+                </div>
+              </tb-card>
+            </div>
           </div>
         </div>
         <!-- Left Content -->
         <!-- Right Side nav -->
         <div fxflex="20" style="padding: 10px; max-width: 250px">
           <mat-card>
-            <div style="text-align: center">
-              <img [src]="qrCode" title="Member QR Code" />
-              <img matCardImage style="width: 100%" src="{{ memberPicture }}" />
+            <div
+              style="display: grid; justify-items: center; align-items: center"
+            >
+              <img
+                [src]="qrCode"
+                title="Member QR Code"
+                *ngIf="memberPicture.length < 1; else memberImage"
+              />
+              <img #memberImage src="{{ memberPicture }}" />
             </div>
-            <div style="margin-left: auto; margin-right: auto">
+            <div style="margin-left: auto; margin-right: auto; padding: 1em">
               <div fxLayout="row">
                 <input
                   mat-raised-button
@@ -296,13 +312,13 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <mat-form-field style="width: 100%">
+              <mat-form-field style="width: 100%; display: none">
                 <input
                   formControlName="password"
                   type="password"
                   autocomplete="new-password"
                   matInput
-                  placeholder="Password "
+                  placeholder="Password"
                 />
               </mat-form-field>
             </mat-card-content>

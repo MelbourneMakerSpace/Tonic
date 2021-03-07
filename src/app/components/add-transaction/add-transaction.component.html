@@ -1,5 +1,5 @@
 <tb-card>
-  <div class="headerText" style="min-width:300px;">Transaction</div>
+  <div class="headerText" style="min-width: 300px">Transaction</div>
   <div class="subheaderText"></div>
   <div class="extraButtons">
     <button mat-mini-fab tabindex="-1" title="Save" (click)="Save()">
@@ -13,12 +13,27 @@
     <form [formGroup]="transactionForm">
       <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
         <mat-form-field>
-          <input formControlName="date" matInput readonly="true" [matDatepicker]="transactionDate" placeholder="Choose transaction date">
-          <mat-datepicker-toggle matSuffix [for]="transactionDate"></mat-datepicker-toggle>
+          <input
+            formControlName="transactionDate"
+            matInput
+            readonly="true"
+            [matDatepicker]="transactionDate"
+            placeholder="Choose transaction date"
+            required="true"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="transactionDate"
+          ></mat-datepicker-toggle>
           <mat-datepicker #transactionDate></mat-datepicker>
         </mat-form-field>
         <mat-form-field>
-          <input formControlName="amount" matInput placeholder="Amount">
+          <input
+            formControlName="amount"
+            matInput
+            placeholder="Amount"
+            required="true"
+          />
         </mat-form-field>
       </div>
       <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
@@ -30,21 +45,29 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field fxFlex>
-          <input formControlName="confirmation" matInput placeholder="Confirmation #">
+          <input
+            formControlName="confirmation"
+            matInput
+            placeholder="Confirmation #"
+          />
         </mat-form-field>
       </div>
       <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
         <mat-form-field fxFlex>
-          <input formControlName="description" matInput placeholder="Description">
+          <input
+            formControlName="description"
+            matInput
+            placeholder="Description"
+          />
         </mat-form-field>
       </div>
       <div fxLayout="row wrap" fxFlex fxLayoutGap="10px">
         <mat-form-field fxFlex>
-          <input formControlName="notes" matInput placeholder="Notes">
+          <input formControlName="notes" matInput placeholder="Notes" />
         </mat-form-field>
       </div>
-      <div fxLayout="row" fxLayoutAlign="center center" style="color:red">
-        {{error}}
+      <div fxLayout="row" fxLayoutAlign="center center" style="color: red">
+        {{ error }}
       </div>
     </form>
   </div>

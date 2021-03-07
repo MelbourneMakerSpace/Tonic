@@ -1,21 +1,37 @@
-import { Component, OnInit, Output, Input } from "@angular/core";
-import { EventEmitter } from "@angular/core";
+import { Component, OnInit, Output, Input } from '@angular/core';
+import { EventEmitter } from '@angular/core';
 
 @Component({
-  selector: "tb-card",
-  templateUrl: "./tb-card.component.html",
+  selector: 'tb-card',
+  templateUrl: './tb-card.component.html',
   styles: [
     `
-      .headerdiv {
-        padding-left: 10px;
-      }
       .headerspan {
-        font-size: 30px;
-        padding-top: 5px;
+        font-size: 24px;
         color: white;
+        position: relative;
+        padding: 0.4em 1em;
       }
       .cardcontent {
         padding: 1em;
+      }
+      .card {
+        margin-top: 1em;
+      }
+      .cardButtonContainer {
+        position: relative;
+        min-width: 150px;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .cardButtons {
+        position: absolute;
+        top: 10%;
+      }
+
+      .subHeaderText {
+        padding: 0.5em;
       }
     `,
   ],
