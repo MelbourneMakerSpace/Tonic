@@ -1,30 +1,18 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 import { DocumentReference } from '@firebase/firestore-types';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { GmailService } from './email/gmail.service';
 import { Member } from '../entities/member';
 import { MemberPlan } from '../entities/memberPlan';
 
 @Injectable()
 export class MemberService {
-  constructor(
-    private db: AngularFirestore,
-    private http: HttpClient,
-    private gmail: GmailService
-  ) {}
+  constructor(private http: HttpClient) {}
 
   getMemberList(): Observable<Member[]> {
     return this.http.get<Member[]>(environment.TonicAPIURL + `member`);
-  }
-
-  getBalance(memberKey): Observable<number> {
-    const url =
-      environment.firebaseFunctionURL + 'getBalance?memberKey=' + memberKey;
-    return this.http.get<number>(url);
   }
 
   getMemberPlans(memberKey): Observable<MemberPlan[]> {
@@ -47,6 +35,12 @@ export class MemberService {
   getMember(id): Observable<Member> {
     //console.log('getting: ', `Members/${id}`);
     return this.http.get<Member>(environment.TonicAPIURL + `member/` + id);
+  }
+
+  getMemberBalance(id): Observable<number> {
+    return this.http.get<number>(
+      environment.TonicAPIURL + `member/balance/` + id
+    );
   }
 
   saveMember(member: Member): Observable<any> {

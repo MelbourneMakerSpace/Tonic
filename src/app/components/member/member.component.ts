@@ -8,7 +8,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { AddEditMemberPlanComponent } from '../add-edit-member-plan/add-edit-member-plan.component';
 import { AlertDialogComponent } from '../shared/alert-dialog/alert-dialog.component';
-import { DbRecordService } from '../../services/db-record.service';
 import { AddKeyComponent } from '../add-key/add-key.component';
 import { AddTransactionComponent } from '../add-transaction/add-transaction.component';
 import { UploadFileService } from '../../services/upload-service.service';
@@ -87,6 +86,7 @@ export class MemberComponent implements OnInit {
       this.memberId = params.id;
 
       if (this.form.controls['id'].value !== 'New') {
+        this.updateMemberBalance();
         this.makeQRCode();
         this.loadValuesIfExisting(this.form.controls['id'].value);
         this.form.valueChanges.subscribe(() => {
@@ -261,19 +261,17 @@ export class MemberComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    //this.updateMemberBalance();
-  }
+  ngOnInit() {}
 
   updateMemberBalance() {
     this.memberBalance = ' calculating...';
 
-    // this.memberService
-    //   .getBalance(this.Key)
-    //   .pipe(take(1))
-    //   .subscribe(
-    //     (value) => (this.memberBalance = " $ " + value.toString() + ".00")
-    //   );
+    this.memberService
+      .getMemberBalance(this.memberId)
+      .pipe(take(1))
+      .subscribe(
+        (balance) => (this.memberBalance = ' $ ' + balance.toString() + '.00')
+      );
   }
 
   back() {

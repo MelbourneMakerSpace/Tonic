@@ -4,8 +4,6 @@ import { HttpRequest, HttpEventType } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { AngularFireStorage } from '@angular/fire/storage';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { finalize } from 'rxjs/operators';
 
 @Injectable()
@@ -15,36 +13,32 @@ export class UploadFileService {
   result: BehaviorSubject<Object> = new BehaviorSubject({});
   private data: any;
   private endpoint: string;
-  constructor(
-    private http: HttpClient,
-    private afs: AngularFireStorage,
-    private db: AngularFirestore
-  ) {}
+  constructor(private http: HttpClient) {}
 
   public uploadMemberImage(file, MemberId) {
-    this.loading.next(true);
-    const task = this.afs.ref('MemberImages/' + MemberId).put(file);
-    this.progress = task.percentageChanges();
-    task.then(data => {
-      if (data.bytesTransferred === data.totalBytes) {
-        console.log(data);
-        const fileRef = this.afs
-          .ref(data.metadata.fullPath)
-          .getDownloadURL()
-          .toPromise()
-          .then(downloadUrl => {
-            console.log(downloadUrl);
-            this.result.next(data);
-            this.loading.next(false);
-            this.progress = new BehaviorSubject(0);
-            this.updateUserRecord(downloadUrl, MemberId);
-          });
-      }
-    });
+    // this.loading.next(true);
+    // const task = this.afs.ref('MemberImages/' + MemberId).put(file);
+    // this.progress = task.percentageChanges();
+    // task.then(data => {
+    //   if (data.bytesTransferred === data.totalBytes) {
+    //     console.log(data);
+    //     const fileRef = this.afs
+    //       .ref(data.metadata.fullPath)
+    //       .getDownloadURL()
+    //       .toPromise()
+    //       .then(downloadUrl => {
+    //         console.log(downloadUrl);
+    //         this.result.next(data);
+    //         this.loading.next(false);
+    //         this.progress = new BehaviorSubject(0);
+    //         this.updateUserRecord(downloadUrl, MemberId);
+    //       });
+    //   }
+    // });
   }
 
   private updateUserRecord(url: string, MemberId: string) {
-    this.db.doc('Members/' + MemberId).update({ picture: url });
+    //this.db.doc('Members/' + MemberId).update({ picture: url });
   }
 
   // public uploadfile(file, endpoint, data = {}) {
