@@ -35,6 +35,14 @@ import { Transaction } from '../../entities/transaction';
         width: 50%;
         flex: none;
       }
+
+      .subheaderText {
+        margin-left: 1em;
+      }
+
+      .Inactive {
+        color: red;
+      }
     `,
   ],
 })
@@ -48,6 +56,7 @@ export class MemberComponent implements OnInit {
   memberTypes = ['Officer', 'Member', 'Disabled'];
   openPlan = false;
   memberPicture = '';
+  memberStatus = 'Loading...';
   @ViewChild('fileInput') fileInput;
   filecontrol: ElementRef[];
   qrCode = '';
@@ -113,7 +122,19 @@ export class MemberComponent implements OnInit {
       .getMemberTransactionList(this.memberId)
       .subscribe((transactions) => {
         this.memberTransactions.data = transactions;
+        this.checkMemberStatus();
       });
+  }
+
+  private checkMemberStatus() {
+    // load member transactions
+    this.memberService.isMemberActive(this.memberId).subscribe((active) => {
+      if (active) {
+        this.memberStatus = 'Active';
+      } else {
+        this.memberStatus = 'Inactive';
+      }
+    });
   }
 
   private loadPlans() {
@@ -129,6 +150,7 @@ export class MemberComponent implements OnInit {
             this.openPlan = true;
           }
         });
+        this.checkMemberStatus();
       });
   }
 
@@ -225,6 +247,7 @@ export class MemberComponent implements OnInit {
       .subscribe((result) => {
         console.dir(result);
         this.loadTransactions();
+        this.updateMemberBalance();
       });
   }
 

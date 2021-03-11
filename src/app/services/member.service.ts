@@ -21,6 +21,12 @@ export class MemberService {
     );
   }
 
+  isMemberActive(memberKey): Observable<boolean> {
+    return this.http.get<boolean>(
+      environment.TonicAPIURL + 'member/isActive/' + memberKey
+    );
+  }
+
   getPlan(Id): Observable<MemberPlan> {
     return this.http.get<MemberPlan>(environment.TonicAPIURL + 'plan/' + Id);
   }

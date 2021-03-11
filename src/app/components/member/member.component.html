@@ -1,6 +1,8 @@
 <tb-card>
   <div class="headerText">{{ headerText }}</div>
-  <div class="subheaderText"></div>
+  <div class="subheaderText" [ngClass]="memberStatus">
+    {{ memberStatus }} member
+  </div>
   <div class="extraButtons">
     <button mat-mini-fab [disabled]="!form.valid" (click)="save()">
       <mat-icon aria-label="Save" title="Save">save</mat-icon>
