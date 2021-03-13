@@ -1,11 +1,11 @@
-import { AccessLog } from "./accessLog";
-import { MemberPlan } from "./memberPlan";
-import { Plan } from "./plan";
-import { Transaction } from "./transaction";
+import { AccessLog } from './accessLog';
+import { MemberPlan } from './memberPlan';
+import { Plan } from './plan';
+import { Transaction } from './transaction';
 
 export enum ROLES {
-  MEMBER = "member",
-  ADMIN = "admin",
+  MEMBER = 'member',
+  ADMIN = 'admin',
 }
 
 export class Member {
@@ -28,6 +28,12 @@ export class Member {
   phone: string;
 
   picture: string;
+
+  status: string;
+
+  statusReason: string;
+
+  balance: number;
 
   role: ROLES;
 
