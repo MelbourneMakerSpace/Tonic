@@ -32,6 +32,7 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class MemberlistComponent implements OnInit, AfterViewInit {
   public memberList = [];
+  public activeMemberCount: any = 'Counting...';
   dataSource;
 
   @ViewChild(MatSort) sort: MatSort;
@@ -61,6 +62,9 @@ export class MemberlistComponent implements OnInit, AfterViewInit {
             this.memberList = members;
             this.dataSource = new MatTableDataSource(this.memberList);
             this.dataSource.sort = this.sort;
+            this.activeMemberCount = this.memberList.filter(
+              (member) => (member.status = 'Active')
+            ).length;
           });
         }
       });
