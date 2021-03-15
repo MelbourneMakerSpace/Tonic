@@ -34,6 +34,7 @@ export class MemberlistComponent implements OnInit, AfterViewInit {
   public memberList = [];
   public activeMemberCount: any = 'Counting...';
   dataSource;
+  showInactive = false;
 
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns = ['firstname', 'lastname', 'email', 'Status'];
@@ -42,32 +43,48 @@ export class MemberlistComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {}
 
+  toggleShowInactive(toggle) {
+    console.log(toggle.checked);
+    this.showInactive = toggle.checked;
+    this.filter$.next('');
+  }
+
   ngOnInit() {
-    this.filter$
-      .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((filterstring) => {
-        if (filterstring?.length > 0) {
+    this.filter$.pipe(debounceTime(400)).subscribe((filterstring) => {
+      if (filterstring?.length > 0) {
+        this.memberList = this.memberList.filter(
+          (member) =>
+            member.firstName
+              .toLowerCase()
+              .startsWith(filterstring.toLowerCase()) ||
+            member.lastName.toLowerCase().startsWith(filterstring.toLowerCase())
+        );
+
+        if (!this.showInactive) {
           this.memberList = this.memberList.filter(
-            (member) =>
-              member.firstName
-                .toLowerCase()
-                .startsWith(filterstring.toLowerCase()) ||
-              member.lastName
-                .toLowerCase()
-                .startsWith(filterstring.toLowerCase())
+            (member) => member.status === 'Active'
           );
-          this.dataSource = new MatTableDataSource(this.memberList);
-        } else {
-          this.memberService.getMemberList().subscribe((members) => {
-            this.memberList = members;
-            this.dataSource = new MatTableDataSource(this.memberList);
-            this.dataSource.sort = this.sort;
-            this.activeMemberCount = this.memberList.filter(
-              (member) => (member.status = 'Active')
-            ).length;
-          });
         }
-      });
+
+        this.dataSource = new MatTableDataSource(this.memberList);
+      } else {
+        this.memberService.getMemberList().subscribe((members) => {
+          this.memberList = members;
+
+          if (this.showInactive) {
+            this.dataSource = new MatTableDataSource(this.memberList);
+          } else {
+            this.dataSource = members.filter(
+              (member) => member.status === 'Active'
+            );
+          }
+          this.dataSource.sort = this.sort;
+          this.activeMemberCount = this.memberList.filter(
+            (member) => member.status === 'Active'
+          ).length;
+        });
+      }
+    });
   }
 
   applyFilter(filterstring) {

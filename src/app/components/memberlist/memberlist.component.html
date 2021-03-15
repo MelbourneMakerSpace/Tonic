@@ -12,6 +12,13 @@
     <a mat-icon-button (click)="clearFilter(filter)">
       <mat-icon class="mat-18" color="primary">clear</mat-icon>
     </a>
+    <span
+      >Show Inactive:
+      <mat-slide-toggle
+        #showInactive
+        (change)="toggleShowInactive(showInactive)"
+      ></mat-slide-toggle
+    ></span>
   </div>
   <div class="content">
     <table
@@ -27,9 +34,7 @@
           First
         </th>
         <td mat-cell *matCellDef="let item">
-          <button mat-icon-button color="primary">
-            <mat-icon aria-label="Update">folder_shared</mat-icon></button
-          >{{ item.firstName }}
+          {{ item.firstName }}
         </td>
       </ng-container>
       <ng-container matColumnDef="lastname">
