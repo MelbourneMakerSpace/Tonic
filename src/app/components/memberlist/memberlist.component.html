@@ -46,12 +46,12 @@
           {{ item.status }}
         </td>
       </ng-container>
-      <ng-container matColumnDef="Balance">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="balance">
-          Balance
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="email">
+          e-mail
         </th>
         <td mat-cell *matCellDef="let item">
-          {{ item.status == 'Inactive' ? 'N/A' : (item.balance | currency) }}
+          {{ item.email }}
         </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>

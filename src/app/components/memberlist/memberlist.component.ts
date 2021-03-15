@@ -35,7 +35,7 @@ export class MemberlistComponent implements OnInit, AfterViewInit {
   dataSource;
 
   @ViewChild(MatSort) sort: MatSort;
-  displayedColumns = ['firstname', 'lastname', 'Status', 'Balance'];
+  displayedColumns = ['firstname', 'lastname', 'email', 'Status'];
   public filter$ = new BehaviorSubject(null);
   constructor(private memberService: MemberService, private router: Router) {}
 
