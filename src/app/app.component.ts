@@ -11,19 +11,20 @@ import { AuthService } from './services/security/auth.service';
   ],
 })
 export class AppComponent implements OnInit {
-  isLoggedIn = false;
+  isAuthenticated = false;
   userRole: string;
   identity: string;
   photoURL: string;
 
-  constructor(private authService: AuthService, private http: HttpClient) {}
+  constructor(private auth: AuthService) {}
 
   logout() {
-    // console.log('logging out the user...');
-    this.userRole = '';
+    this.auth.logout();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.auth.isAuthenticated$.subscribe((res) => (this.isAuthenticated = res));
+  }
 
   testgmail() {}
 

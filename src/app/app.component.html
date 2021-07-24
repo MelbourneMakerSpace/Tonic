@@ -1,17 +1,14 @@
-<!--The content below is only a placeholder and can be replaced.-->
 <div class="mainContainer" fxLayout="row">
   <div fxFlex>
-    <div fxLayout="row" fxLayoutAlign="center center" *ngIf="isLoggedIn">
+    <div fxLayout="row" fxLayoutAlign="center center" *ngIf="isAuthenticated">
       <div fxLayoutAlign="start center" fxLayoutGap="10px">
-        <img src="assets/Logo.jpg" style="height: 60px; width: auto" />
+        <img
+          src="assets/Logo.jpg"
+          style="height: 60px; width: auto"
+          routerLink="memberlist"
+        />
         <span fxHide.xs>
-          <button mat-raised-button color="primary" routerLink="home">
-            Home
-          </button>
-          <button mat-raised-button (click)="logout()">Logout</button>
-          <button mat-raised-button (click)="testMail()">Test Mail</button>
-          <button mat-raised-button (click)="testgmail()">Test gMail</button>
-          <button mat-raised-button *ngIf="userRole == 'Admin'">Admin</button>
+          <button mat-raised-button routerLink="accessLog">Access Log</button>
         </span>
       </div>
       <div
@@ -20,7 +17,7 @@
         fxLayoutAlign="end center"
         fxHide.xs
       >
-        <img src="{{ photoURL }}" style="height: 40px" /> {{ identity }}
+        <button mat-raised-button (click)="logout()">Logout</button>
       </div>
     </div>
     <router-outlet></router-outlet>

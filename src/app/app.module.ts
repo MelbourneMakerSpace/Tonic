@@ -31,6 +31,7 @@ import { AuthService } from './services/security/auth.service';
 import { PlanService } from './services/plan.service';
 import { KeyService } from './services/key.service';
 import { TransactionService } from './services/transaction.service';
+import { AccessLogComponent } from './components/access-log/access-log.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { TransactionService } from './services/transaction.service';
     AlertDialogComponent,
     AddKeyComponent,
     AddTransactionComponent,
+    AccessLogComponent,
     // QrComponent
   ],
   imports: [

@@ -1,12 +1,12 @@
-import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
-import { AuthService } from "../../../services/security/auth.service";
-import { take } from "rxjs/operators";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../services/security/auth.service';
+import { take } from 'rxjs/operators';
 
 @Component({
-  selector: "app-login",
-  templateUrl: "./login.component.html",
+  selector: 'app-login',
+  templateUrl: './login.component.html',
   styles: [],
 })
 export class LoginComponent implements OnInit {
@@ -21,8 +21,8 @@ export class LoginComponent implements OnInit {
     //this.auth.logout();
 
     this.form = this.fb.group({
-      email: ["", Validators.required],
-      password: ["", Validators.required],
+      email: ['', Validators.required],
+      password: ['', Validators.required],
     });
   }
 
@@ -36,7 +36,11 @@ export class LoginComponent implements OnInit {
       .pipe(take(1))
       .subscribe(
         (result) => {
-          this.router.navigate(["memberlist"]);
+          if (result.member.name != 'EntityNotFound') {
+            this.router.navigate(['memberlist']);
+          } else {
+            this.loginError = 'Invalid username or password';
+          }
         },
         (err) => {
           console.log(err);
