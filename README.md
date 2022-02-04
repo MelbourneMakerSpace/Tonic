@@ -20,7 +20,7 @@ git clone https://github.com/MelbourneMakerSpace/Tonic.git
 
 6.  npm install -g @angular/cli
 
-7.  npm install -g firebase
+7.  //no longer using firebase - ignore
 
 8.  npm install
 
@@ -31,26 +31,6 @@ git clone https://github.com/MelbourneMakerSpace/Tonic.git
 11. this will transpile the code and start up a web server on port 4200.
 
 visit http://localhost:4200 to see the web app.
-
-12. This project uses Google Firebase as the back end. Modify the environments.js file to use your firebase project.
-
----
-
-**Firebase Database Setup**
-
-1.  Sign up at firebase.google.com
-
-1.  I recommend using a Google account with Gmail so you can use it as a relay. See e-mail setup below.
-
-1.  Create a new firebase project on the main screen
-
-1.  Go to Database and make sure Cloud Firestore is selected as your database
-
-1.  On the project overview page, click the "Add firebase to your web app" button and copy your config information into the environment.ts file.
-
-1.  Go to the Authentication tab in your Firebase console, and click set up sign-in method. You should enable Email/password at a minimum. Login with Google is also supported.
-
-1.  This completes the firebase database setup.
 
 ---
 

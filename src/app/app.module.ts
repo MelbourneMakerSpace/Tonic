@@ -32,6 +32,8 @@ import { PlanService } from './services/plan.service';
 import { KeyService } from './services/key.service';
 import { TransactionService } from './services/transaction.service';
 import { AccessLogComponent } from './components/access-log/access-log.component';
+import { EquipmentlistComponent } from './components/equipmentlist/equipmentlist.component';
+import { EquipmentService } from './services/equipment.service';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,7 @@ import { AccessLogComponent } from './components/access-log/access-log.component
     AddKeyComponent,
     AddTransactionComponent,
     AccessLogComponent,
+    EquipmentlistComponent,
     // QrComponent
   ],
   imports: [
@@ -64,6 +67,7 @@ import { AccessLogComponent } from './components/access-log/access-log.component
     PlanService,
     KeyService,
     UploadFileService,
+    EquipmentService,
     TransactionService,
     {
       provide: HTTP_INTERCEPTORS,

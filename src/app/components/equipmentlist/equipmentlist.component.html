@@ -1,0 +1,8 @@
+<div
+  *ngFor="let eq of equipmentList"
+  style="display: grid; grid-template-columns: repeat(3, 1fr)"
+>
+  <span>{{ eq.equipmentName }}</span>
+  <span>{{ eq.equipmentDescription }}</span>
+  <span>{{ eq.daysBetweenMaintenance }}</span>
+</div>
