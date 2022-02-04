@@ -302,7 +302,6 @@ export class MemberComponent implements OnInit {
   }
 
   save() {
-    console.dir(this.form);
     this.memberService
       .saveMember(this.form.value)
       .pipe(take(1))

@@ -18,5 +18,5 @@ export const environment = {
   //   "https://us-central1-makertonic321.cloudfunctions.net/",
   SiteURL: 'http://localhost:4200',
   AdminEmail: 'admin@melbournemakerspace.org',
-  TonicAPIURL: 'http://crm.melbournemakerspace.com:5001/',
+  TonicAPIURL: 'http://localhost:5001/',
 };
