@@ -5,6 +5,7 @@ import { LoginComponent } from './components/admin/login/login.component';
 import { MemberlistComponent } from './components/memberlist/memberlist.component';
 import { MemberComponent } from './components/member/member.component';
 import { EquipmentlistComponent } from './components/equipmentlist/equipmentlist.component';
+import { AccessLogComponent } from './components/access-log/access-log.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'memberlist', component: MemberlistComponent },
   { path: 'member/:id', component: MemberComponent },
   { path: 'app-login', component: LoginComponent },
+  { path: 'accessLog', component: AccessLogComponent },
   { path: 'equipmentlist', component: EquipmentlistComponent }
 ];
 
