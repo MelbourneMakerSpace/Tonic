@@ -1,1 +1,70 @@
-<p>access-log works!</p>
+<!-- <p>access-log works!</p> -->
+
+<tb-card>
+  <div class="headerText">Access Log - Past Week</div>
+  <div class="content">
+    <table
+      mat-table
+      matSort
+      class="bglightgray"
+      #table
+      [dataSource]="dataSource"
+      style="width: 100%"
+    >
+      <ng-container matColumnDef="firstname">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="firstName">
+          First
+        </th>
+        <td mat-cell *matCellDef="let item">
+          {{ item.member.firstName }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="lastname">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="lastName">
+          Last
+        </th>
+        <td mat-cell *matCellDef="let item">{{ item.member.lastName }}</td>
+      </ng-container>
+      <ng-container matColumnDef="Status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="status">
+          Status
+        </th>
+        <td mat-cell *matCellDef="let item">
+          {{ item.member.status }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="accessGranted">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="accessGranted">
+          Access Granted
+        </th>
+        <td mat-cell *matCellDef="let item">
+          {{ item.accessGranted }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="message">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="message">
+          Message
+        </th>
+        <td mat-cell *matCellDef="let item">
+          {{ item.message }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="timestamp">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="timestamp">
+          Timestamp
+        </th>
+        <td mat-cell *matCellDef="let item">
+          {{ item.timestamp }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr
+        mat-row
+        class="trHover"
+        [routerLink]="['/member/' + row.id]"
+        *matRowDef="let row; columns: displayedColumns"
+      ></tr>
+    </table>
+  </div>
+</tb-card>
