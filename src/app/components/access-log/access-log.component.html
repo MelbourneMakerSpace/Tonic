@@ -1,5 +1,4 @@
 <!-- <p>access-log works!</p> -->
-
 <tb-card>
   <div class="headerText">Access Log - Past Week</div>
   <div class="content">
@@ -19,11 +18,11 @@
           {{ item.member.firstName }}
         </td>
       </ng-container>
-      <ng-container matColumnDef="lastname">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="lastName">
-          Last
-        </th>
-        <td mat-cell *matCellDef="let item">{{ item.member.lastName }}</td>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="Name">Name</th>
+        <td mat-cell *matCellDef="let item">
+          {{ item.member.firstName + ' ' + item.member.lastName }}
+        </td>
       </ng-container>
       <ng-container matColumnDef="Status">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="status">
@@ -33,12 +32,24 @@
           {{ item.member.status }}
         </td>
       </ng-container>
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="email">Email</th>
+        <td mat-cell *matCellDef="let item">({{ item.member.email }})</td>
+      </ng-container>
       <ng-container matColumnDef="accessGranted">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="accessGranted">
-          Access Granted
+          Access Granted?
         </th>
         <td mat-cell *matCellDef="let item">
-          {{ item.accessGranted }}
+          <mat-icon
+            *ngIf="item.accessGranted; else elseBlock"
+            class="green-check"
+            >check</mat-icon
+          >
+          <ng-template #elseBlock
+            ><mat-icon class="red-lock">lock</mat-icon></ng-template
+          >
+          <!--? 'cierto' : 'falso' }} -->
         </td>
       </ng-container>
       <ng-container matColumnDef="message">
@@ -49,12 +60,10 @@
           {{ item.message }}
         </td>
       </ng-container>
-      <ng-container matColumnDef="timestamp">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="timestamp">
-          Timestamp
-        </th>
+      <ng-container matColumnDef="time">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="time">Time</th>
         <td mat-cell *matCellDef="let item">
-          {{ item.timestamp }}
+          {{ item.timestamp | date: 'EEE M/dd h:mm a':'EST':'en-US' }}
         </td>
       </ng-container>
 
