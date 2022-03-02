@@ -9,3 +9,6 @@
   margin-left: 20%;
   color: map-get($map: $tonic-app-warn, $key: 500);
 }
+.mailto {
+  color: map-get($map: $tonic-app-primary, $key: 500);
+}

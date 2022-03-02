@@ -15,8 +15,6 @@ export class AccessLogComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns = [
-    // 'firstname',
-    // 'lastname',
     'name',
     'Status',
     'accessGranted',
@@ -32,8 +30,6 @@ export class AccessLogComponent implements OnInit {
   ngOnInit(): void {
     this.accessLogService.getAccessLog().subscribe((accessList) => {
       this.accessLogReport = accessList;
-      // console.log(`accessLogReport: ${this.accessLogReport}`);
-      // console.log(`accessLogReport: ${this.accessLogReport[0].message}`);
       this.dataSource = new MatTableDataSource(this.accessLogReport);
     });
   }
