@@ -77,6 +77,7 @@ export class MemberlistComponent implements OnInit, AfterViewInit {
             this.dataSource = members.filter(
               (member) => member.status === 'Active'
             );
+            this.dataSource = new MatTableDataSource(this.memberList);
           }
           this.dataSource.sort = this.sort;
           this.activeMemberCount = this.memberList.filter(

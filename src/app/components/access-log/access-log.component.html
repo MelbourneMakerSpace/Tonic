@@ -42,9 +42,10 @@
             *ngIf="item.accessGranted; else elseBlock"
             class="green-check"
             >check</mat-icon
-          >
+          ><span class="cdk-visually-hidden">Access Granted</span>
           <ng-template #elseBlock
-            ><mat-icon class="red-lock">lock</mat-icon></ng-template
+            ><mat-icon class="red-lock">lock</mat-icon
+            ><span class="cdk-visually-hidden">Access Denied</span></ng-template
           >
         </td>
       </ng-container>
