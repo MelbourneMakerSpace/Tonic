@@ -67,17 +67,17 @@ export class MemberlistComponent implements OnInit, AfterViewInit {
         }
 
         this.dataSource = new MatTableDataSource(this.memberList);
+        this.dataSource.sort = this.sort;
       } else {
         this.memberService.getMemberList().subscribe((members) => {
           this.memberList = members;
 
-          if (this.showInactive) {
-            this.dataSource = new MatTableDataSource(this.memberList);
-          } else {
-            this.dataSource = members.filter(
+          if (!this.showInactive) {
+            this.memberList = members.filter(
               (member) => member.status === 'Active'
             );
           }
+          this.dataSource = new MatTableDataSource(this.memberList);
           this.dataSource.sort = this.sort;
           this.activeMemberCount = this.memberList.filter(
             (member) => member.status === 'Active'
@@ -96,7 +96,7 @@ export class MemberlistComponent implements OnInit, AfterViewInit {
     filterInput.value = '';
   }
 
-  addMember(event) {
+  addMember(_event) {
     this.router.navigate(['member/New']);
   }
 }
