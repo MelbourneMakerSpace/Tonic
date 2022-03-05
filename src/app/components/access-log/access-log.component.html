@@ -10,30 +10,20 @@
       [dataSource]="dataSource"
       style="width: 100%"
     >
-      <ng-container matColumnDef="firstname">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="firstName">
-          First
-        </th>
-        <td mat-cell *matCellDef="let item">
-          {{ item.member.firstName }}
-        </td>
-      </ng-container>
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="Name">Name</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
         <td mat-cell *matCellDef="let item">
           {{ item.member.firstName + ' ' + item.member.lastName }}
         </td>
       </ng-container>
-      <ng-container matColumnDef="Status">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="status">
-          Status
-        </th>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
         <td mat-cell *matCellDef="let item">
           {{ item.member.status }}
         </td>
       </ng-container>
       <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="email">Email</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
         <td mat-cell *matCellDef="let item">
           <a
             href="mailto:{{
@@ -44,7 +34,7 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="accessGranted">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="accessGranted">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
           Access Granted?
         </th>
         <td mat-cell *matCellDef="let item">
@@ -59,15 +49,13 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="message">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="message">
-          Message
-        </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Message</th>
         <td mat-cell *matCellDef="let item">
           {{ item.message }}
         </td>
       </ng-container>
-      <ng-container matColumnDef="time">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="time">Time</th>
+      <ng-container matColumnDef="timestamp">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
         <td mat-cell *matCellDef="let item">
           {{ item.timestamp | date: 'EEE M/dd h:mm a':'EST':'en-US' }}
         </td>
