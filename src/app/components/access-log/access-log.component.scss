@@ -12,21 +12,16 @@ $red500: map-get(
 
 .green-check {
   margin-left: 20%;
-  color: map-get($map: $tonic-app-primary, $key: 500);
+  color: $green500;
 }
 .red-lock {
   margin-left: 20%;
-  color: map-get($map: $tonic-app-warn, $key: 500);
+  color: $red500;
 }
-.mailto {
-  color: map-get($map: $tonic-app-primary, $key: 500);
-}
-
+.mailto,
 .green-trend {
-  // color: $green500;
-  color: map-get($map: $tonic-app-primary, $key: 500);
+  color: $green500;
 }
 .red-trend {
-  // color: $red500;
-  color: map-get($map: $tonic-app-warn, $key: 500);
+  color: $red500;
 }
