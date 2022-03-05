@@ -5,6 +5,7 @@
     <table
       mat-table
       matSort
+      matSortDisableClear="true"
       class="bglightgray"
       #table
       [dataSource]="dataSource"
@@ -18,8 +19,18 @@
       </ng-container>
       <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-        <td mat-cell *matCellDef="let item">
+        <!-- <td mat-cell *matCellDef="let item">
           {{ item.member.status }}
+        </td> -->
+        <td mat-cell *matCellDef="let item">
+          <mat-icon
+            *ngIf="item.member.status == 'Active'; else elseBlock"
+            class="green-trend"
+            >trending_up</mat-icon
+          >
+          <ng-template #elseBlock
+            ><mat-icon class="red-trend">trending_flat</mat-icon></ng-template
+          >
         </td>
       </ng-container>
       <ng-container matColumnDef="email">
