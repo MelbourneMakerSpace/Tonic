@@ -30,6 +30,7 @@ export class AccessLogComponent implements OnInit {
 
   ngOnInit(): void {
     this.accessLogService.getAccessLog().subscribe((accessList) => {
+      console.log(`accessList: ${JSON.stringify(accessList[0].member.id)}`);
       this.accessLogReport = accessList;
       this.dataSource = new MatTableDataSource(this.accessLogReport);
       this.dataSource.sort = this.sort;

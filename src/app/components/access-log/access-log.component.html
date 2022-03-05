@@ -14,14 +14,15 @@
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
         <td mat-cell *matCellDef="let item">
-          {{ item.member.firstName + ' ' + item.member.lastName }}
+          <a
+            class="clickable-name"
+            [routerLink]="['/member/' + item.member.id]"
+            >{{ item.member.firstName + ' ' + item.member.lastName }}</a
+          >
         </td>
       </ng-container>
       <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-        <!-- <td mat-cell *matCellDef="let item">
-          {{ item.member.status }}
-        </td> -->
         <td mat-cell *matCellDef="let item">
           <mat-icon
             *ngIf="item.member.status == 'Active'; else elseBlock"
