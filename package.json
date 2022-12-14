@@ -29,7 +29,7 @@
     "@angular/router": "11.2.3",
     "@google-cloud/firestore": "^4.2.0",
     "core-js": "^2.4.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "firebase": "^8.2.7",
     "qrcode-generator": "^1.4.1",
     "rxjs": "^6.6.2",
