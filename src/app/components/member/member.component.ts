@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MemberService } from '../../services/member.service';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -47,7 +47,7 @@ import { Transaction } from '../../entities/transaction';
   ],
 })
 export class MemberComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   headerText = '';
   memberPlans = new MatTableDataSource<MemberPlan>();
   memberKeys = new MatTableDataSource<Key>();
@@ -65,7 +65,7 @@ export class MemberComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private activatedRoute: ActivatedRoute,
     private memberService: MemberService,
     private keyService: KeyService,

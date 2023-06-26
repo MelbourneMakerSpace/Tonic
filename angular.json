@@ -109,7 +109,6 @@
       }
     }
   },
-  "defaultProject": "carbon-calc",
   "schematics": {
     "@schematics/angular:class": {
       "skipTests": true

@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { TransactionService } from '../../services/transaction.service';
 
 @Component({
@@ -9,14 +9,14 @@ import { TransactionService } from '../../services/transaction.service';
   styles: [],
 })
 export class AddTransactionComponent implements OnInit {
-  transactionForm: FormGroup;
+  transactionForm: UntypedFormGroup;
   error = '';
   methods = ['Cash', 'Paypal', 'Credit Card', 'Check'];
   constructor(
     public dialogRef: MatDialogRef<AddTransactionComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private transactionService: TransactionService,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) {
     this.transactionForm = this.fb.group({
       id: [''],

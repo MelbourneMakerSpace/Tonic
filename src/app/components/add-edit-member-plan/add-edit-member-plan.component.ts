@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Input } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MemberService } from '../../services/member.service';
 import { PlanService } from '../../services/plan.service';
 import { Observable } from 'rxjs';
@@ -16,14 +16,14 @@ export class AddEditMemberPlanComponent implements OnInit {
   memberKey;
 
   plans = new Observable<Plan[]>();
-  planForm: FormGroup;
+  planForm: UntypedFormGroup;
   error = '';
 
   constructor(
     public dialogRef: MatDialogRef<AddEditMemberPlanComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private memberService: MemberService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private planService: PlanService
   ) {
     this.planForm = this.fb.group({
