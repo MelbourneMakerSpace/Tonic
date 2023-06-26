@@ -4,21 +4,21 @@ import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms
 import { MemberService } from '../../services/member.service';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { AddEditMemberPlanComponent } from '../add-edit-member-plan/add-edit-member-plan.component';
 import { AlertDialogComponent } from '../shared/alert-dialog/alert-dialog.component';
 import { AddKeyComponent } from '../add-key/add-key.component';
 import { AddTransactionComponent } from '../add-transaction/add-transaction.component';
 import { UploadFileService } from '../../services/upload-service.service';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatLegacySlideToggle as MatSlideToggle } from '@angular/material/legacy-slide-toggle';
 import * as qr from 'qrcode-generator';
 import { Key } from '../../entities/memberKey';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Member } from '../../entities/member';
 import { MemberPlan } from '../../entities/memberPlan';
 import { KeyService } from '../../services/key.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { TransactionService } from '../../services/transaction.service';
 import { Transaction } from '../../entities/transaction';
 
