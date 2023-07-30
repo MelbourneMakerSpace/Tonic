@@ -1,7 +1,10 @@
 <!-- <p>access-log works!</p> -->
 <tb-card>
-  <div class="headerText">Access Log - Past Week</div>
+  <div class="headerText">Access Log - Last 30 days</div>
   <div class="content">
+    <div *ngIf="dataSource.data.length == 0">
+      <div class="noData">No activity in the past 30 days</div>
+    </div>
     <table
       mat-table
       matSort
@@ -14,11 +17,9 @@
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
         <td mat-cell *matCellDef="let item">
-          <a
-            class="clickable-name"
-            [routerLink]="['/member/' + item.member.id]"
-            >{{ item.member.firstName + ' ' + item.member.lastName }}</a
-          >
+          <a class="clickable-name">{{
+            item.member.firstName + ' ' + item.member.lastName
+          }}</a>
         </td>
       </ng-container>
       <ng-container matColumnDef="status">
@@ -69,7 +70,7 @@
       <ng-container matColumnDef="timestamp">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
         <td mat-cell *matCellDef="let item">
-          {{ item.timestamp | date: 'EEE M/dd h:mm a':'EST':'en-US' }}
+          {{ item.timestamp | date : 'EEE M/dd h:mm a' : 'EST' : 'en-US' }}
         </td>
       </ng-container>
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { AccessLog } from '../../../app/entities/accessLog';
 import { AccessLogService } from '../../services/access-log.service';
@@ -30,7 +30,7 @@ export class AccessLogComponent implements OnInit {
 
   ngOnInit(): void {
     this.accessLogService.getAccessLog().subscribe((accessList) => {
-      console.log(`accessList: ${JSON.stringify(accessList[0].member.id)}`);
+      //console.log(`accessList: ${JSON.stringify(accessList[0].member.id)}`);
       this.accessLogReport = accessList;
       this.dataSource = new MatTableDataSource(this.accessLogReport);
       this.dataSource.sort = this.sort;
