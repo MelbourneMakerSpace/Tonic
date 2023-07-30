@@ -5,6 +5,7 @@
 /dist-server
 /tmp
 /out-tsc
+/.angular
 
 #cloud function config
 functions/.runtimeconfig.json
@@ -49,3 +50,4 @@ package-lock.json
 # System Files
 .DS_Store
 Thumbs.db
+.angular/cache/15.2.8/angular-webpack/1e1b0e4de61c00f443ebb4212e0d5ed1c35ae375/0.pack
