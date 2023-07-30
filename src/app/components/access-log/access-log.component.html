@@ -2,7 +2,8 @@
 <tb-card>
   <div class="headerText">Access Log - Last 30 days</div>
   <div class="content">
-    <div *ngIf="dataSource.data.length == 0">
+    <div *ngIf="loading">Loading...</div>
+    <div *ngIf="dataSource?.data?.length == 0">
       <div class="noData">No activity in the past 30 days</div>
     </div>
     <table
@@ -13,6 +14,7 @@
       #table
       [dataSource]="dataSource"
       style="width: 100%"
+      *ngIf="!loading && dataSource?.data?.length > 0"
     >
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>

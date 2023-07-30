@@ -13,6 +13,7 @@ import { AccessLogService } from '../../services/access-log.service';
 export class AccessLogComponent implements OnInit {
   public accessLogReport = [];
   dataSource;
+  public loading = true;
 
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns = [
@@ -34,6 +35,7 @@ export class AccessLogComponent implements OnInit {
       this.accessLogReport = accessList;
       this.dataSource = new MatTableDataSource(this.accessLogReport);
       this.dataSource.sort = this.sort;
+      this.loading = false;
 
       // Required to sort by columns not top-level
       this.dataSource.sortingDataAccessor = (
