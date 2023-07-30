@@ -1,6 +1,10 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import {
+  UntypedFormGroup,
+  UntypedFormBuilder,
+  Validators,
+} from '@angular/forms';
 import { MemberService } from '../../services/member.service';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -118,12 +122,12 @@ export class MemberComponent implements OnInit {
 
   private loadTransactions() {
     // load member transactions
-    this.transactionService
-      .getMemberTransactionList(this.memberId)
-      .subscribe((transactions) => {
-        this.memberTransactions.data = transactions;
-        this.checkMemberStatus();
-      });
+    // this.transactionService
+    //   .getMemberTransactionList(this.memberId)
+    //   .subscribe((transactions) => {
+    //     this.memberTransactions.data = transactions;
+    //     this.checkMemberStatus();
+    //   });
   }
 
   private checkMemberStatus() {

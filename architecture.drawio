@@ -1,0 +1,105 @@
+<mxfile host="Electron" modified="2023-07-14T19:18:31.611Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.1 Chrome/112.0.5615.204 Electron/24.6.1 Safari/537.36" etag="nSPS82mA-hjt4chUhoIO" version="21.6.1" type="device" pages="2">
+  <diagram name="Page-1" id="Pep5qy3tK6gyyEPntws0">
+    <mxGraphModel dx="694" dy="357" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="MjaTQNwD1__m_ZSwE3v_-1" value="Front End&lt;br&gt;Angular" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="20" y="30" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MjaTQNwD1__m_ZSwE3v_-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" parent="1" source="MjaTQNwD1__m_ZSwE3v_-2" target="MjaTQNwD1__m_ZSwE3v_-3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MjaTQNwD1__m_ZSwE3v_-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="MjaTQNwD1__m_ZSwE3v_-2" target="MjaTQNwD1__m_ZSwE3v_-1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MjaTQNwD1__m_ZSwE3v_-2" value="API - Node JS&lt;br&gt;Controllers" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="200" y="30" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MjaTQNwD1__m_ZSwE3v_-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" parent="1" source="MjaTQNwD1__m_ZSwE3v_-3" target="MjaTQNwD1__m_ZSwE3v_-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MjaTQNwD1__m_ZSwE3v_-3" value="Type ORM&lt;br&gt;Database Access" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="200" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MjaTQNwD1__m_ZSwE3v_-5" value="MySql" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" parent="1" vertex="1">
+          <mxGeometry x="230" y="230" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="MjaTQNwD1__m_ZSwE3v_-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" parent="1" source="MjaTQNwD1__m_ZSwE3v_-7" target="MjaTQNwD1__m_ZSwE3v_-8" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MjaTQNwD1__m_ZSwE3v_-7" value="Paypal &lt;br&gt;Reporting" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" parent="1" vertex="1">
+          <mxGeometry x="550" y="30" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MjaTQNwD1__m_ZSwE3v_-10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="MjaTQNwD1__m_ZSwE3v_-8" target="MjaTQNwD1__m_ZSwE3v_-2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MjaTQNwD1__m_ZSwE3v_-8" value="CRON Job&lt;br&gt;Daily pull from&lt;br&gt;Paypal" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
+          <mxGeometry x="380" y="30" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="jwCP4xlp6QHyNtJcWnSg" name="Page-2">
+    <mxGraphModel dx="762" dy="590" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="sBrA2-qNJsGrmwpL2Xam-9" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="200" y="180" width="380" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="sBrA2-qNJsGrmwpL2Xam-1" value="UI&lt;br&gt;Presentation Layer&lt;br&gt;(HTML)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="200" y="50" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sBrA2-qNJsGrmwpL2Xam-2" value="UI Logic&lt;br&gt;Layer&lt;br&gt;(Typescript)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="340" y="50" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sBrA2-qNJsGrmwpL2Xam-3" value="CSS" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="480" y="50" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sBrA2-qNJsGrmwpL2Xam-4" value="Angular CLI" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="210" y="190" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="sBrA2-qNJsGrmwpL2Xam-5" value="Converts TS to Javascript" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="210" y="220" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sBrA2-qNJsGrmwpL2Xam-6" value="Tree Shaking&lt;br&gt;Removes all Javascript not in use" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="330" y="220" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sBrA2-qNJsGrmwpL2Xam-7" value="Minifies the code and CSS" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="450" y="220" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sBrA2-qNJsGrmwpL2Xam-8" value="NPM (Node Package Manager)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="620" y="150" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="sBrA2-qNJsGrmwpL2Xam-12" value="Node" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="200" y="150" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="sBrA2-qNJsGrmwpL2Xam-13" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="620" y="180" width="410" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="sBrA2-qNJsGrmwpL2Xam-14" value="Installs / Uninstalls Packages" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="630" y="190" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sBrA2-qNJsGrmwpL2Xam-16" value="Package.json" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="620" y="270" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="sBrA2-qNJsGrmwpL2Xam-18" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="620" y="290" width="410" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="sBrA2-qNJsGrmwpL2Xam-19" value="Manages Versions" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="630" y="300" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sBrA2-qNJsGrmwpL2Xam-20" value="Manages Scripts" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="765" y="300" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sBrA2-qNJsGrmwpL2Xam-21" value="Other Configuration" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="900" y="300" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sBrA2-qNJsGrmwpL2Xam-22" value="Tonic Services&lt;br&gt;API" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="200" y="320" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
