@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MemberService } from '../../services/member.service';
 import { KeyService } from '../../services/key.service';
 
@@ -10,12 +10,12 @@ import { KeyService } from '../../services/key.service';
   styles: [],
 })
 export class AddKeyComponent implements OnInit {
-  keyForm: FormGroup;
+  keyForm: UntypedFormGroup;
   error = '';
   constructor(
     public dialogRef: MatDialogRef<AddKeyComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private keyService: KeyService
   ) {
     this.keyForm = this.fb.group({

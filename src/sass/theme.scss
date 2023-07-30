@@ -1,4 +1,5 @@
-@import '~@angular/material/theming';
+@use '@angular/material' as mat;
+@import '@angular/material/theming';
 // Plus imports for other components in your app.
 
 //tonic-green generated at http://mcg.mbitson.com/#!?tonicgreen=%233ea849&themename=tonic-greeen with material 2 export
@@ -37,21 +38,30 @@ $tonic-green: (
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
-@include mat-core();
+// TODO(v15): As of v15 mat.legacy-core no longer includes default typography styles.
+//  The following line adds:
+//    1. Default typography styles for all components
+//    2. Styles for typography hierarchy classes (e.g. .mat-headline-1)
+//  If you specify typography styles for the components you use elsewhere, you should delete this line.
+//  If you don't need the default component typographies but still want the hierarchy styles,
+//  you can delete this line and instead use:
+//    `@include mat.legacy-typography-hierarchy(mat.define-legacy-typography-config());`
+@include mat.all-legacy-component-typographies();
+@include mat.legacy-core();
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://www.google.com/design/spec/style/color.html
-$tonic-app-primary: mat-palette($tonic-green);
-$tonic-app-accent: mat-palette($tonic-green, A200, A100, A400);
+$tonic-app-primary: mat.define-palette($tonic-green);
+$tonic-app-accent: mat.define-palette($tonic-green, A200, A100, A400);
 // The warn palette is optional (defaults to red).
-$tonic-app-warn: mat-palette($mat-red);
+$tonic-app-warn: mat.define-palette(mat.$red-palette);
 // Create the theme object (a Sass map containing all of the palettes).
-$tonic-app-theme: mat-light-theme(
+$tonic-app-theme: mat.define-light-theme(
   $tonic-app-primary,
   $tonic-app-accent,
   $tonic-app-warn
 );
-@include angular-material-theme($tonic-app-theme);
+@include mat.all-legacy-component-themes($tonic-app-theme);
 .bggray {
   background-color: #e1e2e1;
 }

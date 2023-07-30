@@ -1,24 +1,28 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {
+  UntypedFormGroup,
+  UntypedFormBuilder,
+  Validators,
+} from '@angular/forms';
 import { MemberService } from '../../services/member.service';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { AddEditMemberPlanComponent } from '../add-edit-member-plan/add-edit-member-plan.component';
 import { AlertDialogComponent } from '../shared/alert-dialog/alert-dialog.component';
 import { AddKeyComponent } from '../add-key/add-key.component';
 import { AddTransactionComponent } from '../add-transaction/add-transaction.component';
 import { UploadFileService } from '../../services/upload-service.service';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatLegacySlideToggle as MatSlideToggle } from '@angular/material/legacy-slide-toggle';
 import * as qr from 'qrcode-generator';
 import { Key } from '../../entities/memberKey';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Member } from '../../entities/member';
 import { MemberPlan } from '../../entities/memberPlan';
 import { KeyService } from '../../services/key.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { TransactionService } from '../../services/transaction.service';
 import { Transaction } from '../../entities/transaction';
 
@@ -47,7 +51,7 @@ import { Transaction } from '../../entities/transaction';
   ],
 })
 export class MemberComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   headerText = '';
   memberPlans = new MatTableDataSource<MemberPlan>();
   memberKeys = new MatTableDataSource<Key>();
@@ -65,7 +69,7 @@ export class MemberComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private activatedRoute: ActivatedRoute,
     private memberService: MemberService,
     private keyService: KeyService,
@@ -118,12 +122,12 @@ export class MemberComponent implements OnInit {
 
   private loadTransactions() {
     // load member transactions
-    this.transactionService
-      .getMemberTransactionList(this.memberId)
-      .subscribe((transactions) => {
-        this.memberTransactions.data = transactions;
-        this.checkMemberStatus();
-      });
+    // this.transactionService
+    //   .getMemberTransactionList(this.memberId)
+    //   .subscribe((transactions) => {
+    //     this.memberTransactions.data = transactions;
+    //     this.checkMemberStatus();
+    //   });
   }
 
   private checkMemberStatus() {

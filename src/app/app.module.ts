@@ -37,52 +37,46 @@ import { EquipmentService } from './services/equipment.service';
 import { AccessLogService } from './services/access-log.service';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    MemberlistComponent,
-    TbCardComponent,
-    MemberComponent,
-    AddEditMemberPlanComponent,
-    AlertDialogComponent,
-    AddKeyComponent,
-    AddTransactionComponent,
-    AccessLogComponent,
-    EquipmentlistComponent,
-    // QrComponent
-  ],
-  imports: [
-    AppRoutingModule,
-    HttpClientModule,
-    AppMaterialModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    FlexLayoutModule,
-    AppRoutingModule,
-    AppMaterialModule,
-    ReactiveFormsModule,
-  ],
-  providers: [
-    AuthService,
-    AccessLogService,
-    MemberService,
-    PlanService,
-    KeyService,
-    UploadFileService,
-    EquipmentService,
-    TransactionService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-    },
-  ],
-  entryComponents: [
-    AddEditMemberPlanComponent,
-    AlertDialogComponent,
-    AddKeyComponent,
-    AddTransactionComponent,
-  ],
-  bootstrap: [AppComponent],
+    declarations: [
+        AppComponent,
+        LoginComponent,
+        MemberlistComponent,
+        TbCardComponent,
+        MemberComponent,
+        AddEditMemberPlanComponent,
+        AlertDialogComponent,
+        AddKeyComponent,
+        AddTransactionComponent,
+        AccessLogComponent,
+        EquipmentlistComponent,
+        // QrComponent
+    ],
+    imports: [
+        AppRoutingModule,
+        HttpClientModule,
+        AppMaterialModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        FlexLayoutModule,
+        AppRoutingModule,
+        AppMaterialModule,
+        ReactiveFormsModule,
+    ],
+    providers: [
+        AuthService,
+        AccessLogService,
+        MemberService,
+        PlanService,
+        KeyService,
+        UploadFileService,
+        EquipmentService,
+        TransactionService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true,
+        },
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}
