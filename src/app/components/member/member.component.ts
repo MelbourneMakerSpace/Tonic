@@ -122,12 +122,12 @@ export class MemberComponent implements OnInit {
 
   private loadTransactions() {
     // load member transactions
-    // this.transactionService
-    //   .getMemberTransactionList(this.memberId)
-    //   .subscribe((transactions) => {
-    //     this.memberTransactions.data = transactions;
-    //     this.checkMemberStatus();
-    //   });
+    this.transactionService
+      .getMemberTransactionList(this.memberId)
+      .subscribe((transactions) => {
+        this.memberTransactions.data = transactions;
+        this.checkMemberStatus();
+      });
   }
 
   private checkMemberStatus() {

@@ -11,7 +11,7 @@ import { Member } from '../../entities/member';
 
 @Injectable()
 export class AuthService {
-  isAuthenticated: boolean;
+  //isAuthenticated: boolean;
   private _authToken = '';
   public get authToken() {
     if (this._authToken == '') {
