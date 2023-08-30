@@ -34,7 +34,6 @@ export class MemberlistComponent implements OnInit, AfterViewInit {
   public memberList = [];
   public activeMemberCount: any = 'Counting...';
   dataSource;
-  showInactive = false;
 
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns = ['firstname', 'lastname', 'email', 'Status'];
@@ -47,6 +46,15 @@ export class MemberlistComponent implements OnInit, AfterViewInit {
     console.log(toggle.checked);
     this.showInactive = toggle.checked;
     this.filter$.next('');
+  }
+
+  public get showInactive(): boolean {
+    console.log(`showInactive: ${sessionStorage.getItem('showInactive')}`);
+    return sessionStorage.getItem('showInactive') == '1' ? true : false;
+  }
+
+  public set showInactive(flag: boolean) {
+    sessionStorage.setItem('showInactive', flag ? '1' : '0');
   }
 
   ngOnInit() {
