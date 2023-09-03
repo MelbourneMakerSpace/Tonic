@@ -5,19 +5,17 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Attach",
       "type": "chrome",
-      "request": "attach",
-      "port": 9222,
-      "url": "http://localhost:4200",
-      "webRoot": "${workspaceFolder}"
-    },
-    {
-      "name": "Launch localhost",
-      "type": "chrome",
+      "name": "Chrome Debug",
       "request": "launch",
       "url": "http://localhost:4200",
-      "webRoot": "${workspaceFolder}"
+      "skipFiles": ["<node_internals>/**", "node_modules/**"],
+      "webRoot": "${workspaceFolder}",
+      "sourceMaps": true,
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ]
     }
   ]
 }

@@ -6,17 +6,17 @@
         matInput
         (keyup)="applyFilter($event.target.value)"
         placeholder="Filter"
-        #filter
+        [(value)]="currentListFilter"
       />
     </mat-form-field>
-    <a mat-icon-button (click)="clearFilter(filter)">
+    <a mat-icon-button (click)="clearFilter()">
       <mat-icon class="mat-18" color="primary">clear</mat-icon>
     </a>
     <span
       >Show Inactive:
       <mat-slide-toggle
-        #showInactive
-        (change)="toggleShowInactive(showInactive)"
+        [checked]="showInactive"
+        (change)="toggleShowInactive($event.checked)"
       ></mat-slide-toggle
     ></span>
   </div>
