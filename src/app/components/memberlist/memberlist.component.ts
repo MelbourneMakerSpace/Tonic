@@ -34,7 +34,7 @@ export class MemberlistComponent implements OnInit, AfterViewInit {
   public memberList = [];
   public activeMemberCount: any = 'Counting...';
   dataSource;
-  showInactive = false;
+  currentListFilter = null;
 
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns = ['firstname', 'lastname', 'email', 'Status'];
@@ -44,19 +44,29 @@ export class MemberlistComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {}
 
   toggleShowInactive(toggle) {
-    console.log(toggle.checked);
     this.showInactive = toggle.checked;
-    this.filter$.next('');
+    this.filter$.next(this.currentListFilter);
+  }
+
+  public get showInactive(): boolean {
+    console.log(`showInactive: ${sessionStorage.getItem('showInactive')}`);
+    return sessionStorage.getItem('showInactive') == '1' ? true : false;
+  }
+
+  public set showInactive(flag: boolean) {
+    sessionStorage.setItem('showInactive', flag ? '1' : '0');
   }
 
   ngOnInit() {
     this.filter$.pipe(debounceTime(400)).subscribe((filterstring) => {
+      this.currentListFilter = filterstring;
+
       if (filterstring?.length > 0) {
-        
         // Need to set memberList = members so that we re-search the whole
         // list, not just the current filtered list
         this.memberService.getMemberList().subscribe((members) => {
-          this.memberList = members;})
+          this.memberList = members;
+        });
 
         this.memberList = this.memberList.filter(
           (member) =>
