@@ -52,6 +52,12 @@ export class MemberlistComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.filter$.pipe(debounceTime(400)).subscribe((filterstring) => {
       if (filterstring?.length > 0) {
+        
+        // Need to set memberList = members so that we re-search the whole
+        // list, not just the current filtered list
+        this.memberService.getMemberList().subscribe((members) => {
+          this.memberList = members;})
+
         this.memberList = this.memberList.filter(
           (member) =>
             member.firstName
@@ -87,7 +93,7 @@ export class MemberlistComponent implements OnInit, AfterViewInit {
     });
   }
 
-  applyFilter(filterstring) {
+  applyFilter(filterstring: string) {
     this.filter$.next(filterstring);
   }
 
